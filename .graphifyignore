@@ -1,0 +1,27 @@
+# graphify ignore patterns (gitignore-style)
+# Цель: чистый knowledge graph без дубликатов и архивов
+# Дата: 2026-05-15
+
+# Бэкап-папка — старые версии файлов до решений
+backups/
+
+# Archive монолита 03_features.md — заменён 6 sub-files
+_archive_monolith_*.md
+**/concept/03_features/_archive_*.md
+
+# Артефакты прошлых graphify-runs (на случай если останутся в корне)
+_COMMUNITY_*.md
+
+# graphify-out — собственная папка инструмента (исключается автоматически, но на всякий случай)
+graphify-out/
+
+# Node modules / venv / etc — если когда-то появятся
+node_modules/
+.venv/
+venv/
+__pycache__/
+
+# Tools/configs которые не код проекта
+.obsidian/
+.idea/
+.vscode/

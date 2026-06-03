@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+# Husky pre-commit hook (monorepo: hooks at УЛЕЙ root, lint-staged в web/)
+# Запускается только если в web/ есть staged изменения.
+
+if git diff --cached --name-only | grep -qE '^web/'; then
+  cd "$(dirname "$0")/../web" && npx lint-staged
+fi
