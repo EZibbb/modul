@@ -15,7 +15,7 @@
   - [ ] 0.1.3 Перенести правила из `memory/MEMORY_TEMPLATE.md` в auto-memory (попросить Claude в первой сессии)
   - [ ] 0.1.4 Создать junction-link `.claude/skills` → `~/.claude/skills/`
   - [ ] 0.1.5 Удалить `_TEMPLATE_README.md`, `_sanitize.py`, `memory/MEMORY_TEMPLATE.md` после использования
-  - [ ] 0.1.6 Сделать первый коммит на git: `git init && git add . && git commit -m "init from CLAUDE_TEMPLATE"`
+  - [x] 0.1.6 git init + remote github.com/EZibbb/modul + первый коммит + push (main)
 
 - [ ] 0.2 Проверка установленных скиллов
   - [ ] 0.2.1 Проверить что junction `.claude/skills` работает (claude code должен видеть скиллы)
@@ -31,16 +31,16 @@
 
 > Заполнить после Этапа 0. Структура (типовая):
 
-- [ ] 1.1 `_claude/concept/01_overview.md` — что за продукт, целевая аудитория, value prop
-- [ ] 1.2 `_claude/concept/02_architecture.md` — системная архитектура
-- [ ] 1.3 `_claude/concept/03_features/` — каталог фич по доменам
-- [ ] 1.4 `_claude/concept/04_monetization.md` — бизнес-модель / тарифы
-- [ ] 1.5 `_claude/concept/05_roadmap.md` — этапы развития
-- [ ] 1.6 (опционально) `_claude/concept/06_agents_spec.md` — если есть AI-агенты
-- [ ] 1.7 `_claude/concept/07_tech_stack.md` — стек
-- [ ] 1.8 (опционально) `_claude/concept/07_data_models.md` — модели данных
-- [ ] 1.9 `_claude/concept/08_ui_wireframes.md` — UI/UX концепт
-- [ ] 1.X Финал Этапа 1 — backup + /graphify первый запуск + sync NAV_INDEX/DOCS_MAP
+- [x] 1.1 `concept/01_overview.md` — продукт, аудитория, цель (продукт на seed), стек
+- [ ] 1.2 `concept/04_architecture.md` — системная архитектура (свести модель данных из спек) — СЛЕДУЮЩЕЕ
+- [x] 1.3 `concept/03_features/` — 14 модулей A–N по 11-полевому шаблону + карта `02_feature_map.md`
+- [-] 1.4 монетизация — N/A (не SaaS-тарифы; B2B-магазин, цены — roadmap)
+- [ ] 1.5 `concept/05_roadmap.md` — что в демо (P0/P1) vs roadmap-слайд (P2) — свести из тиров
+- [x] 1.6 AI-агенты — покрыто в `03_features/L_ai.md`
+- [x] 1.7 стек — зафиксирован в D003 + overview
+- [x] 1.8 модели данных — описаны в спеках (B, K) → свести в 04_architecture
+- [ ] 1.9 UI/UX — отдельный трек (дизайн ПОСЛЕ функционала, промт готов)
+- [ ] 1.X Финал Этапа 1 — /graphify первый запуск + sync NAV_INDEX/DOCS_MAP
 
 ---
 
@@ -66,3 +66,10 @@
 | W08 | Лог ИИ-диалогов для отладки демо |
 | W09 | M3 планировщик DWDM: начать с табличной ITU-сетки, спектр-график позже |
 | W10 | Единый компонент Term (tooltip-глоссарий) с подгрузкой из GlossaryTerm |
+| W11 | Тёмная тема: inline-скрипт до гидрации (анти-FOUC при SSR) |
+| W12 | Сравнение: правило подсветки различий (числовые vs категориальные) |
+| W13 | Промокоды в корзине — опционально, заглушка для демо |
+| W14 | Seed 1–2 B2B-аккаунта с реалистичной историей заказов |
+| W15 | Единый набор иконок категорий/форм-факторов |
+| W16 | Единый компонент формы-заявки (сервис H + контакты J) с типом |
+| W17 | XML-карта сайта (next-sitemap) при сборке |
