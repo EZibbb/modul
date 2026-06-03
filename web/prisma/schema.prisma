@@ -1,0 +1,317 @@
+// Modul comp — схема данных (по _claude/concept/04_architecture.md)
+// SQLite (dev) → Postgres/Neon (prod). enum-поля = String, структурные = Json?.
+// Prisma 7: url не в схеме (в prisma.config.ts), клиент через driver-adapter.
+// Json-поля nullable без @default (Prisma 7 SQLite не квотит DEFAULT для JSONB);
+// значения задаются в seed/коде, читаются через `?? []` / `?? {}`.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ─────────────────────────────── Каталог (K)
+
+model Category {
+  id            String     @id @default(cuid())
+  parentId      String?
+  parent        Category?  @relation("CategoryTree", fields: [parentId], references: [id])
+  children      Category[] @relation("CategoryTree")
+  name          String
+  slug          String     @unique
+  formFactor    String?
+  attributeKeys Json? // ключи AttributeDefinition, активные в категории
+  position      Int        @default(0)
+  products      Product[]
+}
+
+model Brand {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  products Product[]
+}
+
+// Словарь атрибутов — управляет фасетами динамически (A)
+model AttributeDefinition {
+  key          String  @id // напр. "speedGbps", "reachM"
+  label        String
+  unit         String?
+  type         String // enum | range | bool
+  filterUi     String // checkbox | range | select
+  facetable    Boolean @default(true)
+  categoryKeys Json?
+  position     Int     @default(0)
+}
+
+model Product {
+  id         String   @id @default(cuid())
+  sku        String   @unique
+  mpn        String?
+  name       String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  brandId    String?
+  brand      Brand?   @relation(fields: [brandId], references: [id])
+
+  // фасетируемые характеристики
+  formFactor        String
+  speedGbps         Float?
+  mediaType         String? // SR|LR|ER|ZR|BiDi|CWDM|DWDM|copper
+  reachM            Int?
+  wavelengthNm      Int?
+  dwdmChannel       String?
+  connector         String? // LC|SC|MPO|RJ45|E2000
+  tempRange         String? // com|ext|ind
+  domSupport        Boolean @default(false)
+  txPowerMin        Float?
+  txPowerMax        Float?
+  rxSensitivity     Float?
+  laserType         String? // DFB|FP|VCSEL
+  fiberType         String?
+  powerConsumptionW Float?
+  dimensions        String?
+  weightG           Float?
+
+  certifications  Json?
+  priceBase       Float
+  pricePartner    Float?
+  oemPrice        Float?
+  oemRef          String?
+  stockStatus     String @default("in") // in|order
+  leadTimeDays    Int?
+  images          Json?
+  documents       Json?
+  firmwareOptions Json? // D-007 Вариант А: ["Generic", ...]
+  attributes      Json? // спец. поля категории
+
+  compatibilities Compatibility[]
+  cartItems       CartItem[]
+  orderItems      OrderItem[]
+  favorites       Favorite[]
+
+  @@index([categoryId])
+  @@index([formFactor])
+  @@index([speedGbps])
+}
+
+// ─────────────────────────────── Совместимость (B)
+
+model Vendor {
+  id     String         @id @default(cuid())
+  name   String         @unique
+  slug   String         @unique
+  logo   String?
+  series DeviceSeries[]
+}
+
+model DeviceSeries {
+  id       String        @id @default(cuid())
+  vendorId String
+  vendor   Vendor        @relation(fields: [vendorId], references: [id])
+  name     String
+  models   DeviceModel[]
+
+  @@index([vendorId])
+}
+
+model DeviceModel {
+  id              String          @id @default(cuid())
+  seriesId        String
+  series          DeviceSeries    @relation(fields: [seriesId], references: [id])
+  name            String
+  deviceType      String // switch|router|media-converter|server-nic
+  portGroups      PortGroup[]
+  compatibilities Compatibility[]
+
+  @@index([seriesId])
+}
+
+model PortGroup {
+  id              String          @id @default(cuid())
+  deviceModelId   String
+  deviceModel     DeviceModel     @relation(fields: [deviceModelId], references: [id])
+  label           String
+  count           Int
+  formFactor      String
+  speed           String
+  compatibilities Compatibility[]
+}
+
+// связь M2M товар ↔ модель оборудования с атрибутами
+model Compatibility {
+  id                 String      @id @default(cuid())
+  productId          String
+  product            Product     @relation(fields: [productId], references: [id])
+  deviceModelId      String
+  deviceModel        DeviceModel @relation(fields: [deviceModelId], references: [id])
+  role               String      @default("primary") // primary|alternative
+  note               String?
+  minSoftwareVersion String?
+  portGroupId        String?
+  portGroup          PortGroup?  @relation(fields: [portGroupId], references: [id])
+  tested             Boolean     @default(false)
+
+  @@unique([productId, deviceModelId])
+  @@index([productId])
+  @@index([deviceModelId])
+}
+
+// ─────────────────────────────── Справочники / контент (G, M, J)
+
+model ItuChannel {
+  id           String @id @default(cuid())
+  grid         String // CWDM | DWDM
+  channelNo    String
+  freqGHz      Float?
+  wavelengthNm Float
+
+  @@index([grid])
+}
+
+model GlossaryTerm {
+  slug       String @id
+  term       String
+  definition String
+}
+
+model Article {
+  slug     String   @id
+  title    String
+  category String
+  body     String
+  date     DateTime @default(now())
+}
+
+model OpticalComponent {
+  id     String  @id @default(cuid())
+  kind   String // connector|splice|fiber_km|attenuator
+  lossDb Float
+  note   String?
+}
+
+model Page {
+  slug  String @id
+  title String
+  body  String
+}
+
+// ─────────────────────────────── Коммерция (E)
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?
+  sessionId String?
+  promo     String?
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  qty       Int     @default(1)
+  firmware  String?
+  note      String?
+}
+
+model Order {
+  id           String      @id @default(cuid())
+  type         String      @default("quote") // order|quote
+  companyId    String?
+  company      Company?    @relation(fields: [companyId], references: [id])
+  userId       String?
+  user         User?       @relation(fields: [userId], references: [id])
+  customerJson Json?
+  deliveryJson Json?
+  status       String      @default("new")
+  attachments  Json?
+  items        OrderItem[]
+  createdAt    DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  qty       Int     @default(1)
+  firmware  String?
+  priceAt   Float
+}
+
+// ─────────────────────────────── Аккаунты (F) + сквозное (N, H, J, L)
+
+model Company {
+  id         String  @id @default(cuid())
+  name       String
+  inn        String?
+  requisites Json?
+  priceTier  String?
+  users      User[]
+  orders     Order[]
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  name          String?
+  role          String         @default("member") // admin|member
+  companyId     String?
+  company       Company?       @relation(fields: [companyId], references: [id])
+  favorites     Favorite[]
+  savedConfigs  SavedConfig[]
+  orders        Order[]
+  conversations Conversation[]
+}
+
+model Favorite {
+  id        String  @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+}
+
+model SavedConfig {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  type      String // compare|compat|line
+  payload   Json?
+  code      String   @unique
+  createdAt DateTime @default(now())
+}
+
+model ServiceRequest {
+  id          String   @id @default(cuid())
+  type        String // coding|testing|custom
+  contactJson Json?
+  payload     Json?
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+}
+
+model ContactRequest {
+  id          String   @id @default(cuid())
+  contactJson Json?
+  message     String
+  createdAt   DateTime @default(now())
+}
+
+model Conversation {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  messages  Json?
+  createdAt DateTime @default(now())
+}
