@@ -56,6 +56,23 @@
 
 ---
 
+## `design/` — дизайн-пакет (референс, D004)
+
+> Готовый дизайн-пакет из отдельного Claude-чата (перенесён из `uploads/`). Статичный референс для сборки UI. Конспект — `_claude/concept/06_design.md`.
+
+| Путь | Что |
+|---|---|
+| `design/*.html` | 11 экранов (index, catalog, product, compatibility, calculator, dom-diagnostics, compare, decoder, cart, account, design-system) |
+| `design/assets/tokens.css` | Дизайн-токены (HSL, light+dark, формат shadcn) — источник истины |
+| `design/assets/base.css` | Оптический язык (.hero, .fiber-line, .page-head) + base-слой |
+| `design/assets/tw-setup.js` | Tailwind-конфиг (CDN v3; маппинг → Tailwind 4 `@theme` при переносе) |
+| `design/assets/*.js` | Логика экранов (app/⌘K/со-пилот, module-art, catalog, compat, calc, dom, compare, decoder, cart) — референс поведения для React |
+| `design/docs/SPEC.md` | Исчерпывающая дизайн-спецификация (токены, компоненты, 11 экранов, доменные данные, план переноса) |
+| `design/docs/img/` | 14 эталонных рендеров экранов |
+| `design/screenshots/` | Рабочие скриншоты процесса дизайна |
+
+---
+
 ## `graphify-out/` — knowledge graph
 
 > Создаётся при первом запуске `/graphify`. Не редактировать руками.

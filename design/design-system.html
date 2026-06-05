@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ru" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Modul — Дизайн-система</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/tw-setup.js"></script>
+<link rel="stylesheet" href="assets/tokens.css" />
+<link rel="stylesheet" href="assets/base.css" />
+<script>
+  // theme: persist + restore
+  (function () {
+    const saved = localStorage.getItem('modul-theme');
+    if (saved === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.classList.toggle('dark');
+    localStorage.setItem('modul-theme', root.classList.contains('dark') ? 'dark' : 'light');
+  }
+</script>
+</head>
+<body class="bg-background font-sans text-foreground antialiased">
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
+  <div class="mx-auto flex h-14 max-w-[1320px] items-center gap-4 px-6">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <span class="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+      </span>
+      <span class="text-[15px] font-semibold tracking-tight">Modul<span class="font-normal text-muted-foreground">&nbsp;comp</span></span>
+      <span class="mono text-2xs rounded bg-muted px-1.5 py-0.5 text-muted-foreground">DS&nbsp;v1.0</span>
+    </a>
+    <nav class="ml-4 hidden items-center gap-1 text-sm text-muted-foreground md:flex">
+      <a href="#palette" class="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground">Палитра</a>
+      <a href="#type" class="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground">Типографика</a>
+      <a href="#layout" class="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground">Сетка</a>
+      <a href="#components" class="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground">Компоненты</a>
+      <a href="#domain" class="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground">Доменные</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2">
+      <a href="index.html" class="hidden rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-accent sm:inline-flex">Главная →</a>
+      <button onclick="toggleTheme()" aria-label="Сменить тему" class="flex h-9 w-9 items-center justify-center rounded-md border border-border hover:bg-accent">
+        <svg class="h-4 w-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="relative overflow-hidden border-b border-border">
+  <div class="grid-bg absolute inset-0"></div>
+  <div class="relative mx-auto max-w-[1320px] px-6 py-16">
+    <div class="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground shadow-xs">
+      <span class="h-1.5 w-1.5 rounded-full bg-success"></span>
+      Дизайн-система · оптические трансиверы и сетевое оборудование
+    </div>
+    <h1 class="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">Инженерная точность как интерфейс</h1>
+    <p class="mt-4 max-w-2xl text-lg text-muted-foreground">Спокойная палитра, плотные читаемые таблицы, моноширинные акценты для артикулов и параметров. Токены на CSS-переменных (light/dark), компоненты на Tailwind — переносится в Next.js + shadcn/ui без переделки.</p>
+    <div class="mono mt-6 flex flex-wrap gap-2 text-xs">
+      <span class="rounded-md border border-border bg-card px-2.5 py-1.5">Inter</span>
+      <span class="rounded-md border border-border bg-card px-2.5 py-1.5">IBM&nbsp;Plex&nbsp;Mono</span>
+      <span class="rounded-md border border-border bg-card px-2.5 py-1.5 text-primary">#0A4FD6</span>
+      <span class="rounded-md border border-border bg-card px-2.5 py-1.5 text-cyan">#06B6D4</span>
+      <span class="rounded-md border border-border bg-card px-2.5 py-1.5">radius&nbsp;8px</span>
+    </div>
+  </div>
+</section>
+
+<main class="mx-auto max-w-[1320px] px-6 py-14">
+  <!-- SECTIONS INJECTED BELOW -->
+  <!-- ============ PALETTE ============ -->
+  <section id="palette" class="scroll-mt-20">
+    <div class="flex items-end justify-between border-b border-border pb-3">
+      <div>
+        <span class="mono text-2xs uppercase tracking-widest text-primary">01 — Foundations</span>
+        <h2 class="mt-1 text-2xl font-semibold tracking-tight">Палитра</h2>
+      </div>
+      <p class="hidden max-w-sm text-sm text-muted-foreground sm:block">Нейтрали + один акцент + семантика. Все значения — HSL-каналы в CSS-переменных, light и dark.</p>
+    </div>
+
+    <h3 class="mt-8 text-sm font-semibold text-muted-foreground">Бренд</h3>
+    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="group overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="h-20 bg-primary"></div>
+        <div class="px-3 py-2.5">
+          <div class="text-sm font-medium">Primary</div>
+          <div class="mono text-2xs text-muted-foreground">#0A4FD6</div>
+        </div>
+      </div>
+      <div class="group overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="h-20 bg-primary-hover"></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Primary&nbsp;/ hover</div><div class="mono text-2xs text-muted-foreground">#0942B0</div></div>
+      </div>
+      <div class="group overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="h-20 bg-cyan"></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Cyan&nbsp;/ fiber</div><div class="mono text-2xs text-muted-foreground">#06B6D4</div></div>
+      </div>
+      <div class="group overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="h-20 bg-primary-muted"></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Primary&nbsp;/ muted</div><div class="mono text-2xs text-muted-foreground">tinted</div></div>
+      </div>
+      <div class="group overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="h-20 bg-foreground"></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Foreground</div><div class="mono text-2xs text-muted-foreground">#0F1B2D</div></div>
+      </div>
+      <div class="group overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="h-20 bg-muted"></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Muted</div><div class="mono text-2xs text-muted-foreground">#F1F3F7</div></div>
+      </div>
+    </div>
+
+    <h3 class="mt-8 text-sm font-semibold text-muted-foreground">Семантика</h3>
+    <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="flex h-16 items-end bg-success p-2"><span class="text-2xs font-medium text-white">в наличии · протестировано</span></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Success</div><div class="mono text-2xs text-muted-foreground">#16A34A</div></div>
+      </div>
+      <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="flex h-16 items-end bg-warning p-2"><span class="text-2xs font-medium text-white">под заказ</span></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Warning</div><div class="mono text-2xs text-muted-foreground">#E08A0B</div></div>
+      </div>
+      <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="flex h-16 items-end bg-destructive p-2"><span class="text-2xs font-medium text-white">снято с производства</span></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Destructive</div><div class="mono text-2xs text-muted-foreground">#D92D2D</div></div>
+      </div>
+      <div class="overflow-hidden rounded-lg border border-border bg-card shadow-xs">
+        <div class="flex h-16 items-end bg-info p-2"><span class="text-2xs font-medium text-white">информация · DOM</span></div>
+        <div class="px-3 py-2.5"><div class="text-sm font-medium">Info</div><div class="mono text-2xs text-muted-foreground">#0EA5E9</div></div>
+      </div>
+    </div>
+
+    <h3 class="mt-8 text-sm font-semibold text-muted-foreground">Нейтральная шкала</h3>
+    <div class="mt-3 overflow-hidden rounded-lg border border-border">
+      <div class="grid grid-cols-5 sm:grid-cols-9">
+        <div class="flex h-14 items-center justify-center bg-background text-2xs text-foreground">0</div>
+        <div class="flex h-14 items-center justify-center bg-subtle text-2xs">25</div>
+        <div class="flex h-14 items-center justify-center bg-muted text-2xs">50</div>
+        <div class="flex h-14 items-center justify-center bg-border text-2xs">100</div>
+        <div class="flex h-14 items-center justify-center bg-border-strong text-2xs">200</div>
+        <div class="flex h-14 items-center justify-center bg-muted-foreground text-2xs text-white">500</div>
+        <div class="flex h-14 items-center justify-center bg-secondary-foreground text-2xs text-white">700</div>
+        <div class="flex h-14 items-center justify-center bg-foreground text-2xs text-background">900</div>
+        <div class="flex h-14 items-center justify-center bg-foreground text-2xs text-background">950</div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ TYPE ============ -->
+  <section id="type" class="mt-16 scroll-mt-20">
+    <div class="flex items-end justify-between border-b border-border pb-3">
+      <div>
+        <span class="mono text-2xs uppercase tracking-widest text-primary">02 — Foundations</span>
+        <h2 class="mt-1 text-2xl font-semibold tracking-tight">Типографика</h2>
+      </div>
+      <p class="hidden max-w-sm text-sm text-muted-foreground sm:block">Inter — интерфейс и текст. IBM Plex Mono — артикулы, длины волн, °C, DOM, любые данные.</p>
+    </div>
+
+    <div class="mt-8 grid gap-px overflow-hidden rounded-lg border border-border bg-border">
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">H1 · 48/700</div>
+        <div class="text-5xl font-bold tracking-tight">QSFP28 100G трансиверы</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">H2 · 30/600</div>
+        <div class="text-3xl font-semibold tracking-tight">Оптический бюджет линии</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">H3 · 24/600</div>
+        <div class="text-2xl font-semibold">Совместимость по портам</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">H4 · 20/600</div>
+        <div class="text-xl font-semibold">Технические характеристики</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">H5 · 16/600</div>
+        <div class="text-base font-semibold">Диагностика DOM/DDM</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">H6 · 14/600</div>
+        <div class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Параметры передатчика</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">Body · 15/400</div>
+        <div class="max-w-2xl text-[15px] leading-relaxed text-foreground/90">Модуль кодируется под оборудование вендора и проходит тестирование на коммутаторах перед отгрузкой. Поддержка DOM позволяет в реальном времени контролировать температуру, напряжение, ток смещения и оптическую мощность.</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">Caption · 12/500</div>
+        <div class="text-xs text-muted-foreground">Указанная дальность приведена для одномодового волокна G.652.D при затухании 0.35 дБ/км.</div>
+      </div>
+      <div class="grid grid-cols-[120px_1fr] items-baseline gap-4 bg-card px-5 py-4">
+        <div class="mono text-2xs text-muted-foreground">Mono · 14/500</div>
+        <div class="mono flex flex-wrap gap-x-6 gap-y-1 text-sm">
+          <span>MC-SFP10G-LR</span><span class="text-primary">1310&nbsp;nm</span><span class="text-cyan">10&nbsp;km</span><span class="tnum">-40…+85&nbsp;°C</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ LAYOUT ============ -->
+  <section id="layout" class="mt-16 scroll-mt-20">
+    <div class="flex items-end justify-between border-b border-border pb-3">
+      <div>
+        <span class="mono text-2xs uppercase tracking-widest text-primary">03 — Foundations</span>
+        <h2 class="mt-1 text-2xl font-semibold tracking-tight">Сетка · отступы · радиусы · тени</h2>
+      </div>
+      <p class="hidden max-w-sm text-sm text-muted-foreground sm:block">База 4px. Контейнер 1320px, 12 колонок, gutter 24px. Тени тонкие — приоритет границам.</p>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+      <!-- spacing -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <h3 class="text-sm font-semibold">Шкала отступов · база 4px</h3>
+        <div class="mt-4 space-y-2">
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">4 · 1</span><span class="h-3 bg-primary/80" style="width:4px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">8 · 2</span><span class="h-3 bg-primary/80" style="width:8px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">12 · 3</span><span class="h-3 bg-primary/80" style="width:12px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">16 · 4</span><span class="h-3 bg-primary/80" style="width:16px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">24 · 6</span><span class="h-3 bg-primary/80" style="width:24px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">32 · 8</span><span class="h-3 bg-primary/80" style="width:32px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">48 · 12</span><span class="h-3 bg-primary/80" style="width:48px"></span></div>
+          <div class="flex items-center gap-3"><span class="mono w-16 text-2xs text-muted-foreground">64 · 16</span><span class="h-3 bg-primary/80" style="width:64px"></span></div>
+        </div>
+      </div>
+
+      <!-- radii + shadows -->
+      <div class="space-y-6">
+        <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+          <h3 class="text-sm font-semibold">Радиусы</h3>
+          <div class="mt-4 flex flex-wrap items-end gap-4">
+            <div class="text-center"><div class="h-14 w-14 rounded-sm border-2 border-primary bg-primary-muted"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">sm·4</div></div>
+            <div class="text-center"><div class="h-14 w-14 rounded-md border-2 border-primary bg-primary-muted"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">md·6</div></div>
+            <div class="text-center"><div class="h-14 w-14 rounded-lg border-2 border-primary bg-primary-muted"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">lg·8</div></div>
+            <div class="text-center"><div class="h-14 w-14 rounded-xl border-2 border-primary bg-primary-muted"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">xl·12</div></div>
+            <div class="text-center"><div class="h-14 w-14 rounded-full border-2 border-primary bg-primary-muted"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">full</div></div>
+          </div>
+        </div>
+        <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+          <h3 class="text-sm font-semibold">Тени</h3>
+          <div class="mt-4 grid grid-cols-4 gap-4">
+            <div class="text-center"><div class="h-14 rounded-lg bg-card shadow-xs"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">xs</div></div>
+            <div class="text-center"><div class="h-14 rounded-lg bg-card shadow-sm"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">sm</div></div>
+            <div class="text-center"><div class="h-14 rounded-lg bg-card shadow-md"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">md</div></div>
+            <div class="text-center"><div class="h-14 rounded-lg bg-card shadow-lg"></div><div class="mono mt-1.5 text-2xs text-muted-foreground">lg</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12-col grid -->
+    <div class="mt-6 rounded-lg border border-border bg-card p-5 shadow-xs">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-semibold">12 колонок · контейнер 1320 · gutter 24</h3>
+        <span class="mono text-2xs text-muted-foreground">desktop-first</span>
+      </div>
+      <div class="mt-4 grid grid-cols-12 gap-2">
+        <div class="col-span-3 flex h-10 items-center justify-center rounded-md bg-primary-muted text-2xs text-primary">sidebar · 3</div>
+        <div class="col-span-9 flex h-10 items-center justify-center rounded-md bg-muted text-2xs text-muted-foreground">контент · 9</div>
+        <div class="col-span-4 flex h-10 items-center justify-center rounded-md bg-muted text-2xs text-muted-foreground">4</div>
+        <div class="col-span-4 flex h-10 items-center justify-center rounded-md bg-muted text-2xs text-muted-foreground">4</div>
+        <div class="col-span-4 flex h-10 items-center justify-center rounded-md bg-muted text-2xs text-muted-foreground">4</div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ COMPONENTS ============ -->
+  <section id="components" class="mt-16 scroll-mt-20">
+    <div class="flex items-end justify-between border-b border-border pb-3">
+      <div>
+        <span class="mono text-2xs uppercase tracking-widest text-primary">04 — Components</span>
+        <h2 class="mt-1 text-2xl font-semibold tracking-tight">Базовые компоненты</h2>
+      </div>
+      <p class="hidden max-w-sm text-sm text-muted-foreground sm:block">Кнопки, статусы, чипы, автодополнение, карточка, строка таблицы, табы, крошки.</p>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+
+      <!-- Buttons -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Кнопки</h3><span class="mono text-2xs text-muted-foreground">h-9 · 36px touch</span></div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button class="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow-xs transition hover:bg-primary-hover">Добавить в спецификацию</button>
+          <button class="inline-flex h-9 items-center gap-2 rounded-md border border-border bg-card px-4 text-sm font-medium transition hover:bg-accent">Сравнить</button>
+          <button class="inline-flex h-9 items-center gap-2 rounded-md bg-muted px-4 text-sm font-medium text-foreground transition hover:bg-border">Скачать datasheet</button>
+          <button class="inline-flex h-9 items-center gap-2 rounded-md px-3 text-sm font-medium text-primary transition hover:bg-primary-muted">Подробнее →</button>
+          <button disabled class="inline-flex h-9 cursor-not-allowed items-center gap-2 rounded-md bg-primary/40 px-4 text-sm font-medium text-primary-foreground">Нет в наличии</button>
+        </div>
+        <div class="mt-3 flex flex-wrap items-center gap-3">
+          <button class="inline-flex h-8 items-center gap-1.5 rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground hover:bg-primary-hover">sm</button>
+          <button class="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary-hover">md</button>
+          <button class="inline-flex h-11 items-center gap-2 rounded-md bg-primary px-5 text-[15px] font-medium text-primary-foreground hover:bg-primary-hover">lg</button>
+          <button class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border hover:bg-accent" aria-label="В избранное"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A4.5 4.5 0 0 0 12 5 4.5 4.5 0 0 0 2 8.5C2 10.7 3.5 12.5 5 14l7 7z"/></svg></button>
+        </div>
+      </div>
+
+      <!-- Status badges -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Бейджи статуса</h3><span class="mono text-2xs text-muted-foreground">наличие · качество</span></div>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-success-muted px-2.5 py-1 text-xs font-medium text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>В наличии · 1 240 шт</span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-warning-muted px-2.5 py-1 text-xs font-medium text-warning"><span class="h-1.5 w-1.5 rounded-full bg-warning"></span>Под заказ · 2–3 нед</span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-destructive-muted px-2.5 py-1 text-xs font-medium text-destructive"><span class="h-1.5 w-1.5 rounded-full bg-destructive"></span>Снят с производства</span>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-1.5 rounded-md border border-success/30 bg-success-muted px-2 py-1 text-2xs font-medium text-success"><svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>Протестировано</span>
+          <span class="inline-flex items-center gap-1.5 rounded-md border border-info/30 bg-info-muted px-2 py-1 text-2xs font-medium text-info">DOM/DDM</span>
+          <span class="inline-flex items-center gap-1.5 rounded-md border border-border bg-muted px-2 py-1 text-2xs font-medium text-muted-foreground">Гарантия 5 лет</span>
+          <span class="inline-flex items-center gap-1.5 rounded-md border border-cyan/30 bg-cyan-muted px-2 py-1 text-2xs font-medium text-cyan">RoHS</span>
+        </div>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Чипы фильтров</h3><span class="mono text-2xs text-muted-foreground">активные / выбор</span></div>
+        <div class="flex flex-wrap gap-2">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">10G <button class="-mr-0.5 ml-0.5 opacity-80 hover:opacity-100" aria-label="Снять">✕</button></span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">LC дуплекс <button class="-mr-0.5 ml-0.5 opacity-80 hover:opacity-100" aria-label="Снять">✕</button></span>
+          <button class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium hover:bg-accent">Одномод <span class="mono text-muted-foreground">214</span></button>
+          <button class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium hover:bg-accent">Многомод <span class="mono text-muted-foreground">96</span></button>
+          <button class="inline-flex items-center gap-1.5 rounded-full border border-dashed border-border-strong px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent">+ дальность</button>
+          <button class="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary-muted">Сбросить всё</button>
+        </div>
+      </div>
+
+      <!-- Autocomplete input -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Поиск с автодополнением</h3><span class="mono text-2xs text-muted-foreground">по артикулу</span></div>
+        <div class="relative">
+          <div class="flex h-10 items-center gap-2 rounded-md border border-input bg-background px-3 ring-2 ring-ring/30">
+            <svg class="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <span class="text-sm">SFP-10G<span class="border-r border-foreground/70"></span><span class="text-muted-foreground">-LR</span></span>
+            <kbd class="mono ml-auto rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">⌘K</kbd>
+          </div>
+          <div class="absolute left-0 right-0 top-12 z-10 overflow-hidden rounded-md border border-border bg-popover shadow-lg">
+            <div class="flex items-center gap-3 bg-accent px-3 py-2.5">
+              <span class="mono text-sm font-medium">MC-SFP10G-LR</span>
+              <span class="text-xs text-muted-foreground">10GBASE-LR · 1310nm · 10km</span>
+              <span class="ml-auto inline-flex items-center gap-1 text-2xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>в наличии</span>
+            </div>
+            <div class="flex items-center gap-3 px-3 py-2.5 hover:bg-accent">
+              <span class="mono text-sm">MC-SFP10G-LRM</span>
+              <span class="text-xs text-muted-foreground">10GBASE-LRM · 1310nm · 220m</span>
+              <span class="ml-auto text-2xs text-warning">под заказ</span>
+            </div>
+            <div class="flex items-center gap-3 px-3 py-2.5 hover:bg-accent">
+              <span class="mono text-sm">MC-SFP10G-ER</span>
+              <span class="text-xs text-muted-foreground">10GBASE-ER · 1550nm · 40km</span>
+              <span class="ml-auto text-2xs text-success">в наличии</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-2 h-24"></div>
+      </div>
+
+      <!-- Breadcrumbs + Tabs -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs lg:col-span-2">
+        <h3 class="mb-4 text-sm font-semibold">Хлебные крошки и табы</h3>
+        <nav class="flex items-center gap-2 text-sm text-muted-foreground" aria-label="Хлебные крошки">
+          <a href="#" class="hover:text-foreground">Каталог</a>
+          <span class="text-border-strong">/</span>
+          <a href="#" class="hover:text-foreground">Трансиверы</a>
+          <span class="text-border-strong">/</span>
+          <a href="#" class="hover:text-foreground">SFP+ 10G</a>
+          <span class="text-border-strong">/</span>
+          <span class="mono text-foreground">MC-SFP10G-LR</span>
+        </nav>
+        <div class="mt-5 border-b border-border">
+          <div class="-mb-px flex gap-6 text-sm">
+            <button class="border-b-2 border-primary px-1 py-2.5 font-medium text-foreground">Характеристики</button>
+            <button class="border-b-2 border-transparent px-1 py-2.5 text-muted-foreground hover:text-foreground">Совместимость <span class="mono text-2xs">28</span></button>
+            <button class="border-b-2 border-transparent px-1 py-2.5 text-muted-foreground hover:text-foreground">DOM/DDM</button>
+            <button class="border-b-2 border-transparent px-1 py-2.5 text-muted-foreground hover:text-foreground">Аналоги <span class="mono text-2xs">6</span></button>
+            <button class="border-b-2 border-transparent px-1 py-2.5 text-muted-foreground hover:text-foreground">Документация</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product card -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <h3 class="mb-4 text-sm font-semibold">Карточка товара</h3>
+        <article class="group overflow-hidden rounded-lg border border-border bg-card transition hover:border-border-strong hover:shadow-md">
+          <div class="relative flex h-40 items-center justify-center bg-gradient-to-br from-muted to-subtle">
+            <!-- transceiver placeholder illustration -->
+            <svg viewBox="0 0 200 90" class="h-24 w-auto text-foreground/80">
+              <rect x="14" y="22" width="150" height="46" rx="5" fill="hsl(var(--card))" stroke="currentColor" stroke-width="2"/>
+              <rect x="22" y="30" width="110" height="30" rx="2" fill="hsl(var(--muted))"/>
+              <rect x="138" y="32" width="10" height="26" rx="1.5" fill="hsl(var(--primary))"/>
+              <rect x="151" y="32" width="10" height="26" rx="1.5" fill="hsl(var(--primary))"/>
+              <path d="M164 34h26M164 45h32M164 56h26" stroke="hsl(var(--cyan))" stroke-width="2.5" stroke-linecap="round"/>
+              <text x="30" y="49" font-family="IBM Plex Mono" font-size="12" fill="hsl(var(--muted-foreground))">10G·LR</text>
+            </svg>
+            <span class="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-success-muted px-2 py-0.5 text-2xs font-medium text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>В наличии</span>
+            <button class="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-md border border-border bg-card/80 backdrop-blur hover:bg-accent" aria-label="Сравнить"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+          </div>
+          <div class="p-4">
+            <div class="flex items-center gap-2">
+              <span class="mono text-sm font-medium text-primary">MC-SFP10G-LR</span>
+              <span class="inline-flex items-center gap-1 rounded border border-success/30 bg-success-muted px-1.5 py-0.5 text-2xs font-medium text-success"><svg class="h-2.5 w-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>tested</span>
+            </div>
+            <h4 class="mt-1 text-sm font-medium leading-snug">Трансивер 10GBASE-LR SFP+, 1310 нм, 10 км, LC, DOM</h4>
+            <dl class="mono mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-2xs text-muted-foreground">
+              <div class="flex justify-between border-b border-dashed border-border pb-1"><dt>Скорость</dt><dd class="text-foreground">10.3125 Gb/s</dd></div>
+              <div class="flex justify-between border-b border-dashed border-border pb-1"><dt>Дальность</dt><dd class="text-foreground">10 км</dd></div>
+              <div class="flex justify-between border-b border-dashed border-border pb-1"><dt>λ</dt><dd class="text-foreground">1310 нм</dd></div>
+              <div class="flex justify-between border-b border-dashed border-border pb-1"><dt>Темп.</dt><dd class="text-foreground">0…+70 °C</dd></div>
+            </dl>
+            <div class="mt-4 flex items-end justify-between">
+              <div>
+                <div class="text-2xs text-muted-foreground">от 50 шт</div>
+                <div class="tnum text-lg font-semibold">2 900 ₽</div>
+              </div>
+              <button class="inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3.5 text-sm font-medium text-primary-foreground hover:bg-primary-hover">+ в спецификацию</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- Tech table row -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <h3 class="mb-4 text-sm font-semibold">Строка тех-таблицы · зебра, числа по правому краю</h3>
+        <div class="overflow-hidden rounded-lg border border-border">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border bg-subtle text-left text-xs text-muted-foreground">
+                <th class="px-3 py-2.5 font-medium">Артикул</th>
+                <th class="px-3 py-2.5 font-medium">Стандарт</th>
+                <th class="px-3 py-2.5 text-right font-medium">λ, нм</th>
+                <th class="px-3 py-2.5 text-right font-medium">Дальность</th>
+                <th class="px-3 py-2.5 text-right font-medium">Цена</th>
+              </tr>
+            </thead>
+            <tbody class="mono tnum">
+              <tr class="border-b border-border hover:bg-accent">
+                <td class="px-3 py-2.5 font-medium text-primary">MC-SFP10G-SR</td>
+                <td class="px-3 py-2.5 font-sans text-foreground/90">10GBASE-SR</td>
+                <td class="px-3 py-2.5 text-right">850</td>
+                <td class="px-3 py-2.5 text-right">300 м</td>
+                <td class="px-3 py-2.5 text-right">1 700 ₽</td>
+              </tr>
+              <tr class="border-b border-border bg-subtle hover:bg-accent">
+                <td class="px-3 py-2.5 font-medium text-primary">MC-SFP10G-LR</td>
+                <td class="px-3 py-2.5 font-sans text-foreground/90">10GBASE-LR</td>
+                <td class="px-3 py-2.5 text-right">1310</td>
+                <td class="px-3 py-2.5 text-right">10 км</td>
+                <td class="px-3 py-2.5 text-right">2 900 ₽</td>
+              </tr>
+              <tr class="border-b border-border hover:bg-accent">
+                <td class="px-3 py-2.5 font-medium text-primary">MC-SFP10G-ER</td>
+                <td class="px-3 py-2.5 font-sans text-foreground/90">10GBASE-ER</td>
+                <td class="px-3 py-2.5 text-right">1550</td>
+                <td class="px-3 py-2.5 text-right">40 км</td>
+                <td class="px-3 py-2.5 text-right">7 400 ₽</td>
+              </tr>
+              <tr class="bg-subtle hover:bg-accent">
+                <td class="px-3 py-2.5 font-medium text-primary">MC-SFP10G-ZR</td>
+                <td class="px-3 py-2.5 font-sans text-foreground/90">10GBASE-ZR</td>
+                <td class="px-3 py-2.5 text-right">1550</td>
+                <td class="px-3 py-2.5 text-right">80 км</td>
+                <td class="px-3 py-2.5 text-right">12 800 ₽</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DOMAIN COMPONENTS ============ -->
+  <section id="domain" class="mt-16 scroll-mt-20">
+    <div class="flex items-end justify-between border-b border-border pb-3">
+      <div>
+        <span class="mono text-2xs uppercase tracking-widest text-primary">05 — Domain</span>
+        <h2 class="mt-1 text-2xl font-semibold tracking-tight">Доменные компоненты</h2>
+      </div>
+      <p class="hidden max-w-sm text-sm text-muted-foreground sm:block">Блок цены с экономией vs OEM, селект прошивки, DOM-таблица, ИИ-карточка, тултип-глоссарий, каскад совместимости.</p>
+    </div>
+
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
+
+      <!-- Price block -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Блок цены · экономия vs OEM</h3><span class="mono text-2xs text-muted-foreground">PriceBlock</span></div>
+        <div class="rounded-lg border border-border bg-subtle p-4">
+          <div class="flex items-end justify-between">
+            <div>
+              <div class="text-2xs text-muted-foreground">Розничная</div>
+              <div class="tnum text-2xl font-semibold">2 900 ₽</div>
+            </div>
+            <div class="text-right">
+              <div class="text-2xs text-muted-foreground">Партнёрская</div>
+              <div class="tnum text-lg font-semibold text-primary">2 400 ₽</div>
+            </div>
+          </div>
+          <div class="mt-3 flex items-center justify-between rounded-md border border-success/30 bg-success-muted px-3 py-2">
+            <span class="text-xs font-medium text-success">−68% к OEM Cisco SFP-10G-LR</span>
+            <span class="mono text-xs text-success">9 100 ₽ → 2 900 ₽</span>
+          </div>
+          <div class="mono mt-3 grid grid-cols-3 gap-px overflow-hidden rounded-md border border-border bg-border text-center text-2xs">
+            <div class="bg-card px-1 py-1.5"><div class="text-muted-foreground">1–9</div><div class="font-semibold">2 900</div></div>
+            <div class="bg-card px-1 py-1.5"><div class="text-muted-foreground">10–49</div><div class="font-semibold">2 650</div></div>
+            <div class="bg-card px-1 py-1.5"><div class="text-muted-foreground">50+</div><div class="font-semibold text-primary">2 400</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Firmware select -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Селект прошивки</h3><span class="mono text-2xs text-muted-foreground">FirmwareSelect</span></div>
+        <label class="mb-1.5 block text-xs font-medium text-muted-foreground">Кодирование под вендора</label>
+        <div class="flex h-11 items-center gap-2 rounded-md border border-input bg-background px-3">
+          <span class="flex h-6 w-9 items-center justify-center rounded bg-foreground text-2xs font-semibold text-background">CSC</span>
+          <span class="text-sm">Cisco — Generic / Universal</span>
+          <svg class="ml-auto h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+        <div class="mt-2 flex items-start gap-2 rounded-md border border-info/30 bg-info-muted px-3 py-2 text-xs text-info">
+          <svg class="mt-0.5 h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>
+          Программируется на складе под выбранный вендор перед отгрузкой. Срок +0 дней.
+        </div>
+        <div class="mt-3 flex flex-wrap gap-1.5">
+          <button class="rounded-full border border-primary bg-primary-muted px-2.5 py-1 text-2xs font-medium text-primary">Cisco</button>
+          <button class="rounded-full border border-border bg-card px-2.5 py-1 text-2xs hover:bg-accent">Juniper</button>
+          <button class="rounded-full border border-border bg-card px-2.5 py-1 text-2xs hover:bg-accent">Arista</button>
+          <button class="rounded-full border border-border bg-card px-2.5 py-1 text-2xs hover:bg-accent">Huawei</button>
+          <button class="rounded-full border border-border bg-card px-2.5 py-1 text-2xs hover:bg-accent">MikroTik</button>
+        </div>
+      </div>
+
+      <!-- AI result card -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Карточка результата ИИ</h3><span class="mono text-2xs text-muted-foreground">AIResultCard</span></div>
+        <div class="flex gap-2.5">
+          <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary text-primary-foreground"><svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.6V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.4A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 5-3z"/></svg></span>
+          <div class="flex-1 space-y-2 text-sm">
+            <p class="text-foreground/90">Под задачу подойдёт модуль с запасом по оптбюджету:</p>
+            <div class="rounded-lg border border-border bg-subtle p-3">
+              <div class="flex items-center gap-2">
+                <span class="mono text-sm font-medium text-primary">MC-SFP10G-LR</span>
+                <span class="inline-flex items-center gap-1 rounded border border-primary/30 bg-primary-muted px-1.5 py-0.5 text-2xs font-medium text-primary"><span class="flex h-2.5 w-2.5 items-center justify-center rounded-sm bg-primary text-[7px] text-primary-foreground">AI</span>подобрано ИИ</span>
+              </div>
+              <p class="mt-1 text-xs text-muted-foreground">10GBASE-LR, 1310nm, 10км, LC, DOM</p>
+              <div class="mt-2.5 flex items-center justify-between">
+                <span class="mono text-sm font-semibold">2 900 ₽</span>
+                <button class="inline-flex h-7 items-center rounded-md bg-primary px-2.5 text-xs font-medium text-primary-foreground">+ в спецификацию</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tooltip glossary -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Тултип-глоссарий</h3><span class="mono text-2xs text-muted-foreground">Tooltip</span></div>
+        <p class="text-sm leading-relaxed text-foreground/90">Модуль с поддержкой
+          <span class="group relative inline-flex cursor-help items-center gap-0.5 border-b border-dashed border-primary/60 font-medium text-primary">DOM
+            <span class="invisible absolute bottom-full left-1/2 z-10 mb-2 w-56 -translate-x-1/2 rounded-md border border-border bg-popover p-2.5 text-xs font-normal text-foreground opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100">Digital Optical Monitoring — цифровой мониторинг оптических параметров: мощность Tx/Rx, температура, ток лазера, напряжение.</span>
+          </span>
+          и
+          <span class="group relative inline-flex cursor-help items-center gap-0.5 border-b border-dashed border-primary/60 font-medium text-primary">FEC
+            <span class="invisible absolute bottom-full left-1/2 z-10 mb-2 w-56 -translate-x-1/2 rounded-md border border-border bg-popover p-2.5 text-xs font-normal text-foreground opacity-0 shadow-lg transition group-hover:visible group-hover:opacity-100">Forward Error Correction — упреждающая коррекция ошибок, обязательна для 25G+ на медных и многомодовых линиях.</span>
+          </span>. Наведите на термин для пояснения.</p>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="mono rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">BiDi</span>
+          <span class="mono rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">DFB</span>
+          <span class="mono rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">VCSEL</span>
+          <span class="mono rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">SMF-28e</span>
+        </div>
+      </div>
+
+      <!-- DOM table -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs lg:col-span-2">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">DOM/DDM-таблица · пороги normal / warning / alarm</h3><span class="mono text-2xs text-muted-foreground">DomTable</span></div>
+        <div class="overflow-hidden rounded-lg border border-border">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-border bg-subtle text-left text-xs text-muted-foreground">
+                <th class="px-4 py-2.5 font-medium">Параметр</th>
+                <th class="px-4 py-2.5 text-right font-medium">Текущее</th>
+                <th class="px-4 py-2.5 text-right font-medium">Low alarm</th>
+                <th class="px-4 py-2.5 text-right font-medium">Low warn</th>
+                <th class="px-4 py-2.5 text-right font-medium">High warn</th>
+                <th class="px-4 py-2.5 text-right font-medium">High alarm</th>
+                <th class="px-4 py-2.5 text-center font-medium">Статус</th>
+              </tr>
+            </thead>
+            <tbody class="mono tnum">
+              <tr class="border-b border-border">
+                <td class="px-4 py-2.5 font-sans text-foreground/90">Температура, °C</td>
+                <td class="px-4 py-2.5 text-right font-medium">41.2</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">−5.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">0.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">70.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">75.0</td>
+                <td class="px-4 py-2.5 text-center"><span class="inline-flex items-center gap-1 text-2xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>norm</span></td>
+              </tr>
+              <tr class="border-b border-border bg-subtle">
+                <td class="px-4 py-2.5 font-sans text-foreground/90">Rx Power, dBm</td>
+                <td class="px-4 py-2.5 text-right font-medium">−4.21</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">−14.4</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">−11.4</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">0.5</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">2.0</td>
+                <td class="px-4 py-2.5 text-center"><span class="inline-flex items-center gap-1 text-2xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>norm</span></td>
+              </tr>
+              <tr class="border-b border-border">
+                <td class="px-4 py-2.5 font-sans text-foreground/90">Tx Power, dBm</td>
+                <td class="px-4 py-2.5 text-right font-medium text-warning">−1.05</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">−8.2</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">−5.2</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">−1.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">0.5</td>
+                <td class="px-4 py-2.5 text-center"><span class="inline-flex items-center gap-1 text-2xs text-warning"><span class="h-1.5 w-1.5 rounded-full bg-warning"></span>warn</span></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-2.5 font-sans text-foreground/90">Ток смещения, mA</td>
+                <td class="px-4 py-2.5 text-right font-medium">6.83</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">2.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">3.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">11.0</td>
+                <td class="px-4 py-2.5 text-right text-muted-foreground">13.0</td>
+                <td class="px-4 py-2.5 text-center"><span class="inline-flex items-center gap-1 text-2xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>norm</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Compatibility cascade -->
+      <div class="rounded-lg border border-border bg-card p-5 shadow-xs lg:col-span-2">
+        <div class="mb-4 flex items-center justify-between"><h3 class="text-sm font-semibold">Каскад совместимости · вендор → серия → модель</h3><span class="mono text-2xs text-muted-foreground">CompatCascade</span></div>
+        <div class="grid gap-3 sm:grid-cols-3">
+          <div class="rounded-lg border border-border bg-subtle p-3">
+            <div class="mb-2 flex items-center gap-2 text-2xs font-medium text-muted-foreground"><span class="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">1</span>Вендор</div>
+            <div class="space-y-1.5">
+              <button class="flex w-full items-center gap-2 rounded-md border border-primary bg-primary-muted px-2.5 py-1.5 text-xs font-medium text-primary"><span class="flex h-5 w-7 items-center justify-center rounded bg-foreground text-[9px] font-semibold text-background">CSC</span>Cisco</button>
+              <button class="flex w-full items-center gap-2 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent"><span class="flex h-5 w-7 items-center justify-center rounded bg-muted text-[9px] font-semibold text-muted-foreground">JNP</span>Juniper</button>
+              <button class="flex w-full items-center gap-2 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent"><span class="flex h-5 w-7 items-center justify-center rounded bg-muted text-[9px] font-semibold text-muted-foreground">ARS</span>Arista</button>
+            </div>
+          </div>
+          <div class="rounded-lg border border-border bg-subtle p-3">
+            <div class="mb-2 flex items-center gap-2 text-2xs font-medium text-muted-foreground"><span class="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">2</span>Серия</div>
+            <div class="space-y-1.5 mono">
+              <button class="flex w-full items-center justify-between rounded-md border border-primary bg-primary-muted px-2.5 py-1.5 text-xs font-medium text-primary">Catalyst 9300 <span>›</span></button>
+              <button class="flex w-full items-center justify-between rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent">Nexus 9300 <span class="text-muted-foreground">›</span></button>
+              <button class="flex w-full items-center justify-between rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent">ASR 9000 <span class="text-muted-foreground">›</span></button>
+            </div>
+          </div>
+          <div class="rounded-lg border border-border bg-subtle p-3">
+            <div class="mb-2 flex items-center gap-2 text-2xs font-medium text-muted-foreground"><span class="flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">3</span>Модель</div>
+            <div class="space-y-1.5 mono">
+              <button class="flex w-full items-center justify-between rounded-md border border-primary bg-primary-muted px-2.5 py-1.5 text-xs font-medium text-primary">C9300-48UXM <span class="font-sans text-2xs">8×SFP+</span></button>
+              <button class="flex w-full items-center justify-between rounded-md border border-border bg-card px-2.5 py-1.5 text-xs hover:bg-accent">C9300-24T <span class="font-sans text-2xs text-muted-foreground">4×SFP+</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="border-t border-border">
+  <div class="mx-auto flex max-w-[1320px] flex-col items-start justify-between gap-3 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center">
+    <div class="flex items-center gap-2">
+      <span class="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></span>
+      <span class="text-foreground">Modul</span> · дизайн-система v1.0
+    </div>
+    <div class="mono text-2xs">tokens · type · layout · components</div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

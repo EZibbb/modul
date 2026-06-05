@@ -1,0 +1,107 @@
+/* ============================================================
+   Modul — Design Tokens
+   shadcn/ui-compatible HSL channel variables (light + dark)
+   Use in Tailwind config as hsl(var(--token))
+   ============================================================ */
+
+:root {
+  /* Neutrals (cool slate) ------------------------------------ */
+  --background: 214 32% 97%;        /* faint cool page — white cards pop */
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --muted: 216 24% 93%;
+  --muted-foreground: 220 9% 43%;
+  --subtle: 215 30% 95%;            /* zebra / table head fill — recessed */
+  --border: 218 18% 89%;
+  --border-strong: 220 14% 82%;
+  --input: 220 16% 88%;
+  --ring: 222 89% 46%;
+
+  /* Brand — optical blue + fiber cyan ------------------------ */
+  --primary: 222 89% 46%;           /* #0A4FD6 deep optical blue */
+  --primary-foreground: 0 0% 100%;
+  --primary-hover: 222 89% 40%;
+  --primary-muted: 222 90% 96%;     /* tinted surfaces */
+  --secondary: 220 17% 96%;
+  --secondary-foreground: 222 47% 13%;
+  --accent: 220 17% 95%;            /* shadcn hover surface */
+  --accent-foreground: 222 47% 13%;
+  --cyan: 190 95% 39%;              /* #06B6D4 fiber light — data accent */
+  --cyan-muted: 190 80% 95%;
+
+  /* Semantic ------------------------------------------------- */
+  --success: 142 71% 38%;           /* in stock / tested */
+  --success-muted: 142 60% 95%;
+  --warning: 33 92% 45%;            /* backorder */
+  --warning-muted: 33 90% 95%;
+  --destructive: 0 72% 48%;         /* EOL / discontinued */
+  --destructive-foreground: 0 0% 100%;
+  --destructive-muted: 0 80% 96%;
+  --info: 199 89% 44%;
+  --info-muted: 199 90% 95%;
+
+  /* Data-viz ramp (optical budget, charts) ------------------- */
+  --data-1: 222 89% 46%;
+  --data-2: 190 95% 39%;
+  --data-3: 142 71% 38%;
+  --data-4: 33 92% 45%;
+  --data-5: 262 70% 55%;
+
+  /* Radii / shadows ------------------------------------------ */
+  --radius: 0.5rem;
+  --shadow-xs: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
+  --shadow-sm: 0 1px 3px 0 hsl(222 47% 11% / 0.08), 0 1px 2px -1px hsl(222 47% 11% / 0.06);
+  --shadow-md: 0 4px 12px -2px hsl(222 47% 11% / 0.10), 0 2px 6px -2px hsl(222 47% 11% / 0.06);
+  --shadow-lg: 0 12px 28px -6px hsl(222 47% 11% / 0.14), 0 6px 12px -6px hsl(222 47% 11% / 0.08);
+}
+
+.dark {
+  --background: 222 33% 7%;          /* #0B0F17 slate-950 */
+  --foreground: 213 27% 92%;
+  --card: 222 28% 9%;                /* #10151F */
+  --card-foreground: 213 27% 92%;
+  --popover: 222 30% 10%;
+  --popover-foreground: 213 27% 92%;
+  --muted: 220 22% 14%;
+  --muted-foreground: 218 13% 60%;
+  --subtle: 222 26% 11%;
+  --border: 220 20% 18%;
+  --border-strong: 220 18% 26%;
+  --input: 220 20% 20%;
+  --ring: 217 91% 60%;
+
+  --primary: 217 91% 60%;            /* #3B82F6 lifted for dark */
+  --primary-foreground: 222 47% 8%;
+  --primary-hover: 217 91% 66%;
+  --primary-muted: 222 60% 16%;
+  --secondary: 220 22% 15%;
+  --secondary-foreground: 213 27% 92%;
+  --accent: 220 22% 16%;
+  --accent-foreground: 213 27% 92%;
+  --cyan: 188 86% 53%;
+  --cyan-muted: 190 70% 16%;
+
+  --success: 142 65% 45%;
+  --success-muted: 142 50% 14%;
+  --warning: 36 92% 55%;
+  --warning-muted: 33 70% 15%;
+  --destructive: 0 74% 58%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-muted: 0 60% 16%;
+  --info: 199 89% 55%;
+  --info-muted: 199 70% 15%;
+
+  --data-1: 217 91% 60%;
+  --data-2: 188 86% 53%;
+  --data-3: 142 65% 45%;
+  --data-4: 36 92% 55%;
+  --data-5: 262 75% 68%;
+
+  --shadow-xs: 0 1px 2px 0 hsl(0 0% 0% / 0.30);
+  --shadow-sm: 0 1px 3px 0 hsl(0 0% 0% / 0.40), 0 1px 2px -1px hsl(0 0% 0% / 0.30);
+  --shadow-md: 0 4px 12px -2px hsl(0 0% 0% / 0.45), 0 2px 6px -2px hsl(0 0% 0% / 0.35);
+  --shadow-lg: 0 12px 28px -6px hsl(0 0% 0% / 0.55), 0 6px 12px -6px hsl(0 0% 0% / 0.40);
+}

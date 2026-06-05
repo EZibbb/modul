@@ -1,0 +1,118 @@
+/* Modul — base layer (element defaults + helpers).
+   Components themselves use Tailwind utility classes inline.
+   NOTE: unlayered on purpose so body bg/fg win over Tailwind CDN layers. */
+* { border-color: hsl(var(--border)); }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "cv05" 1, "ss01" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* numeric alignment for data */
+.tnum { font-variant-numeric: tabular-nums; }
+.mono { font-family: "IBM Plex Mono", ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+/* accessible focus */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* refined scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border-strong)); border-radius: 99px; border: 2px solid hsl(var(--background)); }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+/* subtle engineering grid backdrop — plain rgba, no var()/slash-alpha */
+.grid-bg {
+  background-image:
+    radial-gradient(ellipse 92% 72% at 50% -6%, rgba(255,255,255,0) 34%, #ffffff 80%),
+    linear-gradient(to right, rgba(100,116,139,0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100,116,139,0.14) 1px, transparent 1px);
+  background-size: 100% 100%, 34px 34px, 34px 34px;
+}
+.dark .grid-bg {
+  background-image:
+    radial-gradient(ellipse 92% 72% at 50% -6%, rgba(11,15,23,0) 34%, #0b0f17 80%),
+    linear-gradient(to right, rgba(148,163,184,0.10) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148,163,184,0.10) 1px, transparent 1px);
+}
+
+/* ===== Photonics language (shared dark surfaces) ===== */
+.hero { background:#070b14; color:#e8edf5; }
+.hero-grid { position:absolute; inset:0;
+  background-image:linear-gradient(rgba(120,160,220,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(120,160,220,.07) 1px,transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 75% 70% at 28% 0%, #000 25%, transparent 78%);
+          mask-image:radial-gradient(ellipse 75% 70% at 28% 0%, #000 25%, transparent 78%); }
+.hero-glow { position:absolute; border-radius:9999px; filter:blur(90px); pointer-events:none; }
+.fiber-line { position:absolute; left:0; right:0; height:1px;
+  background:linear-gradient(90deg, transparent, rgba(120,180,235,.16) 18%, rgba(120,180,235,.16) 82%, transparent); }
+.pulse { position:absolute; top:50%; height:2px; width:90px; transform:translateY(-50%); border-radius:9999px;
+  background:linear-gradient(90deg, transparent, #38bdf8, #22d3ee, transparent); box-shadow:0 0 14px 1px rgba(34,211,238,.7);
+  animation:travel var(--d,7s) linear var(--delay,0s) infinite; }
+@keyframes travel { from{ left:-110px; } to{ left:100%; } }
+.glass { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10); backdrop-filter:blur(8px); }
+.glass-field { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); }
+@media (prefers-reduced-motion: reduce){ .pulse{ animation:none; opacity:.5; left:40%; } }
+
+/* spectrum / fiber divider — slim horizontal rule with wavelength gradient */
+.spectrum-rule { height:2px; border:0; border-radius:9999px;
+  background:linear-gradient(90deg, transparent, #38bdf8 18%, #22d3ee 38%, #2563eb 62%, #7c3aed 82%, transparent); opacity:.55; }
+
+/* soft melt at the bottom of dark hero/trust bands into the page background */
+.hero::after, .page-head::after { content:""; position:absolute; left:0; right:0; bottom:0; height:44px; pointer-events:none;
+  background:linear-gradient(to bottom, transparent, hsl(var(--background))); opacity:.9; }
+
+/* ===== Theme-aware page headers (.page-head) =====
+   Light: refined light "instrument" surface with dark text.
+   Dark : same premium dark band as the hero. */
+.page-head { position:relative; overflow:hidden; }
+html:not(.dark) .page-head {
+  background:
+    radial-gradient(120% 150% at 80% -40%, hsl(var(--primary) / 0.08), transparent 55%),
+    linear-gradient(180deg, hsl(214 36% 96%), hsl(var(--background)));
+  border-bottom:1px solid hsl(var(--border));
+}
+.dark .page-head { background:#070b14; border-bottom:1px solid rgba(255,255,255,.06); }
+/* flip the dark-built header utilities to tokens in light theme */
+html:not(.dark) .page-head .text-white,
+html:not(.dark) .page-head .text-slate-200 { color: hsl(var(--foreground)); }
+html:not(.dark) .page-head .text-slate-400 { color: hsl(var(--muted-foreground)); }
+html:not(.dark) .page-head .text-slate-600 { color: hsl(var(--border-strong)); }
+html:not(.dark) .page-head a:hover { color: hsl(var(--foreground)); }
+html:not(.dark) .page-head .border-white\/10,
+html:not(.dark) .page-head .border-white\/15,
+html:not(.dark) .page-head .border-white\/20 { border-color: hsl(var(--border)); }
+html:not(.dark) .page-head .bg-white\/5,
+html:not(.dark) .page-head .bg-white\/10,
+html:not(.dark) .page-head .bg-white\/15 { background-color: hsl(var(--muted)); }
+html:not(.dark) .page-head .pulse { opacity:.4; }
+html:not(.dark) .page-head .hero-glow { opacity:.7; }
+
+/* hero-specific utilities flipped for light theme */
+html:not(.dark) .page-head .text-slate-300 { color: hsl(var(--foreground)); }
+html:not(.dark) .page-head .text-slate-500 { color: hsl(var(--muted-foreground)); }
+html:not(.dark) .page-head .bg-white\/12 { background-color: hsl(var(--border)); }
+html:not(.dark) .page-head .bg-white\/\[\.02\] { background-color: hsl(var(--muted) / 0.5); }
+html:not(.dark) .page-head .border-white\/12 { border-color: hsl(var(--border)); }
+html:not(.dark) .page-head .glass {
+  background: hsl(var(--card)); border:1px solid hsl(var(--border)); box-shadow: var(--shadow-lg); backdrop-filter:none;
+}
+html:not(.dark) .page-head .glass-field { background: hsl(var(--background)); border:1px solid hsl(var(--input)); }
+/* white CTA + chips → primary blue on light */
+html:not(.dark) .page-head .bg-white { background-color: hsl(var(--primary)); }
+html:not(.dark) .page-head .bg-white.text-slate-950,
+html:not(.dark) .page-head .text-slate-950 { color: hsl(var(--primary-foreground)); }
+html:not(.dark) .page-head a.bg-white:hover { background-color: hsl(var(--primary-hover)); }
+/* wavelength ruler baseline */
+html:not(.dark) .page-head .via-white\/20 { --tw-gradient-via: hsl(var(--border-strong)); }
+
+/* light-theme depth: bordered cards lift a touch off the tinted page */
+html:not(.dark) .lift { box-shadow: var(--shadow-sm); }
+
+/* trust-band dark cells → white cards in light theme */
+html:not(.dark) .page-head .bg-\[\#0a0f1a\]\/60 { background-color: hsl(var(--card)); }
+html:not(.dark) .page-head .bg-white\/\[\.06\] { background-color: hsl(var(--border)); }

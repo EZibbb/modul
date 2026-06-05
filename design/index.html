@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ru" class="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Modul — оптические трансиверы и сетевое оборудование</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="assets/tw-setup.js"></script>
+<link rel="stylesheet" href="assets/tokens.css" />
+<link rel="stylesheet" href="assets/base.css" />
+<script>
+  (function () { if (localStorage.getItem('modul-theme') === 'dark') document.documentElement.classList.add('dark'); })();
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.classList.toggle('dark');
+    localStorage.setItem('modul-theme', root.classList.contains('dark') ? 'dark' : 'light');
+  }
+</script>
+</head>
+<body class="bg-background font-sans text-foreground antialiased">
+
+<!-- ============ TOP UTILITY BAR ============ -->
+<div class="border-b border-border bg-subtle">
+  <div class="mx-auto flex h-9 max-w-[1320px] items-center justify-between px-6 text-2xs text-muted-foreground">
+    <div class="flex items-center gap-4">
+      <span class="hidden items-center gap-1.5 sm:flex"><span class="h-1.5 w-1.5 rounded-full bg-success"></span> 8 600+ позиций на складе в Москве</span>
+      <span class="hidden md:inline">Отгрузка в день заказа до 16:00</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="#" class="hover:text-foreground">Прайс-лист (XLSX)</a>
+      <a href="#" class="hover:text-foreground">API для интеграторов</a>
+      <a href="#" class="hover:text-foreground">+7 495 120-40-90</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-[1320px] items-center gap-5 px-6">
+    <a href="index.html" class="flex shrink-0 items-center gap-2.5">
+      <span class="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+      </span>
+      <span class="text-[17px] font-semibold tracking-tight">Modul<span class="font-normal text-muted-foreground">&nbsp;comp</span></span>
+    </a>
+
+    <!-- SKU search → opens Cmd+K -->
+    <div class="relative hidden flex-1 lg:block">
+      <button data-mc-open="cmdk" class="flex h-10 w-full items-center gap-2.5 rounded-lg border border-input bg-card px-3.5 text-left shadow-xs transition hover:border-border-strong">
+        <svg class="h-4 w-4 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="mono text-sm text-muted-foreground">Поиск по артикулу — напр. MC-QSFP100G-LR4</span>
+        <kbd class="mono ml-auto hidden rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground sm:block">⌘K</kbd>
+      </button>
+    </div>
+
+    <nav class="hidden items-center gap-1 text-sm xl:flex">
+      <a href="catalog.html" class="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground">Каталог</a>
+      <a href="compatibility.html" class="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground">Совместимость</a>
+      <a href="calculator.html" class="rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground">Калькулятор</a>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2 xl:ml-0">
+      <button data-mc-open="ai" class="hidden h-9 items-center gap-2 rounded-md border border-primary/30 bg-primary-muted px-3 text-sm font-medium text-primary transition hover:bg-primary hover:text-primary-foreground sm:inline-flex">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.6V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.4A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 5-3z"/></svg>
+        ИИ-консультант
+      </button>
+      <button onclick="toggleTheme()" aria-label="Сменить тему" class="flex h-9 w-9 items-center justify-center rounded-md border border-border hover:bg-accent">
+        <svg class="h-4 w-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a href="compare.html" class="hidden h-9 items-center gap-2 rounded-md border border-border px-3 text-sm font-medium hover:bg-accent sm:inline-flex">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>Сравнение <span class="mono rounded bg-muted px-1.5 text-2xs">2</span>
+      </a>
+      <button class="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-3.5 text-sm font-medium text-primary-foreground shadow-xs hover:bg-primary-hover">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h2l2 11h9l2-7H7"/><circle cx="9" cy="20" r="1.5"/><circle cx="17" cy="20" r="1.5"/></svg>
+        Спецификация <span class="mono rounded bg-primary-foreground/20 px-1.5 text-2xs">5</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- category strip -->
+  <div class="border-t border-border bg-card">
+    <div class="mx-auto flex max-w-[1320px] items-center gap-1 overflow-x-auto px-6 text-sm">
+      <a href="catalog.html" class="flex shrink-0 items-center gap-2 border-b-2 border-primary px-3 py-2.5 font-medium text-foreground"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="4" rx="1"/><rect x="3" y="10" width="18" height="4" rx="1"/><rect x="3" y="16" width="18" height="4" rx="1"/></svg>Весь каталог</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">SFP / SFP+</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">SFP28 / QSFP+</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">QSFP28 / QSFP-DD</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">OSFP 800G</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">DAC / AOC</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">Патч-корды</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">CWDM / DWDM</a>
+      <a href="catalog.html" class="shrink-0 border-b-2 border-transparent px-3 py-2.5 text-muted-foreground hover:text-foreground">Решения</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ HERO + EXPRESS PICKER ============ -->
+  <style>
+    .wl-node { position:relative; }
+    .wl-node::before { content:""; position:absolute; left:50%; top:50%; width:26px; height:26px; transform:translate(-50%,-50%);
+      border-radius:9999px; background:radial-gradient(circle, var(--c) 0%, transparent 70%); opacity:.55; }
+  </style>
+  <section class="page-head relative overflow-hidden">
+    <div class="hero-grid"></div>
+    <!-- ambient glows -->
+    <div class="hero-glow" style="width:520px;height:520px;top:-160px;right:-80px;background:rgba(37,99,235,.30);"></div>
+    <div class="hero-glow" style="width:380px;height:380px;bottom:-160px;left:30%;background:rgba(6,182,212,.18);"></div>
+    <!-- light pulses travelling through fibers -->
+    <div class="pointer-events-none absolute inset-0">
+      <div class="fiber-line" style="top:24%"><span class="pulse" style="--d:6.5s"></span></div>
+      <div class="fiber-line" style="top:46%"><span class="pulse" style="--d:9s;--delay:1.4s"></span></div>
+      <div class="fiber-line" style="top:68%"><span class="pulse" style="--d:7.5s;--delay:.6s"></span></div>
+      <div class="fiber-line" style="top:86%"><span class="pulse" style="--d:11s;--delay:2.2s"></span></div>
+    </div>
+
+    <div class="relative mx-auto grid max-w-[1320px] gap-12 px-6 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:py-24">
+      <!-- left: pitch -->
+      <div class="flex flex-col justify-center">
+        <div class="mono inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-2xs uppercase tracking-widest text-cyan">
+          <span class="h-1.5 w-1.5 rounded-full bg-cyan shadow-[0_0_8px_2px_rgba(34,211,238,.8)]"></span>
+          850 · 1310 · 1550 nm
+        </div>
+        <h1 class="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-[3.4rem]">Оптика, которая заведётся<br /><span class="bg-gradient-to-r from-[#3b82f6] via-[#22d3ee] to-[#38bdf8] bg-clip-text text-transparent">с первого порта</span></h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-300" style="text-wrap:pretty">SFP / SFP+ / SFP28 / QSFP+ / QSFP28 / QSFP-DD / OSFP, DAC/AOC, патч-корды и WDM. Кодирование под вендора, полная диагностика DOM, гарантия 5 лет.</p>
+
+        <!-- wavelength ruler -->
+        <div class="mt-8 max-w-md">
+          <div class="relative flex items-center justify-between">
+            <div class="absolute left-0 right-0 top-1/2 h-px -translate-y-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+            <div class="wl-node flex flex-col items-center gap-2" style="--c:rgba(56,189,248,.9)">
+              <span class="h-2.5 w-2.5 rounded-full bg-[#38bdf8] shadow-[0_0_10px_2px_rgba(56,189,248,.7)]"></span>
+              <span class="mono text-2xs text-slate-400">850</span>
+            </div>
+            <div class="wl-node flex flex-col items-center gap-2" style="--c:rgba(34,211,238,.9)">
+              <span class="h-2.5 w-2.5 rounded-full bg-[#22d3ee] shadow-[0_0_10px_2px_rgba(34,211,238,.7)]"></span>
+              <span class="mono text-2xs text-slate-400">1310</span>
+            </div>
+            <div class="wl-node flex flex-col items-center gap-2" style="--c:rgba(59,130,246,.9)">
+              <span class="h-2.5 w-2.5 rounded-full bg-[#3b82f6] shadow-[0_0_10px_2px_rgba(59,130,246,.7)]"></span>
+              <span class="mono text-2xs text-slate-400">1550</span>
+            </div>
+          </div>
+          <div class="mono mt-2 flex justify-between text-[10px] uppercase tracking-wider text-slate-500"><span>multimode</span><span>singlemode</span><span>long-haul</span></div>
+        </div>
+
+        <!-- stats -->
+        <div class="mt-9 flex flex-wrap items-center gap-7">
+          <div><div class="tnum text-2xl font-semibold text-white">8 600<span class="text-cyan">+</span></div><div class="text-xs text-slate-400">позиций на складе</div></div>
+          <div class="h-9 w-px bg-white/12"></div>
+          <div><div class="tnum text-2xl font-semibold text-white">24 ч</div><div class="text-xs text-slate-400">тест перед отгрузкой</div></div>
+          <div class="h-9 w-px bg-white/12"></div>
+          <div><div class="tnum text-2xl font-semibold text-white">99.98<span class="text-cyan">%</span></div><div class="text-xs text-slate-400">приёмка без дефектов</div></div>
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="catalog.html" class="inline-flex h-11 items-center gap-2 rounded-md bg-white px-5 text-[15px] font-medium text-slate-950 transition hover:bg-slate-100">Открыть каталог <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <button data-mc-open="ai" class="inline-flex h-11 items-center gap-2 rounded-md border border-white/20 bg-white/5 px-5 text-[15px] font-medium text-white transition hover:bg-white/10"><svg class="h-4 w-4 text-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.6V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.4A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 5-3z"/></svg>Спросить со-пилота</button>
+        </div>
+      </div>
+
+      <!-- right: express picker (glass) -->
+      <div class="glass rounded-2xl p-6 shadow-2xl">
+        <div class="flex items-center justify-between">
+          <h2 class="text-base font-semibold text-white">Экспресс-подбор модуля</h2>
+          <span class="mono rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-2xs text-cyan">3 шага</span>
+        </div>
+        <p class="mt-1 text-sm text-slate-400">Вендор → серия оборудования → модель. Подберём совместимые трансиверы по портам.</p>
+
+        <div class="mt-5 space-y-3">
+          <label class="block">
+            <span class="mb-1.5 flex items-center gap-2 text-xs font-medium text-slate-400"><span class="flex h-4 w-4 items-center justify-center rounded-full bg-cyan text-2xs font-semibold text-slate-950">1</span>Вендор оборудования</span>
+            <div class="glass-field flex h-11 items-center gap-2 rounded-md px-3">
+              <span class="flex h-6 w-9 items-center justify-center rounded bg-white text-2xs font-semibold text-slate-950">CSC</span>
+              <span class="text-sm text-white">Cisco Systems</span>
+              <svg class="ml-auto h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </label>
+          <label class="block">
+            <span class="mb-1.5 flex items-center gap-2 text-xs font-medium text-slate-400"><span class="flex h-4 w-4 items-center justify-center rounded-full bg-cyan text-2xs font-semibold text-slate-950">2</span>Серия / платформа</span>
+            <div class="glass-field flex h-11 items-center gap-2 rounded-md px-3">
+              <span class="mono text-sm text-white">Catalyst 9300</span>
+              <svg class="ml-auto h-4 w-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </label>
+          <label class="block">
+            <span class="mb-1.5 flex items-center gap-2 text-xs font-medium text-slate-400"><span class="flex h-4 w-4 items-center justify-center rounded-full bg-white/10 text-2xs text-slate-300">3</span>Модель</span>
+            <div class="flex h-11 items-center gap-2 rounded-md border border-dashed border-white/15 bg-white/[.02] px-3 text-slate-500">
+              <span class="text-sm">C9300-48UXM-A …</span>
+              <svg class="ml-auto h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </label>
+        </div>
+
+        <!-- live result preview -->
+        <div class="mt-4 rounded-lg border border-cyan/20 bg-cyan/[.06] p-3">
+          <div class="flex items-center justify-between text-xs"><span class="text-slate-400">Совместимо · найдено</span><span class="mono font-semibold text-cyan">12 моделей</span></div>
+          <div class="mt-2 flex items-center justify-between rounded-md border border-white/10 bg-white/5 px-3 py-2">
+            <div class="flex items-center gap-2"><span class="mono text-sm font-medium text-white">MC-SFP10G-LR</span><span class="mono rounded border border-cyan/30 bg-cyan/10 px-1.5 py-0.5 text-[10px] text-cyan">основной</span></div>
+            <span class="tnum text-sm font-semibold text-white">2 900 ₽</span>
+          </div>
+        </div>
+
+        <a href="compatibility.html" class="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-md bg-gradient-to-r from-[#2563eb] to-[#0891b2] text-sm font-medium text-white shadow-lg transition hover:opacity-95">
+          Подобрать совместимые модули
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <div class="mt-3 flex items-center justify-center gap-2 text-2xs text-slate-400">
+          <svg class="h-3.5 w-3.5 text-cyan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg>
+          Совместимость подтверждается тестом на конкретной платформе
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ CATEGORIES ============ -->
+  <section class="mx-auto max-w-[1320px] px-6 py-14">
+    <div class="flex items-end justify-between">
+      <div>
+        <h2 class="text-2xl font-semibold tracking-tight">Категории по форм-фактору</h2>
+        <p class="mt-1 text-sm text-muted-foreground">От 1G до 800G. Параметры приведены к стандарту IEEE/MSA.</p>
+      </div>
+      <a href="catalog.html" class="hidden items-center gap-1.5 text-sm font-medium text-primary hover:underline sm:inline-flex">Открыть каталог <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+    <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><rect x="2" y="4" width="34" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="36" y="9" width="9" height="10" rx="1.5" fill="currentColor"/><rect x="7" y="9" width="22" height="10" rx="1" fill="hsl(var(--muted))"/></svg>
+          <span class="mono text-2xs text-muted-foreground">1G</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">SFP</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">Gigabit · BiDi · CWDM</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">312 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><rect x="2" y="4" width="34" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="36" y="9" width="9" height="10" rx="1.5" fill="currentColor"/><rect x="7" y="9" width="22" height="10" rx="1" fill="hsl(var(--cyan-muted))"/></svg>
+          <span class="mono text-2xs text-muted-foreground">10G</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">SFP+</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">SR / LR / ER / ZR</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">468 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><rect x="2" y="4" width="34" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="36" y="9" width="9" height="10" rx="1.5" fill="currentColor"/><rect x="7" y="9" width="22" height="10" rx="1" fill="hsl(var(--muted))"/></svg>
+          <span class="mono text-2xs text-muted-foreground">25G</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">SFP28</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">25GBASE · FEC-aware</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">176 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><rect x="2" y="3" width="36" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="38" y="8" width="8" height="12" rx="1.5" fill="currentColor"/><rect x="7" y="7" width="24" height="14" rx="1" fill="hsl(var(--muted))"/></svg>
+          <span class="mono text-2xs text-muted-foreground">40G</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">QSFP+</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">40G · 4×10G breakout</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">204 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><rect x="2" y="3" width="36" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="38" y="8" width="8" height="12" rx="1.5" fill="currentColor"/><rect x="7" y="7" width="24" height="14" rx="1" fill="hsl(var(--cyan-muted))"/></svg>
+          <span class="mono text-2xs text-muted-foreground">100G</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">QSFP28</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">100G · CWDM4 · LR4</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">288 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><rect x="2" y="2" width="38" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="40" y="7" width="7" height="14" rx="1.5" fill="currentColor"/><rect x="7" y="6" width="26" height="16" rx="1" fill="hsl(var(--muted))"/></svg>
+          <span class="mono text-2xs text-muted-foreground">400G</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">QSFP-DD</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">400G · DR4 · FR4</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">96 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-4 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-cyan"><path d="M4 14h12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><rect x="14" y="9" width="9" height="10" rx="1.5" fill="currentColor"/><path d="M23 14h2c4 0 4-9 8-9h11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="33" y="1" width="9" height="10" rx="1.5" fill="currentColor"/></svg>
+          <span class="mono text-2xs text-muted-foreground">DAC/AOC</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">Кабели DAC / AOC</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">Passive · Active · Breakout</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">340 SKU</span><span class="text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">Смотреть →</span></div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-dashed border-border-strong bg-subtle p-4 transition hover:border-primary hover:bg-primary-muted">
+        <div class="flex items-start justify-between">
+          <svg viewBox="0 0 48 28" class="h-9 w-auto text-primary"><circle cx="12" cy="14" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="30" cy="9" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="34" cy="20" r="5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M19 12l6-2M19 16l11 3" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span class="mono text-2xs text-muted-foreground">WDM</span>
+        </div>
+        <h3 class="mt-3 text-sm font-semibold">CWDM / DWDM</h3>
+        <p class="mt-0.5 text-xs text-muted-foreground">Мультиплексоры · OADM · усилители</p>
+        <div class="mt-3 flex items-center justify-between border-t border-border pt-2.5"><span class="mono text-2xs text-muted-foreground">128 SKU</span><span class="text-xs font-medium text-primary">Решения →</span></div>
+      </a>
+    </div>
+  </section>
+  <!-- ============ INDUSTRY COLLECTIONS ============ -->
+  <section class="border-y border-border bg-subtle">
+    <div class="mx-auto max-w-[1320px] px-6 py-14">
+      <h2 class="text-2xl font-semibold tracking-tight">Отраслевые подборки</h2>
+      <p class="mt-1 text-sm text-muted-foreground">Готовые наборы под типовые задачи — с проверенной совместимостью и оптическим бюджетом.</p>
+
+      <div class="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+        <a href="catalog.html" class="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition hover:shadow-md">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-muted text-primary"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="6" rx="1"/><rect x="3" y="11" width="18" height="6" rx="1"/><path d="M7 6h.01M7 14h.01M3 21h18"/></svg></span>
+          <h3 class="mt-4 text-base font-semibold">ЦОД · Leaf-Spine</h3>
+          <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">100G/400G аплинки, DAC внутри стойки, breakout 4×25G на сервера.</p>
+          <div class="mono mt-4 flex flex-wrap gap-1.5 text-2xs">
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">QSFP28-100G</span>
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">QSFP-DD-400G</span>
+          </div>
+          <span class="mt-4 text-sm font-medium text-primary">42 позиции →</span>
+        </a>
+        <a href="catalog.html" class="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition hover:shadow-md">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-cyan-muted text-cyan"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18M3 8c6-4 12-4 18 0M5 13c4.5-3 9.5-3 14 0M8 18c2.5-1.5 5.5-1.5 8 0"/></svg></span>
+          <h3 class="mt-4 text-base font-semibold">Операторы связи</h3>
+          <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">Магистраль DWDM 80–120 км, CWDM-доступ, BiDi для экономии волокна.</p>
+          <div class="mono mt-4 flex flex-wrap gap-1.5 text-2xs">
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">DWDM-SFP10G</span>
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">CWDM-MUX-8</span>
+          </div>
+          <span class="mt-4 text-sm font-medium text-primary">64 позиции →</span>
+        </a>
+        <a href="catalog.html" class="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition hover:shadow-md">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-muted text-primary"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/><circle cx="12" cy="11" r="3"/></svg></span>
+          <h3 class="mt-4 text-base font-semibold">Видеонаблюдение</h3>
+          <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">Промышленные SFP −40…+85 °C, индустриальные коммутаторы, длинные линии.</p>
+          <div class="mono mt-4 flex flex-wrap gap-1.5 text-2xs">
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">SFP-1G-IND</span>
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">BiDi-20km</span>
+          </div>
+          <span class="mt-4 text-sm font-medium text-primary">38 позиций →</span>
+        </a>
+        <a href="catalog.html" class="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card p-5 transition hover:shadow-md">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-muted text-primary"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 7h6M9 11h6M9 15h4"/></svg></span>
+          <h3 class="mt-4 text-base font-semibold">Корпоративный кампус</h3>
+          <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">Доступ 1G/10G, агрегация 25G/40G, мультимод OM4 на этажах.</p>
+          <div class="mono mt-4 flex flex-wrap gap-1.5 text-2xs">
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">MC-SFP10G-SR</span>
+            <span class="rounded border border-border bg-muted px-1.5 py-0.5">QSFP-40G-SR4</span>
+          </div>
+          <span class="mt-4 text-sm font-medium text-primary">56 позиций →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ POPULAR SOLUTIONS ============ -->
+  <section class="mx-auto max-w-[1320px] px-6 pt-14">
+    <div class="flex items-end justify-between">
+      <div>
+        <h2 class="text-2xl font-semibold tracking-tight">Популярные решения</h2>
+        <p class="mt-1 text-sm text-muted-foreground">Готовые комплекты с проверенной совместимостью и расчётом оптбюджета.</p>
+      </div>
+      <button data-mc-open="ai" class="hidden items-center gap-1.5 rounded-md border border-primary/30 bg-primary-muted px-3 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground sm:inline-flex">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.6V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.4A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 5-3z"/></svg>
+        Собрать своё с ИИ
+      </button>
+    </div>
+
+    <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <a href="compatibility.html" class="group rounded-lg border border-border bg-card p-5 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-center justify-between">
+          <span class="mono text-2xs text-primary">ЦОД · Top-of-Rack</span>
+          <span class="mono rounded bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">10/25/100G</span>
+        </div>
+        <h3 class="mt-3 text-base font-semibold">Стойка 25G + аплинк 100G</h3>
+        <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">48×25G на сервера, 6×100G на spine, DAC внутри стойки.</p>
+        <div class="mt-4 flex items-center justify-between border-t border-border pt-3">
+          <span class="text-xs text-muted-foreground">от <span class="mono font-semibold text-foreground">186 400 ₽</span></span>
+          <span class="text-sm font-medium text-primary">Комплект →</span>
+        </div>
+      </a>
+      <a href="compatibility.html" class="group rounded-lg border border-border bg-card p-5 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-center justify-between">
+          <span class="mono text-2xs text-primary">Мобильная сеть</span>
+          <span class="mono rounded bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">5G CPRI</span>
+        </div>
+        <h3 class="mt-3 text-base font-semibold">Fronthaul 25G eCPRI</h3>
+        <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">Индустриальные SFP28 −40…+85 °C, BiDi для экономии волокна.</p>
+        <div class="mt-4 flex items-center justify-between border-t border-border pt-3">
+          <span class="text-xs text-muted-foreground">от <span class="mono font-semibold text-foreground">74 800 ₽</span></span>
+          <span class="text-sm font-medium text-primary">Комплект →</span>
+        </div>
+      </a>
+      <a href="calculator.html" class="group rounded-lg border border-border bg-card p-5 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-center justify-between">
+          <span class="mono text-2xs text-primary">Магистраль</span>
+          <span class="mono rounded bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">DWDM</span>
+        </div>
+        <h3 class="mt-3 text-base font-semibold">DWDM 100G · 80 км</h3>
+        <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">Транспондеры + мукс + усилитель, расчёт бюджета с запасом.</p>
+        <div class="mt-4 flex items-center justify-between border-t border-border pt-3">
+          <span class="text-xs text-muted-foreground">от <span class="mono font-semibold text-foreground">312 000 ₽</span></span>
+          <span class="text-sm font-medium text-primary">Расчёт →</span>
+        </div>
+      </a>
+      <a href="catalog.html" class="group rounded-lg border border-border bg-card p-5 transition hover:border-border-strong hover:shadow-md">
+        <div class="flex items-center justify-between">
+          <span class="mono text-2xs text-primary">Доступ</span>
+          <span class="mono rounded bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground">GPON</span>
+        </div>
+        <h3 class="mt-3 text-base font-semibold">PON OLT · ODN</h3>
+        <p class="mt-1 text-sm text-muted-foreground" style="text-wrap:pretty">SFP OLT-модули класса C+/C++, сплиттеры, патч-корды SC/APC.</p>
+        <div class="mt-4 flex items-center justify-between border-t border-border pt-3">
+          <span class="text-xs text-muted-foreground">от <span class="mono font-semibold text-foreground">58 200 ₽</span></span>
+          <span class="text-sm font-medium text-primary">Комплект →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ POPULAR (data strip) ============ -->
+  <section class="mx-auto max-w-[1320px] px-6 py-14">
+    <div class="flex items-end justify-between">
+      <div>
+        <h2 class="text-2xl font-semibold tracking-tight">Популярное на складе</h2>
+        <p class="mt-1 text-sm text-muted-foreground">Топ-позиции с подтверждённым наличием и тестом.</p>
+      </div>
+      <a href="catalog.html" class="hidden items-center gap-1.5 text-sm font-medium text-primary hover:underline sm:inline-flex">Весь каталог <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+    <div class="mt-6 overflow-hidden rounded-lg border border-border">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-border bg-subtle text-left text-xs text-muted-foreground">
+            <th class="px-4 py-3 font-medium">Артикул</th>
+            <th class="px-4 py-3 font-medium">Описание</th>
+            <th class="px-4 py-3 text-right font-medium">λ, нм</th>
+            <th class="px-4 py-3 text-right font-medium">Дальность</th>
+            <th class="px-4 py-3 text-right font-medium">Темп.</th>
+            <th class="px-4 py-3 text-center font-medium">Наличие</th>
+            <th class="px-4 py-3 text-right font-medium">vs OEM</th>
+            <th class="px-4 py-3 text-right font-medium">Цена, от</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-border transition hover:bg-accent">
+            <td class="px-4 py-3"><a href="product.html" class="mono font-medium text-primary hover:underline">MC-SFP10G-SR</a></td>
+            <td class="px-4 py-3 text-foreground/90">10GBASE-SR, MMF, LC дуплекс, DOM</td>
+            <td class="mono tnum px-4 py-3 text-right">850</td>
+            <td class="mono tnum px-4 py-3 text-right">300 м</td>
+            <td class="mono tnum px-4 py-3 text-right text-muted-foreground">0…+70</td>
+            <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1.5 text-xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>1 240</span></td>
+            <td class="px-4 py-3 text-right"><span class="mono inline-flex items-center rounded bg-success-muted px-1.5 py-0.5 text-2xs font-medium text-success">−66%</span></td>
+            <td class="mono tnum px-4 py-3 text-right font-medium">1 700 ₽</td>
+            <td class="px-4 py-3 text-right"><button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-card" aria-label="В спецификацию"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button></td>
+          </tr>
+          <tr class="border-b border-border bg-subtle transition hover:bg-accent">
+            <td class="px-4 py-3"><a href="product.html" class="mono font-medium text-primary hover:underline">MC-SFP10G-LR</a></td>
+            <td class="px-4 py-3 text-foreground/90">10GBASE-LR, SMF, LC дуплекс, DOM</td>
+            <td class="mono tnum px-4 py-3 text-right">1310</td>
+            <td class="mono tnum px-4 py-3 text-right">10 км</td>
+            <td class="mono tnum px-4 py-3 text-right text-muted-foreground">0…+70</td>
+            <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1.5 text-xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>980</span></td>
+            <td class="px-4 py-3 text-right"><span class="mono inline-flex items-center rounded bg-success-muted px-1.5 py-0.5 text-2xs font-medium text-success">−68%</span></td>
+            <td class="mono tnum px-4 py-3 text-right font-medium">2 900 ₽</td>
+            <td class="px-4 py-3 text-right"><button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-card" aria-label="В спецификацию"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button></td>
+          </tr>
+          <tr class="border-b border-border transition hover:bg-accent">
+            <td class="px-4 py-3"><a href="product.html" class="mono font-medium text-primary hover:underline">MC-QSFP100G-LR4</a></td>
+            <td class="px-4 py-3 text-foreground/90">100GBASE-LR4, SMF, LC, 4×25G, DOM</td>
+            <td class="mono tnum px-4 py-3 text-right">1295–1309</td>
+            <td class="mono tnum px-4 py-3 text-right">10 км</td>
+            <td class="mono tnum px-4 py-3 text-right text-muted-foreground">0…+70</td>
+            <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1.5 text-xs text-warning"><span class="h-1.5 w-1.5 rounded-full bg-warning"></span>под заказ</span></td>
+            <td class="px-4 py-3 text-right"><span class="mono inline-flex items-center rounded bg-success-muted px-1.5 py-0.5 text-2xs font-medium text-success">−72%</span></td>
+            <td class="mono tnum px-4 py-3 text-right font-medium">22 500 ₽</td>
+            <td class="px-4 py-3 text-right"><button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-card" aria-label="В спецификацию"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button></td>
+          </tr>
+          <tr class="transition hover:bg-accent">
+            <td class="px-4 py-3"><a href="product.html" class="mono font-medium text-primary hover:underline">MC-QSFP100G-DAC3</a></td>
+            <td class="px-4 py-3 text-foreground/90">100G DAC, passive, 3 м, QSFP28↔QSFP28</td>
+            <td class="mono tnum px-4 py-3 text-right text-muted-foreground">—</td>
+            <td class="mono tnum px-4 py-3 text-right">3 м</td>
+            <td class="mono tnum px-4 py-3 text-right text-muted-foreground">0…+70</td>
+            <td class="px-4 py-3 text-center"><span class="inline-flex items-center gap-1.5 text-xs text-success"><span class="h-1.5 w-1.5 rounded-full bg-success"></span>520</span></td>
+            <td class="px-4 py-3 text-right"><span class="mono inline-flex items-center rounded bg-success-muted px-1.5 py-0.5 text-2xs font-medium text-success">−55%</span></td>
+            <td class="mono tnum px-4 py-3 text-right font-medium">5 400 ₽</td>
+            <td class="px-4 py-3 text-right"><button class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-card" aria-label="В спецификацию"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <!-- ============ TRUST ============ -->
+  <section class="page-head relative overflow-hidden border-t border-white/10">
+    <div class="hero-grid" style="-webkit-mask-image:radial-gradient(ellipse 80% 90% at 50% 50%, #000 35%, transparent 80%);mask-image:radial-gradient(ellipse 80% 90% at 50% 50%, #000 35%, transparent 80%)"></div>
+    <div class="hero-glow" style="width:480px;height:300px;top:-120px;left:50%;transform:translateX(-50%);background:rgba(37,99,235,.22)"></div>
+    <div class="pointer-events-none absolute inset-0">
+      <div class="fiber-line" style="top:30%"><span class="pulse" style="--d:8s"></span></div>
+      <div class="fiber-line" style="top:72%"><span class="pulse" style="--d:10s;--delay:1.8s"></span></div>
+    </div>
+    <div class="relative mx-auto max-w-[1320px] px-6 py-14">
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <div class="mono mb-2 inline-flex items-center gap-2 text-2xs uppercase tracking-widest text-cyan"><span class="h-1.5 w-1.5 rounded-full bg-cyan shadow-[0_0_8px_2px_rgba(34,211,238,.8)]"></span>почему Modul comp</div>
+          <h2 class="text-2xl font-semibold tracking-tight text-white sm:text-3xl">Инженерное доверие, а не маркетинг</h2>
+        </div>
+        <a href="catalog.html" class="mono text-2xs text-slate-400 hover:text-white">все гарантии →</a>
+      </div>
+      <div class="grid gap-px overflow-hidden rounded-xl border border-white/10 bg-white/[.06] sm:grid-cols-2 lg:grid-cols-4">
+        <div class="bg-[#0a0f1a]/60 p-6">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-success/30 bg-success/10 text-success"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5v6c0 5 3.5 8 8 11 4.5-3 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3 class="mt-4 text-sm font-semibold text-white">Тест перед отгрузкой</h3>
+          <p class="mt-1 text-xs text-slate-400">Каждый модуль проверяется на коммутаторе целевого вендора.</p>
+        </div>
+        <div class="bg-[#0a0f1a]/60 p-6">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-cyan/30 bg-cyan/10 text-cyan"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <h3 class="mt-4 text-sm font-semibold text-white">Отгрузка в день заказа</h3>
+          <p class="mt-1 text-xs text-slate-400">Склад в Москве, до 16:00 — доставка по РФ и ЕАЭС.</p>
+        </div>
+        <div class="bg-[#0a0f1a]/60 p-6">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-[#60a5fa]"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></span>
+          <h3 class="mt-4 text-sm font-semibold text-white">Гарантия 5 лет</h3>
+          <p class="mt-1 text-xs text-slate-400">Замена по RMA без споров. Совместимость гарантируется.</p>
+        </div>
+        <div class="bg-[#0a0f1a]/60 p-6">
+          <span class="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-[#60a5fa]"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M9 13h6M9 17h4"/></svg></span>
+          <h3 class="mt-4 text-sm font-semibold text-white">Полные datasheet</h3>
+          <p class="mt-1 text-xs text-slate-400">DOM-таблицы, оптбюджет, RoHS, протоколы тестов.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-border bg-background">
+  <div class="mx-auto grid max-w-[1320px] gap-10 px-6 py-14 md:grid-cols-[1.3fr_1fr_1fr_1fr]">
+    <div>
+      <div class="flex items-center gap-2.5">
+        <span class="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></span>
+        <span class="text-[17px] font-semibold tracking-tight">Modul<span class="font-normal text-muted-foreground">&nbsp;comp</span></span>
+      </div>
+      <p class="mt-4 max-w-xs text-sm text-muted-foreground" style="text-wrap:pretty">Оптические трансиверы и сетевое оборудование для инженеров. Точные данные, подтверждённая совместимость, инженерная поддержка.</p>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <span class="mono inline-flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 text-2xs text-muted-foreground">RoHS</span>
+        <span class="mono inline-flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 text-2xs text-muted-foreground">ISO 9001</span>
+        <span class="mono inline-flex items-center gap-1 rounded-md border border-border bg-card px-2 py-1 text-2xs text-muted-foreground">MSA</span>
+      </div>
+    </div>
+    <div>
+      <h4 class="text-sm font-semibold">Каталог</h4>
+      <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
+        <li><a href="catalog.html" class="hover:text-foreground">SFP / SFP+ модули</a></li>
+        <li><a href="catalog.html" class="hover:text-foreground">QSFP28 / QSFP-DD</a></li>
+        <li><a href="catalog.html" class="hover:text-foreground">DAC / AOC кабели</a></li>
+        <li><a href="catalog.html" class="hover:text-foreground">CWDM / DWDM</a></li>
+        <li><a href="catalog.html" class="hover:text-foreground">Патч-корды</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-sm font-semibold">Инструменты</h4>
+      <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
+        <li><a href="compatibility.html" class="hover:text-foreground">Подбор совместимости</a></li>
+        <li><a href="calculator.html" class="hover:text-foreground">Калькулятор оптбюджета</a></li>
+        <li><a href="compare.html" class="hover:text-foreground">Сравнение модулей</a></li>
+        <li><a href="design-system.html" class="hover:text-foreground">Дизайн-система</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="text-sm font-semibold">Контакты</h4>
+      <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
+        <li class="mono text-foreground">+7 495 120-40-90</li>
+        <li><a href="#" class="hover:text-foreground"><span class="__cf_email__" data-cfemail="97e4f6fbf2e4d7faf8f3e2fbb9e5e2">[email&#160;protected]</span></a></li>
+        <li>Москва, ул. Складочная, 1</li>
+        <li><a href="#" class="hover:text-foreground">Стать партнёром</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-border">
+    <div class="mx-auto flex max-w-[1320px] flex-col items-start justify-between gap-2 px-6 py-5 text-2xs text-muted-foreground sm:flex-row sm:items-center">
+      <span>© 2026 Modul. Все упомянутые товарные знаки принадлежат их правообладателям.</span>
+      <div class="flex gap-4"><a href="#" class="hover:text-foreground">Оферта</a><a href="#" class="hover:text-foreground">Политика данных</a><a href="#" class="hover:text-foreground">Доставка и оплата</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- floating AI co-pilot trigger (mobile + always-available) -->
+<button data-mc-open="ai" class="fixed bottom-5 right-5 z-50 flex h-12 items-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg transition hover:bg-primary-hover">
+  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a3 3 0 0 1 3 3v1a3 3 0 0 1 3 3 3 3 0 0 1-1 5.6V18a3 3 0 0 1-6 0 3 3 0 0 1-6 0v-2.4A3 3 0 0 1 4 10a3 3 0 0 1 3-3V6a3 3 0 0 1 5-3z"/></svg>
+  <span class="hidden sm:inline">Со-пилот</span>
+</button>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/app.js"></script>
+</body>
+</html>
