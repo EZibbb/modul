@@ -58,7 +58,7 @@
 - [/] 2.3 Каркас UI + дизайн-токены (D004 закрыт — пакет в `design/`)
   - [/] 2.3.0 Зафиксировать дизайн-пакет: `uploads/`→`design/`, D-005→D004, `concept/06_design.md`, NAV
   - [x] 2.3.1 Токены в web/: `tokens.css`+`base.css`→`globals.css` (Tailwind 4 `@theme`), шрифты Inter+IBM Plex Mono — проверено build+gstack
-  - [ ] 2.3.2 Установить shadcn/ui + базовые примитивы (button, card, badge, tabs, dialog, sheet, command)
+  - [x] 2.3.2 shadcn/ui + примитивы button/card/badge/tabs/dialog/sheet — на наших токенах, проверено build+gstack (command — позже с ⌘K в 2.3.3)
   - [ ] 2.3.3 Тёмная тема (N2) + анти-FOUC (W11), ⌘K-каркас (N1)
 - [ ] 2.4 P0-экраны: каталог (A) → карточка (C) → совместимость (B) → главная (I)
 - [ ] 2.5 ИИ-слой L (Claude API + tool use)
