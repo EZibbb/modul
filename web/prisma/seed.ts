@@ -197,6 +197,7 @@ async function main() {
         { name: "Nexus 9300", models: [{ name: "N9K-C93180YC-EX", type: "switch", ports: [["Downlink", 48, "SFP28", "25G"], ["Uplink", 6, "QSFP28", "100G"]] }] },
         { name: "Nexus 9300-FX2", models: [{ name: "N9K-C9336C-FX2", type: "switch", ports: [["Ports", 36, "QSFP28", "100G"]] }] },
         { name: "Nexus 9300-GX", models: [{ name: "N9K-C9316D-GX", type: "switch", ports: [["Ports", 16, "QSFP-DD", "400G"]] }] },
+        { name: "Nexus 9332", models: [{ name: "N9K-C9332PQ", type: "switch", ports: [["Ports", 32, "QSFP+", "40G"]] }] },
       ],
     },
     {
@@ -226,12 +227,6 @@ async function main() {
       series: [
         { name: "CRS3xx", models: [{ name: "CRS317-1G-16S+", type: "switch", ports: [["Ports", 16, "SFP+", "10G"]] }] },
         { name: "CRS5xx", models: [{ name: "CRS504-4XQ", type: "switch", ports: [["Ports", 4, "QSFP28", "100G"]] }] },
-      ],
-    },
-    {
-      name: "Cisco-40G", slug: "cisco-40g", sw: "NX-OS 9.3",
-      series: [
-        { name: "Nexus 9332", models: [{ name: "N9K-C9332PQ", type: "switch", ports: [["Ports", 32, "QSFP+", "40G"]] }] },
       ],
     },
   ];

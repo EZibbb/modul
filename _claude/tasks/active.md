@@ -54,7 +54,10 @@
   - [x] 2.1.5 Seed-срез K+B (6 кат · 7 атрибутов · 8 товаров · 3 вендора · 3 модели · 9 связей), npm db:seed/db:reset
   - [x] 2.1.6 Seed расширен: 85 товаров (9 категорий) + 6 вендоров/15 моделей/19 порт-групп + 148 связей (детерминированно, W03). Матрица port-grouped primary/alternative/tested
   - [ ] 2.1.7 ITU-сетки, глоссарий, OpticalComponent-пресеты (для G)
-- [ ] 2.2 Сервисный слой: catalog (фасеты+счётчики), compat (по портам), tools
+- [/] 2.2 Сервисный слой
+  - [x] 2.2.1 catalog: `src/lib/catalog.ts` — фасетный where, дизъюнктивные фасеты+счётчики, сортировки, дерево категорий, поиск, getProductBySku
+  - [x] 2.2.2 compat: `src/lib/compat.ts` — каскад вендор→серия→модель, compat по порт-группам (primary/alt/tested), обратное направление (W02)
+  - [ ] 2.2.3 tools для ИИ (decoder/оптбюджет) — позже, при сборке L/M
 - [/] 2.3 Каркас UI + дизайн-токены (D004 закрыт — пакет в `design/`)
   - [/] 2.3.0 Зафиксировать дизайн-пакет: `uploads/`→`design/`, D-005→D004, `concept/06_design.md`, NAV
   - [x] 2.3.1 Токены в web/: `tokens.css`+`base.css`→`globals.css` (Tailwind 4 `@theme`), шрифты Inter+IBM Plex Mono — проверено build+gstack
