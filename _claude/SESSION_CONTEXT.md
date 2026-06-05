@@ -113,6 +113,7 @@
 - [2026-06-05] Дизайн-пакет зафиксирован: `uploads/`→`design/`, `index (3).html`→`index.html`. Канон. дом референса.
 - [2026-06-05] Создан принципиальный документ `concept/06_design.md` (конспект токенов/тем/оптического языка/плана переноса). NAV_INDEX → секция `design/`. Задача 1.9 закрыта, 2.3 развёрнута в подзадачи (2.3.0–2.3.3).
 - [2026-06-05] Нюанс стека: дизайн на Tailwind 3 CDN, web/ на Tailwind 4 (`@theme`) — CSS-переменные совместимы, маппинг утилит адаптируется при переносе (блок B).
+- [2026-06-05] **Задача 2.3.1 закрыта (блок B):** токены `tokens.css`+`base.css`→`web/src/app/globals.css` (Tailwind 4 `@theme inline`, class-based dark через `@custom-variant`); шрифты Geist→**Inter (latin+cyrillic)+IBM Plex Mono** через next/font; `layout.tsx` lang=ru + анти-FOUC скрипт темы (W11); boilerplate `page.tsx`→on-brand токен-страница + `_ThemeToggle`. Проверено: `npm run build` зелёный, утилиты эмитятся (`.bg-primary`→`hsl(var(--primary))`), gstack-рендер обеих тем (light `#F4F6FA` / dark `#0B0F17`, 0 ошибок консоли, кириллица Inter, mono-SKU). Решение Tailwind 4: `@theme inline` + `.dark`-override токенов → тёмная тема каскадит без дублей утилит.
 
 ---
 
