@@ -49,7 +49,8 @@ export function AiCopilot() {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
+  const seedRef = useRef<string | null>(null);
+  const loaded = useRef(false);
 
   async function send(text: string) {
     const q = text.trim();
@@ -65,15 +66,35 @@ export function AiCopilot() {
     }
   }
 
-  // при открытии — приветствие или автозапуск seed
+  // загрузка истории (переживает закрытие drawer и перезагрузку вкладки)
   useEffect(() => {
-    if (aiOpen && !started.current) {
-      started.current = true;
-      if (aiSeed) send(aiSeed);
-      else setMsgs([GREETING]);
+    try {
+      const s = sessionStorage.getItem("modul-ai");
+      if (s) setMsgs(JSON.parse(s));
+    } catch {}
+    loaded.current = true;
+  }, []);
+  useEffect(() => {
+    if (loaded.current) {
+      try { sessionStorage.setItem("modul-ai", JSON.stringify(msgs)); } catch {}
     }
-    if (!aiOpen) started.current = false;
+  }, [msgs]);
+
+  // при открытии: новый seed → отправить один раз; иначе показать приветствие только если пусто (историю НЕ трогаем)
+  useEffect(() => {
+    if (!aiOpen) return;
+    if (aiSeed && aiSeed !== seedRef.current) {
+      seedRef.current = aiSeed;
+      send(aiSeed);
+      return;
+    }
+    setMsgs((m) => (m.length === 0 ? [GREETING] : m));
   }, [aiOpen, aiSeed]);
+
+  function clearChat() {
+    setMsgs([GREETING]);
+    seedRef.current = null;
+  }
 
   useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }); }, [msgs]);
 
@@ -81,7 +102,10 @@ export function AiCopilot() {
     <Sheet open={aiOpen} onOpenChange={(o) => { if (!o) closeAi(); }}>
       <SheetContent side="right" className="flex w-full flex-col gap-0 p-0 sm:max-w-md">
         <SheetHeader className="border-b border-border">
-          <SheetTitle className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground"><Sparkles className="h-4 w-4" /></span> ИИ-со-пилот</SheetTitle>
+          <div className="flex items-center justify-between gap-2 pr-6">
+            <SheetTitle className="flex items-center gap-2"><span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground"><Sparkles className="h-4 w-4" /></span> ИИ-со-пилот</SheetTitle>
+            {msgs.length > 1 && <button onClick={clearChat} className="text-2xs text-muted-foreground hover:text-foreground">Очистить</button>}
+          </div>
           <SheetDescription>Подбор модулей, аналоги OEM, разбор DOM — на данных каталога.</SheetDescription>
         </SheetHeader>
 
