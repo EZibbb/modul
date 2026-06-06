@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Search, Sparkles, ClipboardList, User, GitCompare } from "lucide-react";
+import { Search, Sparkles, ClipboardList, User, GitCompare, ChevronDown, Calculator, ScanSearch, Activity, PiggyBank, FileSpreadsheet } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/lib/store";
@@ -11,12 +11,20 @@ import { useStore } from "@/lib/store";
 const NAV = [
   { href: "/catalog", label: "Каталог" },
   { href: "/compatibility", label: "Совместимость" },
-  { href: "/calculator", label: "Калькулятор" },
+];
+
+const TOOLS = [
+  { href: "/calculator", label: "Калькулятор оптбюджета", icon: Calculator, desc: "Расчёт бюджета линии" },
+  { href: "/decoder", label: "Декодер артикула", icon: ScanSearch, desc: "Разбор названия модуля" },
+  { href: "/dom", label: "Диагностика DOM", icon: Activity, desc: "Разбор show transceiver" },
+  { href: "/economy", label: "Калькулятор экономии", icon: PiggyBank, desc: "Сравнение с OEM" },
+  { href: "/order-excel", label: "Заказ по Excel", icon: FileSpreadsheet, desc: "Список SKU → спецификация" },
 ];
 
 export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
   const router = useRouter();
   const [q, setQ] = useState(initialQuery);
+  const [toolsOpen, setToolsOpen] = useState(false);
   const { cartCount, compare } = useStore();
 
   function submit(e: React.FormEvent) {
@@ -42,6 +50,36 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
               {n.label}
             </Link>
           ))}
+          {/* Инструменты — выпадающее меню */}
+          <div className="relative">
+            <button
+              onClick={() => setToolsOpen((o) => !o)}
+              className={`flex items-center gap-1 rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground ${toolsOpen ? "bg-accent text-foreground" : ""}`}
+            >
+              Инструменты <ChevronDown className={`h-3.5 w-3.5 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
+            </button>
+            {toolsOpen && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setToolsOpen(false)} />
+                <div className="absolute left-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
+                  {TOOLS.map((t) => (
+                    <Link
+                      key={t.href}
+                      href={t.href}
+                      onClick={() => setToolsOpen(false)}
+                      className="flex items-start gap-3 px-3 py-2.5 hover:bg-accent"
+                    >
+                      <t.icon className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      <span>
+                        <span className="block font-medium text-foreground">{t.label}</span>
+                        <span className="block text-2xs text-muted-foreground">{t.desc}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </nav>
 
         <form onSubmit={submit} className="relative ml-auto hidden max-w-xs flex-1 sm:block">
