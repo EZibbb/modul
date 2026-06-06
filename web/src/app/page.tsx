@@ -153,7 +153,7 @@ export default async function Home() {
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {tiles.map((c) => (
-              <Link key={c.id} href={`/catalog?cat=${c.slug}`} className="group rounded-lg border border-border bg-card p-4 shadow-sm transition-shadow hover:shadow-md">
+              <Link key={c.id} href={`/catalog?cat=${c.slug}`} className="group lift-hover rounded-lg border border-border bg-card p-4 shadow-sm">
                 <div className="flex h-12 items-center">
                   <span className="mono rounded bg-muted px-2 py-1 text-2xs text-muted-foreground">{c.formFactor ?? "MISC"}</span>
                 </div>
@@ -169,7 +169,7 @@ export default async function Home() {
           <h2 className="mb-5 text-xl font-semibold tracking-tight">Готовые решения</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {SOLUTIONS.map((s) => (
-              <Link key={s.title} href={s.href} className="group flex flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+              <Link key={s.title} href={s.href} className="group lift-hover flex flex-col rounded-lg border border-border bg-card p-5 shadow-sm">
                 <div className="font-medium">{s.title}</div>
                 <p className="mt-1 flex-1 text-sm text-muted-foreground">{s.desc}</p>
                 <span className="mt-3 inline-flex items-center gap-1 text-sm text-primary">Подобрать <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>

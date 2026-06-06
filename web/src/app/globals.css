@@ -291,6 +291,11 @@ html:not(.dark) .page-head .via-white\/20 { --tw-gradient-via: hsl(var(--border-
 /* light-theme depth: bordered cards lift a touch off the tinted page */
 html:not(.dark) .lift { box-shadow: var(--shadow-sm); }
 
+/* interactive card — сдержанный premium-отклик на hover (depth + lift) */
+.lift-hover { transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease; }
+.lift-hover:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: hsl(var(--border-strong)); }
+@media (prefers-reduced-motion: reduce) { .lift-hover, .lift-hover:hover { transition: none; transform: none; } }
+
 /* trust-band dark cells → white cards in light theme */
 html:not(.dark) .page-head .bg-\[\#0a0f1a\]\/60 { background-color: hsl(var(--card)); }
 html:not(.dark) .page-head .bg-white\/\[\.06\] { background-color: hsl(var(--border)); }

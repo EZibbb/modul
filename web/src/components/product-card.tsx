@@ -34,7 +34,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
   ].filter(Boolean);
 
   return (
-    <div className="group flex flex-col rounded-lg border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+    <div className="group lift-hover flex flex-col rounded-lg border border-border bg-card shadow-sm">
       {/* арт-плейсхолдер по форм-фактору (W04 — реальные SVG позже) */}
       <div className="relative flex h-32 items-center justify-center rounded-t-lg bg-gradient-to-br from-muted to-subtle">
         <span className="mono text-2xs rounded bg-card/80 px-2 py-1 text-muted-foreground">{p.formFactor}</span>

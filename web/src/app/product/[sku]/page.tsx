@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { getProductBySku, getRelatedProducts } from "@/lib/catalog";
 import { getCompatForProduct } from "@/lib/compat";
 import { TEMP_LABELS } from "@/lib/catalog-params";
+import { FirmwareSelect } from "./_components/firmware-select";
 
 const ru = (n: number) => n.toLocaleString("ru-RU");
 const reach = (m: number | null) => (m == null ? null : m >= 1000 ? `${m / 1000} км` : `${m} м`);
@@ -130,11 +131,7 @@ export default async function ProductPage({ params }: { params: Promise<{ sku: s
               {fw.length > 0 && (
                 <div className="mt-4">
                   <label className="text-2xs font-medium uppercase tracking-wide text-muted-foreground">Прошивка</label>
-                  <select className="mono mt-1 h-9 w-full rounded-md border border-input bg-background px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                    {fw.map((f) => (
-                      <option key={f} value={f}>{f === "Generic" ? "Универсальный (Generic)" : f}</option>
-                    ))}
-                  </select>
+                  <FirmwareSelect options={fw} />
                   <p className="mt-1 text-2xs text-muted-foreground">Программируется на складе под вендора, +0 дней.</p>
                 </div>
               )}
