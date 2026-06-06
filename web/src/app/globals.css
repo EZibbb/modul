@@ -10,6 +10,7 @@
    Used as hsl(var(--token)).
    ============================================================ */
 :root {
+  color-scheme: light; /* нативные контролы (попап select, скроллбары) в светлой теме */
   /* Neutrals (cool slate) */
   --background: 214 32% 97%;
   --foreground: 222 47% 11%;
@@ -64,6 +65,7 @@
 }
 
 .dark {
+  color-scheme: dark; /* нативный попап select/скроллбары — в тёмной теме */
   --background: 222 33% 7%;
   --foreground: 213 27% 92%;
   --card: 222 28% 9%;
