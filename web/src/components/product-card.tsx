@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { AddToSpec } from "@/components/add-to-spec";
 import { AddToCompare } from "@/components/add-to-compare";
+import { ModuleArt } from "@/components/module-art";
 
 export type ProductCardData = {
   sku: string;
@@ -36,8 +37,9 @@ export function ProductCard({ p }: { p: ProductCardData }) {
   return (
     <div className="group lift-hover flex flex-col rounded-lg border border-border bg-card shadow-sm">
       {/* арт-плейсхолдер по форм-фактору (W04 — реальные SVG позже) */}
-      <div className="relative flex h-32 items-center justify-center rounded-t-lg bg-gradient-to-br from-muted to-subtle">
-        <span className="mono text-2xs rounded bg-card/80 px-2 py-1 text-muted-foreground">{p.formFactor}</span>
+      <div className="relative flex h-32 items-center justify-center overflow-hidden rounded-t-lg bg-gradient-to-br from-muted to-subtle">
+        <ModuleArt formFactor={p.formFactor} className="h-24 w-[80%] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none" />
+        <span className="mono absolute bottom-2 left-2 rounded bg-card/80 px-1.5 py-0.5 text-2xs text-muted-foreground">{p.formFactor}</span>
         <div className="absolute left-2 top-2">
           <AddToCompare item={p} iconOnly size="icon" variant="outline" className="h-7 w-7 bg-card/80" />
         </div>

@@ -12,6 +12,7 @@ import { getProductBySku, getRelatedProducts } from "@/lib/catalog";
 import { getCompatForProduct } from "@/lib/compat";
 import { TEMP_LABELS } from "@/lib/catalog-params";
 import { FirmwareSelect } from "./_components/firmware-select";
+import { ModuleArt } from "@/components/module-art";
 
 const ru = (n: number) => n.toLocaleString("ru-RU");
 const reach = (m: number | null) => (m == null ? null : m >= 1000 ? `${m / 1000} км` : `${m} м`);
@@ -77,8 +78,9 @@ export default async function ProductPage({ params }: { params: Promise<{ sku: s
         <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_minmax(360px,420px)]">
           {/* галерея (плейсхолдер, W04) */}
           <div>
-            <div className="flex h-80 items-center justify-center rounded-lg border border-border bg-gradient-to-br from-muted to-subtle">
-              <span className="mono rounded bg-card/80 px-3 py-1.5 text-sm text-muted-foreground">{product.formFactor}</span>
+            <div className="relative flex h-80 items-center justify-center overflow-hidden rounded-lg border border-border bg-gradient-to-br from-muted to-subtle">
+              <ModuleArt formFactor={product.formFactor} category={product.category.slug} className="h-52 w-[68%]" />
+              <span className="mono absolute bottom-3 left-3 rounded bg-card/80 px-2 py-1 text-2xs text-muted-foreground">{product.formFactor}</span>
             </div>
             <div className="mt-3 flex gap-3">
               {["Модуль", "Габариты", "DOM-консоль"].map((t, i) => (
