@@ -25,7 +25,7 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
   const router = useRouter();
   const [q, setQ] = useState(initialQuery);
   const [toolsOpen, setToolsOpen] = useState(false);
-  const { cartCount, compare } = useStore();
+  const { cartCount, compare, openAi } = useStore();
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -94,7 +94,7 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
         </form>
 
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm" className="hidden gap-1.5 lg:inline-flex">
+          <Button variant="secondary" size="sm" className="hidden gap-1.5 lg:inline-flex" onClick={() => openAi()}>
             <Sparkles className="h-4 w-4" /> ИИ-консультант
           </Button>
           <Link href="/compare" className="relative hidden h-9 items-center gap-1.5 rounded-md border border-border px-3 text-sm hover:bg-accent sm:inline-flex">

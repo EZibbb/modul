@@ -1,6 +1,6 @@
 import { Sparkles, Network } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
-import { Button } from "@/components/ui/button";
+import { CopilotButton } from "@/components/copilot-button";
 import { getVendorsCascade, getCompatForModel } from "@/lib/compat";
 import { CompatCascade } from "./_components/compat-cascade";
 import { CompatResult } from "./_components/compat-result";
@@ -35,7 +35,7 @@ export default async function CompatibilityPage({ searchParams }: { searchParams
               <div className="mt-5 rounded-lg border border-dashed border-border p-3 text-sm">
                 <div className="mb-1 flex items-center gap-1.5 font-medium"><Sparkles className="h-4 w-4 text-primary" /> Не нашли модель?</div>
                 <p className="text-muted-foreground">Опишите задачу — ИИ-со-пилот подберёт комплект.</p>
-                <Button variant="secondary" size="sm" className="mt-2 gap-1.5"><Sparkles className="h-4 w-4" /> Спросить ИИ</Button>
+                <CopilotButton seed="Не нашёл нужную модель оборудования — помоги подобрать совместимые модули" label="Спросить ИИ" size="sm" className="mt-2" />
               </div>
             </div>
           </div>

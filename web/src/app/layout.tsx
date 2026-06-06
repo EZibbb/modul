@@ -3,6 +3,7 @@ import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { StoreProvider } from "@/lib/store";
 import { CommandPalette } from "@/components/command-palette";
+import { AiCopilot } from "@/components/ai-copilot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -45,6 +46,7 @@ export default function RootLayout({
         <StoreProvider>
           {children}
           <CommandPalette />
+          <AiCopilot />
         </StoreProvider>
       </body>
     </html>

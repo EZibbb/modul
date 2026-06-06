@@ -39,6 +39,11 @@ type Store = {
   clearCompare: () => void;
   inCompare: (sku: string) => boolean;
   COMPARE_MAX: number;
+  // ИИ-со-пилот
+  aiOpen: boolean;
+  aiSeed: string | null;
+  openAi: (seed?: string) => void;
+  closeAi: () => void;
 };
 
 const COMPARE_MAX = 4;
@@ -50,6 +55,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [compare, setCompare] = useState<CompareItem[]>([]);
   const [ready, setReady] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiSeed, setAiSeed] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -102,8 +109,12 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       clearCompare,
       inCompare: (sku: string) => compare.some((x) => x.sku === sku),
       COMPARE_MAX,
+      aiOpen,
+      aiSeed,
+      openAi: (seed?: string) => { setAiSeed(seed ?? null); setAiOpen(true); },
+      closeAi: () => setAiOpen(false),
     }),
-    [cart, compare, addToCart, setQty, removeFromCart, clearCart, addToCompare, removeFromCompare, clearCompare],
+    [cart, compare, addToCart, setQty, removeFromCart, clearCart, addToCompare, removeFromCompare, clearCompare, aiOpen, aiSeed],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

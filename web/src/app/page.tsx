@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Truck, ShieldCheck, FlaskConical, FileText, ArrowRight, Sparkles } from "lucide-react";
+import { Truck, ShieldCheck, FlaskConical, FileText, ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CopilotButton } from "@/components/copilot-button";
 import { ExpressPicker } from "./_components/express-picker";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -135,7 +136,7 @@ export default async function Home() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild className="h-11 gap-1.5"><Link href="/catalog">Открыть каталог <ArrowRight className="h-4 w-4" /></Link></Button>
-              <Button variant="secondary" className="h-11 gap-1.5"><Sparkles className="h-4 w-4" /> Спросить со-пилота</Button>
+              <CopilotButton className="h-11" />
             </div>
           </div>
 
@@ -234,11 +235,7 @@ export default async function Home() {
 
       <SiteFooter />
 
-      {/* плавающий со-пилот */}
-      <button className="fixed bottom-5 right-5 z-40 flex h-12 items-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg hover:bg-primary-hover">
-        <Sparkles className="h-5 w-5" />
-        <span className="hidden sm:inline">Со-пилот</span>
-      </button>
+      <CopilotButton floating label="Со-пилот" />
     </>
   );
 }
