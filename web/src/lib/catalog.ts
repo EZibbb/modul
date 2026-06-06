@@ -160,6 +160,23 @@ export async function searchProducts(q: string, limit = 8) {
   });
 }
 
+export async function getRelatedProducts(
+  excludeSku: string,
+  categoryId: string,
+  speedGbps: number | null,
+  limit = 4,
+) {
+  return prisma.product.findMany({
+    where: {
+      categoryId,
+      sku: { not: excludeSku },
+      ...(speedGbps != null ? { speedGbps } : {}),
+    },
+    take: limit,
+    orderBy: [{ stockStatus: "asc" }, { priceBase: "asc" }],
+  });
+}
+
 export async function getProductBySku(sku: string) {
   return prisma.product.findUnique({
     where: { sku },
