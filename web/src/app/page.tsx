@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { CopilotButton } from "@/components/copilot-button";
 import { ExpressPicker } from "./_components/express-picker";
 import { CategoryGlyph } from "@/components/module-art";
+import { Reveal } from "@/components/reveal";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getCategoryTree, listProducts } from "@/lib/catalog";
@@ -147,7 +148,7 @@ export default async function Home() {
 
       <main className="mx-auto max-w-[1320px] px-6">
         {/* категории */}
-        <section className="py-12">
+        <Reveal><section className="py-12">
           <div className="mb-5 flex items-end justify-between">
             <h2 className="text-xl font-semibold tracking-tight">Категории</h2>
             <Link href="/catalog" className="text-sm text-primary hover:underline">Весь каталог →</Link>
@@ -161,10 +162,10 @@ export default async function Home() {
               </Link>
             ))}
           </div>
-        </section>
+        </section></Reveal>
 
         {/* готовые решения */}
-        <section id="solutions" className="scroll-mt-24 py-2">
+        <Reveal><section id="solutions" className="scroll-mt-24 py-2">
           <h2 className="mb-5 text-xl font-semibold tracking-tight">Готовые решения</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {SOLUTIONS.map((s) => (
@@ -175,10 +176,10 @@ export default async function Home() {
               </Link>
             ))}
           </div>
-        </section>
+        </section></Reveal>
 
         {/* популярное на складе */}
-        <section className="py-12">
+        <Reveal><section className="py-12">
           <div className="mb-5 flex items-end justify-between">
             <h2 className="text-xl font-semibold tracking-tight">Популярное на складе</h2>
             <Link href="/catalog?stock=1" className="text-sm text-primary hover:underline">Всё в наличии →</Link>
@@ -210,11 +211,11 @@ export default async function Home() {
               </tbody>
             </table>
           </div>
-        </section>
+        </section></Reveal>
       </main>
 
       {/* полоса доверия */}
-      <section className="page-head border-y border-border">
+      <Reveal><section className="page-head border-y border-border">
         <div className="relative mx-auto max-w-[1320px] px-6 py-10">
           <div className="text-2xs font-semibold uppercase tracking-wider text-muted-foreground">Инженерное доверие, а не маркетинг</div>
           <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -230,7 +231,7 @@ export default async function Home() {
           </div>
           <hr className="spectrum-rule mt-8" />
         </div>
-      </section>
+      </section></Reveal>
 
       <SiteFooter />
 
