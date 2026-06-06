@@ -1,183 +1,178 @@
-import { ThemeToggle } from "./_ThemeToggle";
+import Link from "next/link";
+import { Truck, ShieldCheck, FlaskConical, FileText, ArrowRight } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
+import { ExpressPicker } from "./_components/express-picker";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  CardAction,
-} from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
+import { getCategoryTree, listProducts } from "@/lib/catalog";
+import { getVendorsCascade } from "@/lib/compat";
 
-const swatches = [
-  { name: "primary", cls: "bg-primary", fg: "text-primary-foreground" },
-  { name: "cyan", cls: "bg-cyan", fg: "text-white" },
-  { name: "success", cls: "bg-success", fg: "text-white" },
-  { name: "warning", cls: "bg-warning", fg: "text-white" },
-  { name: "destructive", cls: "bg-destructive", fg: "text-destructive-foreground" },
-  { name: "info", cls: "bg-info", fg: "text-white" },
+const ru = (n: number) => n.toLocaleString("ru-RU");
+
+const SOLUTIONS = [
+  { title: "ЦОД 100G spine-leaf", desc: "QSFP28 LR4/SR4 + DAC для top-of-rack", href: "/catalog?cat=qsfp28" },
+  { title: "Агрегация 25G", desc: "SFP28 LR/SR на leaf-коммутаторы", href: "/catalog?cat=sfp28" },
+  { title: "Магистраль DWDM 80 км", desc: "DWDM-каналы + мультиплексоры", href: "/catalog?cat=wdm" },
+  { title: "Доступ 10G", desc: "SFP+ LR/SR/BiDi для операторов", href: "/catalog?cat=sfp-plus" },
 ];
 
-export default function Home() {
-  return (
-    <div className="min-h-full">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-[1320px] items-center gap-4 px-6">
-          <span className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M3 12h4l2-6 4 12 2-6h6" /></svg>
-            </span>
-            <span className="text-[15px] font-semibold tracking-tight">
-              Modul<span className="font-normal text-muted-foreground">&nbsp;comp</span>
-            </span>
-            <span className="mono text-2xs rounded bg-muted px-1.5 py-0.5 text-muted-foreground">shadcn</span>
-          </span>
-          <div className="ml-auto flex items-center gap-2">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="secondary" size="sm">ИИ-консультант</Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader>
-                  <SheetTitle>ИИ-со-пилот</SheetTitle>
-                  <SheetDescription>
-                    Боковая панель инженерного со-пилота. Заглушка примитива Sheet на наших токенах.
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="px-4">
-                  <Card>
-                    <CardHeader>
-                      <span className="mono text-sm text-primary">MC-SFP10G-LR</span>
-                      <CardAction>
-                        <Badge>подобрано ИИ</Badge>
-                      </CardAction>
-                      <CardTitle className="text-base">SFP+ 10GBASE-LR</CardTitle>
-                      <CardDescription>1310 нм · 10 км · LC · DOM</CardDescription>
-                    </CardHeader>
-                  </Card>
-                </div>
-              </SheetContent>
-            </Sheet>
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
+const TRUST = [
+  { icon: FlaskConical, title: "Тестирование на оборудовании", desc: "Каждый модуль проверен на реальном железе вендора." },
+  { icon: Truck, title: "Отгрузка в день заказа", desc: "Со склада в Москве, по заявке до 16:00." },
+  { icon: ShieldCheck, title: "Гарантия 5 лет", desc: "Замена при любых отказах DOM/линка." },
+  { icon: FileText, title: "Полные datasheet", desc: "Тех-данные, тест-отчёты, сертификаты CE/FCC/RoHS." },
+];
 
-      <main className="mx-auto max-w-[1320px] space-y-12 px-6 py-12">
-        <section>
-          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground shadow-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-success" />
-            <span className="mono">850 · 1310 · 1550 NM</span>
+export default async function Home() {
+  const [tree, vendors, popular] = await Promise.all([
+    getCategoryTree(),
+    getVendorsCascade(),
+    listProducts({ inStockOnly: true }, "popular", 1, 6),
+  ]);
+
+  // плитки категорий: дети «Трансиверы» + корневые dac/patch/wdm
+  const txChildren = tree.find((c) => c.slug === "transceivers")?.children ?? [];
+  const rootExtra = tree.filter((c) => c.slug !== "transceivers");
+  const tiles = [...txChildren, ...rootExtra];
+  const total = tree.reduce((s, c) => s + c.productCount + c.children.reduce((a, ch) => a + ch.productCount, 0), 0);
+
+  return (
+    <>
+      {/* утилити-бар */}
+      <div className="border-b border-border bg-card text-2xs text-muted-foreground">
+        <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-5 gap-y-1 px-6 py-1.5">
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-success" />{ru(total)}+ позиций на складе</span>
+          <span>Отгрузка в день заказа до 16:00</span>
+          <span className="ml-auto hidden sm:inline">Прайс-лист (XLSX)</span>
+          <span className="hidden sm:inline">API для интеграторов</span>
+          <span className="mono">+7 495 120-40-90</span>
+        </div>
+      </div>
+
+      <SiteHeader />
+
+      {/* hero */}
+      <section className="page-head border-b border-border">
+        <div className="grid-bg absolute inset-0" />
+        <div className="fiber-line" style={{ top: "30%" }}><span className="pulse" style={{ "--d": "9s" } as React.CSSProperties} /></div>
+        <div className="fiber-line" style={{ top: "62%" }}><span className="pulse" style={{ "--d": "11s", "--delay": "2s" } as React.CSSProperties} /></div>
+        <div className="relative mx-auto max-w-[1320px] px-6 py-16">
+          <div className="mono inline-flex items-center gap-3 rounded-full border border-border bg-card/60 px-3 py-1 text-2xs tracking-wider text-muted-foreground">
+            <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-cyan" />850</span>
+            <span>·</span><span>1310</span><span>·</span><span>1550 NM</span>
           </div>
-          <h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            Инженерная точность как интерфейс
+          <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            Оптика, которая заведётся{" "}
+            <span className="bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">с первого порта</span>
           </h1>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Фундамент: дизайн-токены (light/dark), Inter + IBM&nbsp;Plex&nbsp;Mono, и примитивы
-            shadcn/ui на наших токенах. Артикул: <span className="mono text-primary">MC-SFP10G-LR</span>.
+            SFP / SFP+ / SFP28 / QSFP+ / QSFP28 / QSFP-DD, DAC/AOC, патч-корды и WDM. Кодирование под вендора,
+            полная диагностика DOM, гарантия 5 лет.
           </p>
-        </section>
 
-        <section>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Бренд и семантика</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-            {swatches.map((c) => (
-              <div key={c.name} className={`flex h-20 items-end rounded-lg p-3 shadow-sm ${c.cls} ${c.fg}`}>
-                <span className="mono text-2xs">{c.name}</span>
-              </div>
+          <div className="mt-8 max-w-3xl">
+            <ExpressPicker vendors={vendors} />
+          </div>
+
+          <div className="mono mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm">
+            <span><span className="font-semibold text-foreground">{ru(total)}+</span> <span className="text-muted-foreground">позиций</span></span>
+            <span><span className="font-semibold text-foreground">{vendors.length}</span> <span className="text-muted-foreground">вендоров протестировано</span></span>
+            <span><span className="font-semibold text-success">−68%</span> <span className="text-muted-foreground">к OEM в среднем</span></span>
+          </div>
+        </div>
+      </section>
+
+      <main className="mx-auto max-w-[1320px] px-6">
+        {/* категории */}
+        <section className="py-12">
+          <div className="mb-5 flex items-end justify-between">
+            <h2 className="text-xl font-semibold tracking-tight">Категории</h2>
+            <Link href="/catalog" className="text-sm text-primary hover:underline">Весь каталог →</Link>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {tiles.map((c) => (
+              <Link key={c.id} href={`/catalog?cat=${c.slug}`} className="group rounded-lg border border-border bg-card p-4 shadow-sm transition-shadow hover:shadow-md">
+                <div className="flex h-12 items-center">
+                  <span className="mono rounded bg-muted px-2 py-1 text-2xs text-muted-foreground">{c.formFactor ?? "MISC"}</span>
+                </div>
+                <div className="mt-2 text-sm font-medium">{c.name}</div>
+                <div className="mono text-2xs text-muted-foreground">{c.productCount} позиций</div>
+              </Link>
             ))}
           </div>
         </section>
 
-        <section>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Кнопки и бейджи</h2>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button>В корзину</Button>
-            <Button variant="secondary">В сравнение</Button>
-            <Button variant="outline">Документация</Button>
-            <Button variant="ghost">Подробнее</Button>
-            <Button variant="destructive">Снять с производства</Button>
-          </div>
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <Badge>в наличии</Badge>
-            <Badge variant="secondary">под заказ</Badge>
-            <Badge variant="outline">протестировано</Badge>
-            <Badge variant="destructive">EOL</Badge>
+        {/* готовые решения */}
+        <section className="py-2">
+          <h2 className="mb-5 text-xl font-semibold tracking-tight">Готовые решения</h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {SOLUTIONS.map((s) => (
+              <Link key={s.title} href={s.href} className="group flex flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+                <div className="font-medium">{s.title}</div>
+                <p className="mt-1 flex-1 text-sm text-muted-foreground">{s.desc}</p>
+                <span className="mt-3 inline-flex items-center gap-1 text-sm text-primary">Подобрать <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+              </Link>
+            ))}
           </div>
         </section>
 
-        <section>
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Карточка · табы · модалка</h2>
-          <Card className="max-w-md">
-            <CardHeader>
-              <span className="mono text-sm text-primary">MC-QSFP100G-LR4</span>
-              <CardAction>
-                <Badge variant="outline" className="border-success/40 text-success">в наличии</Badge>
-              </CardAction>
-              <CardTitle>QSFP28 100GBASE-LR4</CardTitle>
-              <CardDescription>CWDM4 · 1310 нм · 10 км · LC · DOM</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="specs">
-                <TabsList>
-                  <TabsTrigger value="specs">Характеристики</TabsTrigger>
-                  <TabsTrigger value="compat">Совместимость</TabsTrigger>
-                  <TabsTrigger value="dom">DOM</TabsTrigger>
-                </TabsList>
-                <TabsContent value="specs" className="mono text-sm text-muted-foreground">
-                  100GBASE-LR4 · 4×25G · DFB · −8…−1 dBm Tx · −10.6 dBm Rx
-                </TabsContent>
-                <TabsContent value="compat" className="text-sm text-muted-foreground">
-                  Cisco Nexus 9300 · Juniper QFX5200 · Arista 7050X
-                </TabsContent>
-                <TabsContent value="dom" className="text-sm text-muted-foreground">
-                  Температура, напряжение, ток, Tx/Rx Power — в норме.
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-            <CardFooter className="justify-between border-t border-border">
-              <span className="mono text-lg font-semibold">22&nbsp;500&nbsp;₽</span>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button>Запросить КП</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Запрос коммерческого предложения</DialogTitle>
-                    <DialogDescription>
-                      Заглушка примитива Dialog на токенах. Здесь будет форма КП.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <DialogFooter>
-                    <Button variant="outline">Отмена</Button>
-                    <Button>Отправить</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </CardFooter>
-          </Card>
+        {/* популярное на складе */}
+        <section className="py-12">
+          <div className="mb-5 flex items-end justify-between">
+            <h2 className="text-xl font-semibold tracking-tight">Популярное на складе</h2>
+            <Link href="/catalog?stock=1" className="text-sm text-primary hover:underline">Всё в наличии →</Link>
+          </div>
+          <div className="overflow-x-auto rounded-lg border border-border">
+            <table className="w-full text-sm">
+              <thead className="bg-subtle text-xs text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-2.5 text-left font-medium">Артикул</th>
+                  <th className="px-4 py-2.5 text-left font-medium">Наименование</th>
+                  <th className="px-4 py-2.5 text-right font-medium">Цена</th>
+                  <th className="px-4 py-2.5 text-right font-medium">vs OEM</th>
+                  <th className="px-4 py-2.5"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {popular.items.map((p, i) => {
+                  const sav = p.oemPrice ? Math.round(((p.oemPrice - p.priceBase) / p.oemPrice) * 100) : null;
+                  return (
+                    <tr key={p.sku} className={i % 2 ? "bg-subtle" : ""}>
+                      <td className="px-4 py-2.5"><Link href={`/product/${p.sku}`} className="mono text-primary hover:underline">{p.sku}</Link></td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{p.name}</td>
+                      <td className="mono px-4 py-2.5 text-right font-medium tabular-nums">{ru(p.priceBase)} ₽</td>
+                      <td className="px-4 py-2.5 text-right">{sav != null && sav > 0 ? <span className="text-success">−{sav}%</span> : "—"}</td>
+                      <td className="px-4 py-2.5 text-right"><Badge variant="outline" className="border-success/40 text-success">в наличии</Badge></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </section>
       </main>
-    </div>
+
+      {/* полоса доверия */}
+      <section className="page-head border-y border-border">
+        <div className="relative mx-auto max-w-[1320px] px-6 py-10">
+          <div className="text-2xs font-semibold uppercase tracking-wider text-muted-foreground">Инженерное доверие, а не маркетинг</div>
+          <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {TRUST.map((t) => (
+              <div key={t.title} className="flex gap-3">
+                <t.icon className="h-5 w-5 shrink-0 text-cyan" />
+                <div>
+                  <div className="text-sm font-medium">{t.title}</div>
+                  <p className="mt-0.5 text-sm text-muted-foreground">{t.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <hr className="spectrum-rule mt-8" />
+        </div>
+      </section>
+
+      <SiteFooter />
+    </>
   );
 }
