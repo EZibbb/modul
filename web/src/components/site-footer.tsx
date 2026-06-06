@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const COLS = [
   { title: "Каталог", links: [["SFP+ (10G)", "/catalog?cat=sfp-plus"], ["SFP28 (25G)", "/catalog?cat=sfp28"], ["QSFP28 (100G)", "/catalog?cat=qsfp28"], ["DAC / AOC", "/catalog?cat=dac-aoc"]] },
-  { title: "Инструменты", links: [["Подбор совместимости", "/compatibility"], ["Калькулятор оптбюджета", "/calculator"], ["Каталог", "/catalog"]] },
+  { title: "Инструменты", links: [["Подбор совместимости", "/compatibility"], ["Калькулятор оптбюджета", "/calculator"], ["Декодер артикула", "/decoder"], ["Диагностика DOM", "/dom"], ["Калькулятор экономии", "/economy"], ["Заказ по Excel", "/order-excel"]] },
   { title: "Компания", links: [["О нас", "#"], ["Доставка", "#"], ["Контакты", "#"], ["API для интеграторов", "#"]] },
 ];
 
