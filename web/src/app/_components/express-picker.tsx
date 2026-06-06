@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import type { VendorCascade } from "@/lib/compat";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Summary = Record<string, { count: number; top: { sku: string; priceBase: number } | null }>;
 
@@ -35,7 +36,7 @@ export function ExpressPicker({ vendors, summary }: { vendors: VendorCascade; su
     setModelId(vendor?.series.find((s) => s.id === id)?.models[0]?.id ?? "");
   };
 
-  const selectCls = "glass-field h-11 w-full rounded-md px-3 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring";
+  const trigCls = "glass-field h-11 w-full";
   const StepNum = ({ n, on }: { n: number; on?: boolean }) => (
     <span className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-2xs font-semibold ${on ? "bg-cyan text-white" : "bg-primary text-primary-foreground"}`}>{n}</span>
   );
@@ -51,21 +52,24 @@ export function ExpressPicker({ vendors, summary }: { vendors: VendorCascade; su
       <div className="mt-4 space-y-3">
         <label className="block">
           <span className="mb-1 flex items-center gap-2 text-2xs text-muted-foreground"><StepNum n={1} /> Вендор оборудования</span>
-          <select value={vendorId} onChange={(e) => onVendor(e.target.value)} className={selectCls}>
-            {vendors.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
-          </select>
+          <Select value={vendorId} onValueChange={onVendor}>
+            <SelectTrigger className={trigCls}><SelectValue /></SelectTrigger>
+            <SelectContent>{vendors.map((v) => <SelectItem key={v.id} value={v.id}>{v.name}</SelectItem>)}</SelectContent>
+          </Select>
         </label>
         <label className="block">
           <span className="mb-1 flex items-center gap-2 text-2xs text-muted-foreground"><StepNum n={2} on /> Серия / платформа</span>
-          <select value={seriesId} onChange={(e) => onSeries(e.target.value)} className={selectCls}>
-            {seriesList.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
-          </select>
+          <Select value={seriesId} onValueChange={onSeries}>
+            <SelectTrigger className={trigCls}><SelectValue /></SelectTrigger>
+            <SelectContent>{seriesList.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
+          </Select>
         </label>
         <label className="block">
           <span className="mb-1 flex items-center gap-2 text-2xs text-muted-foreground"><StepNum n={3} /> Модель</span>
-          <select value={modelId} onChange={(e) => setModelId(e.target.value)} className={`mono ${selectCls}`}>
-            {models.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
-          </select>
+          <Select value={modelId} onValueChange={setModelId}>
+            <SelectTrigger className={`mono ${trigCls}`}><SelectValue /></SelectTrigger>
+            <SelectContent>{models.map((m) => <SelectItem key={m.id} value={m.id} className="mono">{m.name}</SelectItem>)}</SelectContent>
+          </Select>
         </label>
       </div>
 

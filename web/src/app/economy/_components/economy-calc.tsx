@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AddToSpec } from "@/components/add-to-spec";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type P = { sku: string; name: string; priceBase: number; pricePartner: number | null; oemPrice: number; oemRef: string | null };
 const ru = (n: number) => Math.round(n).toLocaleString("ru-RU");
@@ -25,9 +26,12 @@ export function EconomyCalc({ products }: { products: P[] }) {
       <div className="space-y-4 rounded-lg border border-border bg-card p-5">
         <label className="block">
           <span className="mb-1 block text-2xs uppercase tracking-wide text-muted-foreground">Модуль Modul comp</span>
-          <select value={sku} onChange={(e) => setSku(e.target.value)} className="mono h-10 w-full rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring">
-            {products.map((x) => <option key={x.sku} value={x.sku}>{x.sku} — {x.name}</option>)}
-          </select>
+          <Select value={sku} onValueChange={setSku}>
+            <SelectTrigger className="mono h-10 w-full bg-card"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {products.map((x) => <SelectItem key={x.sku} value={x.sku} className="mono">{x.sku} — {x.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
         </label>
         <label className="block">
           <span className="mb-1 block text-2xs uppercase tracking-wide text-muted-foreground">Количество (партия)</span>

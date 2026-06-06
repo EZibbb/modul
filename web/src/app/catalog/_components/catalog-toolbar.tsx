@@ -4,6 +4,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { X } from "lucide-react";
 import type { CatalogSort } from "@/lib/catalog";
 import { FACET_PARAM, SORT_LABELS, TEMP_LABELS, toggleCsv } from "@/lib/catalog-params";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const TEMP_SHORT: Record<string, string> = { com: "0…+70 °C", ext: "−20…+85 °C", ind: "−40…+85 °C" };
 
@@ -60,18 +61,17 @@ export function CatalogToolbar({ total }: { total: number }) {
         <div className="text-sm text-muted-foreground">
           Найдено: <span className="mono font-medium text-foreground">{total}</span>
         </div>
-        <label className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           Сортировка
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            className="h-9 rounded-md border border-input bg-card px-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            {(Object.keys(SORT_LABELS) as CatalogSort[]).map((s) => (
-              <option key={s} value={s}>{SORT_LABELS[s]}</option>
-            ))}
-          </select>
-        </label>
+          <Select value={sort} onValueChange={setSort}>
+            <SelectTrigger className="h-9 w-[180px] bg-card"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {(Object.keys(SORT_LABELS) as CatalogSort[]).map((s) => (
+                <SelectItem key={s} value={s}>{SORT_LABELS[s]}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {chips.length > 0 && (

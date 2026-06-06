@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Calculator } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // Затухание волокна, dB/км (SPEC §9.4)
 const ATTEN: Record<string, number> = { "850": 3.0, "1310": 0.35, "1550": 0.22 };
@@ -69,11 +70,14 @@ export default function CalculatorPage() {
           <div className="space-y-4 rounded-lg border border-border bg-card p-5">
             <label className="block">
               <span className="mb-1 block text-2xs uppercase tracking-wide text-muted-foreground">Длина волны</span>
-              <select value={wl} onChange={(e) => setWl(e.target.value)} className="mono h-10 w-full rounded-md border border-input bg-card px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                <option value="850">850 нм (MMF, 3.0 dB/км)</option>
-                <option value="1310">1310 нм (SMF, 0.35 dB/км)</option>
-                <option value="1550">1550 нм (SMF, 0.22 dB/км)</option>
-              </select>
+              <Select value={wl} onValueChange={setWl}>
+                <SelectTrigger className="mono h-10 w-full bg-card"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="850">850 нм (MMF, 3.0 dB/км)</SelectItem>
+                  <SelectItem value="1310">1310 нм (SMF, 0.35 dB/км)</SelectItem>
+                  <SelectItem value="1550">1550 нм (SMF, 0.22 dB/км)</SelectItem>
+                </SelectContent>
+              </Select>
             </label>
             <div className="grid grid-cols-2 gap-4">
               <Num label="Длина линии" value={distance} onChange={setDistance} step={0.5} suffix="км" />
