@@ -44,6 +44,26 @@ export async function getVendorsCascade(): Promise<VendorCascade> {
   }));
 }
 
+// Сводка для экспресс-подбора на главной: по каждой модели — сколько совместимых модулей + основной.
+export async function getCompatSummaryByModel(): Promise<Record<string, { count: number; top: { sku: string; priceBase: number } | null }>> {
+  const rows = await prisma.compatibility.findMany({
+    include: { product: { select: { sku: true, priceBase: true } } },
+  });
+  const map: Record<string, { count: number; top: { sku: string; priceBase: number } | null; _hasPrimary: boolean }> = {};
+  for (const r of rows) {
+    const m = (map[r.deviceModelId] ??= { count: 0, top: null, _hasPrimary: false });
+    m.count++;
+    const isPrimary = r.role === "primary";
+    if (!m.top || (isPrimary && !m._hasPrimary)) {
+      m.top = { sku: r.product.sku, priceBase: r.product.priceBase };
+      m._hasPrimary = isPrimary;
+    }
+  }
+  const out: Record<string, { count: number; top: { sku: string; priceBase: number } | null }> = {};
+  for (const k in map) out[k] = { count: map[k].count, top: map[k].top };
+  return out;
+}
+
 export type CompatModule = {
   productId: string;
   sku: string;

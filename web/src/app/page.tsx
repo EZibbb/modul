@@ -1,14 +1,34 @@
 import Link from "next/link";
-import { Truck, ShieldCheck, FlaskConical, FileText, ArrowRight } from "lucide-react";
+import { Truck, ShieldCheck, FlaskConical, FileText, ArrowRight, Sparkles } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ExpressPicker } from "./_components/express-picker";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getCategoryTree, listProducts } from "@/lib/catalog";
-import { getVendorsCascade } from "@/lib/compat";
+import { getVendorsCascade, getCompatSummaryByModel } from "@/lib/compat";
 
 const ru = (n: number) => n.toLocaleString("ru-RU");
+const STOCK = "8 600+"; // презентационный объём склада (каталог-демо — срез)
+
+const WL = [
+  { wl: 850, label: "MULTIMODE" },
+  { wl: 1310, label: "SINGLEMODE" },
+  { wl: 1550, label: "LONG-HAUL" },
+];
+
+const CAT_NAV: [string, string][] = [
+  ["Весь каталог", "/catalog"],
+  ["SFP / SFP+", "/catalog?cat=sfp-plus"],
+  ["SFP28", "/catalog?cat=sfp28"],
+  ["QSFP+", "/catalog?cat=qsfp-plus"],
+  ["QSFP28", "/catalog?cat=qsfp28"],
+  ["QSFP-DD 400G", "/catalog?cat=qsfp-dd"],
+  ["DAC / AOC", "/catalog?cat=dac-aoc"],
+  ["Патч-корды", "/catalog?cat=patch"],
+  ["CWDM / DWDM", "/catalog?cat=wdm"],
+  ["Решения", "#solutions"],
+];
 
 const SOLUTIONS = [
   { title: "ЦОД 100G spine-leaf", desc: "QSFP28 LR4/SR4 + DAC для top-of-rack", href: "/catalog?cat=qsfp28" },
@@ -25,24 +45,23 @@ const TRUST = [
 ];
 
 export default async function Home() {
-  const [tree, vendors, popular] = await Promise.all([
+  const [tree, vendors, summary, popular] = await Promise.all([
     getCategoryTree(),
     getVendorsCascade(),
+    getCompatSummaryByModel(),
     listProducts({ inStockOnly: true }, "popular", 1, 6),
   ]);
 
-  // плитки категорий: дети «Трансиверы» + корневые dac/patch/wdm
   const txChildren = tree.find((c) => c.slug === "transceivers")?.children ?? [];
   const rootExtra = tree.filter((c) => c.slug !== "transceivers");
   const tiles = [...txChildren, ...rootExtra];
-  const total = tree.reduce((s, c) => s + c.productCount + c.children.reduce((a, ch) => a + ch.productCount, 0), 0);
 
   return (
     <>
       {/* утилити-бар */}
       <div className="border-b border-border bg-card text-2xs text-muted-foreground">
         <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-5 gap-y-1 px-6 py-1.5">
-          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-success" />{ru(total)}+ позиций на складе</span>
+          <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-success" />{STOCK} позиций на складе в Москве</span>
           <span>Отгрузка в день заказа до 16:00</span>
           <span className="ml-auto hidden sm:inline">Прайс-лист (XLSX)</span>
           <span className="hidden sm:inline">API для интеграторов</span>
@@ -52,34 +71,75 @@ export default async function Home() {
 
       <SiteHeader />
 
+      {/* строка категорий */}
+      <div className="border-b border-border bg-background/80">
+        <div className="mx-auto flex max-w-[1320px] items-center gap-1 overflow-x-auto px-6 py-2 text-sm">
+          {CAT_NAV.map(([label, href]) => (
+            <Link key={label} href={href} className="shrink-0 rounded-md px-2.5 py-1.5 text-muted-foreground hover:bg-accent hover:text-foreground">
+              {label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       {/* hero */}
-      <section className="page-head border-b border-border">
+      <section className="page-head relative overflow-hidden border-b border-border">
         <div className="grid-bg absolute inset-0" />
-        <div className="fiber-line" style={{ top: "30%" }}><span className="pulse" style={{ "--d": "9s" } as React.CSSProperties} /></div>
-        <div className="fiber-line" style={{ top: "62%" }}><span className="pulse" style={{ "--d": "11s", "--delay": "2s" } as React.CSSProperties} /></div>
-        <div className="relative mx-auto max-w-[1320px] px-6 py-16">
-          <div className="mono inline-flex items-center gap-3 rounded-full border border-border bg-card/60 px-3 py-1 text-2xs tracking-wider text-muted-foreground">
-            <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-cyan" />850</span>
-            <span>·</span><span>1310</span><span>·</span><span>1550 NM</span>
-          </div>
-          <h1 className="mt-5 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            Оптика, которая заведётся{" "}
-            <span className="bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">с первого порта</span>
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            SFP / SFP+ / SFP28 / QSFP+ / QSFP28 / QSFP-DD, DAC/AOC, патч-корды и WDM. Кодирование под вендора,
-            полная диагностика DOM, гарантия 5 лет.
-          </p>
+        <div className="hero-glow" style={{ width: 420, height: 260, top: -120, right: "12%", background: "rgba(37,99,235,.18)" }} />
+        <div className="fiber-line" style={{ top: "28%" }}><span className="pulse" style={{ "--d": "9s" } as React.CSSProperties} /></div>
+        <div className="fiber-line" style={{ top: "64%" }}><span className="pulse" style={{ "--d": "12s", "--delay": "2s" } as React.CSSProperties} /></div>
 
-          <div className="mt-8 max-w-3xl">
-            <ExpressPicker vendors={vendors} />
+        <div className="relative mx-auto grid max-w-[1320px] items-center gap-10 px-6 py-16 lg:grid-cols-[1fr_minmax(380px,460px)]">
+          <div>
+            <div className="mono inline-flex items-center gap-3 rounded-full border border-border bg-card/60 px-3 py-1 text-2xs tracking-wider text-muted-foreground">
+              <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-cyan" />850</span><span>·</span><span>1310</span><span>·</span><span>1550 NM</span>
+            </div>
+            <h1 className="mt-5 max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
+              Оптика, которая заведётся{" "}
+              <span className="bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">с первого порта</span>
+            </h1>
+            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
+              SFP / SFP+ / SFP28 / QSFP+ / QSFP28 / QSFP-DD / OSFP, DAC/AOC, патч-корды и WDM. Кодирование под
+              вендора, полная диагностика DOM, гарантия 5 лет.
+            </p>
+
+            {/* шкала длин волн */}
+            <div className="mt-8 max-w-md">
+              <div className="relative">
+                <div className="absolute left-1.5 right-1.5 top-1.5 h-px bg-gradient-to-r from-cyan/50 via-primary/50 to-[#7c3aed]/50" />
+                <div className="relative flex justify-between">
+                  {WL.map((n) => (
+                    <div key={n.wl} className="flex flex-col items-center gap-1">
+                      <span className="h-3 w-3 rounded-full bg-cyan shadow-[0_0_10px_2px_rgba(34,211,238,.55)]" />
+                      <span className="mono mt-1 text-sm font-medium">{n.wl}</span>
+                      <span className="text-2xs uppercase tracking-wider text-muted-foreground">{n.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* статы */}
+            <div className="mt-8 flex flex-wrap gap-x-10 gap-y-3">
+              {[
+                { v: STOCK, l: "позиций на складе" },
+                { v: "24 ч", l: "тест перед отгрузкой" },
+                { v: "99.98%", l: "приёмка без дефектов" },
+              ].map((s) => (
+                <div key={s.l}>
+                  <div className="mono text-2xl font-semibold">{s.v}</div>
+                  <div className="text-2xs text-muted-foreground">{s.l}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild className="h-11 gap-1.5"><Link href="/catalog">Открыть каталог <ArrowRight className="h-4 w-4" /></Link></Button>
+              <Button variant="secondary" className="h-11 gap-1.5"><Sparkles className="h-4 w-4" /> Спросить со-пилота</Button>
+            </div>
           </div>
 
-          <div className="mono mt-8 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-            <span><span className="font-semibold text-foreground">{ru(total)}+</span> <span className="text-muted-foreground">позиций</span></span>
-            <span><span className="font-semibold text-foreground">{vendors.length}</span> <span className="text-muted-foreground">вендоров протестировано</span></span>
-            <span><span className="font-semibold text-success">−68%</span> <span className="text-muted-foreground">к OEM в среднем</span></span>
-          </div>
+          <ExpressPicker vendors={vendors} summary={summary} />
         </div>
       </section>
 
@@ -104,7 +164,7 @@ export default async function Home() {
         </section>
 
         {/* готовые решения */}
-        <section className="py-2">
+        <section id="solutions" className="scroll-mt-24 py-2">
           <h2 className="mb-5 text-xl font-semibold tracking-tight">Готовые решения</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {SOLUTIONS.map((s) => (
@@ -173,6 +233,12 @@ export default async function Home() {
       </section>
 
       <SiteFooter />
+
+      {/* плавающий со-пилот */}
+      <button className="fixed bottom-5 right-5 z-40 flex h-12 items-center gap-2 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground shadow-lg hover:bg-primary-hover">
+        <Sparkles className="h-5 w-5" />
+        <span className="hidden sm:inline">Со-пилот</span>
+      </button>
     </>
   );
 }
