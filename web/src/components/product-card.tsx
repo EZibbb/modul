@@ -35,12 +35,12 @@ export function ProductCard({ p }: { p: ProductCardData }) {
   ].filter(Boolean);
 
   return (
-    <div className="group lift-hover flex flex-col rounded-lg border border-border bg-card shadow-sm">
+    <div className="group lift-hover relative flex flex-col rounded-lg border border-border bg-card shadow-sm">
       {/* арт-плейсхолдер по форм-фактору (W04 — реальные SVG позже) */}
       <div className="relative flex h-32 items-center justify-center overflow-hidden rounded-t-lg bg-gradient-to-br from-muted to-subtle">
         <ModuleArt formFactor={p.formFactor} className="h-24 w-[80%] transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none" />
         <span className="mono absolute bottom-2 left-2 rounded bg-card/80 px-1.5 py-0.5 text-2xs text-muted-foreground">{p.formFactor}</span>
-        <div className="absolute left-2 top-2">
+        <div className="absolute left-2 top-2 z-10">
           <AddToCompare item={p} iconOnly size="icon" variant="outline" className="h-7 w-7 bg-card/80" />
         </div>
         <div className="absolute right-2 top-2">
@@ -56,7 +56,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
 
       <div className="flex flex-1 flex-col gap-2 p-4">
         <div className="flex items-center gap-2">
-          <Link href={`/product/${p.sku}`} className="mono text-sm font-medium text-primary hover:underline">
+          <Link href={`/product/${p.sku}`} className="mono text-sm font-medium text-primary after:absolute after:inset-0 after:content-[''] hover:underline">
             {p.sku}
           </Link>
           {p.domSupport && <span className="mono text-2xs rounded bg-muted px-1 py-0.5 text-muted-foreground">DOM</span>}
@@ -78,7 +78,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
               <div className="text-2xs text-success">−{savings}% к OEM</div>
             )}
           </div>
-          <AddToSpec item={{ sku: p.sku, name: p.name, priceBase: p.priceBase, pricePartner: p.pricePartner, oemPrice: p.oemPrice }} />
+          <span className="relative z-10"><AddToSpec item={{ sku: p.sku, name: p.name, priceBase: p.priceBase, pricePartner: p.pricePartner, oemPrice: p.oemPrice }} /></span>
         </div>
       </div>
     </div>

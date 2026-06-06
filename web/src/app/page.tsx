@@ -4,7 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CopilotButton } from "@/components/copilot-button";
 import { ExpressPicker } from "./_components/express-picker";
-import { ModuleArt } from "@/components/module-art";
+import { CategoryGlyph } from "@/components/module-art";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getCategoryTree, listProducts } from "@/lib/catalog";
@@ -155,9 +155,7 @@ export default async function Home() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {tiles.map((c) => (
               <Link key={c.id} href={`/catalog?cat=${c.slug}`} className="group lift-hover rounded-lg border border-border bg-card p-4 shadow-sm">
-                <div className="flex h-16 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-muted to-subtle">
-                  <ModuleArt formFactor={c.formFactor} category={c.slug} className="h-10 w-3/4 transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none" />
-                </div>
+                <CategoryGlyph slug={c.slug} formFactor={c.formFactor} className="h-16 transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none" />
                 <div className="mt-3 text-sm font-medium">{c.name}</div>
                 <div className="mono text-2xs text-muted-foreground">{c.productCount} позиций</div>
               </Link>
