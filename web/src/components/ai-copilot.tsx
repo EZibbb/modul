@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Sparkles, Send, ArrowRight } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -122,7 +124,9 @@ export function AiCopilot() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <div className="max-w-[92%] rounded-2xl rounded-bl-sm bg-muted px-3 py-2 text-sm">{m.text}</div>
+                  <div className="max-w-[92%] rounded-2xl rounded-bl-sm bg-muted px-3 py-2 text-sm leading-relaxed [&>*+*]:mt-2 [&_strong]:font-semibold [&_ul]:ml-1 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:ml-1 [&_ol]:list-decimal [&_ol]:pl-4 [&_li]:mt-0.5 [&_a]:text-primary [&_a]:underline [&_code]:rounded [&_code]:bg-background/60 [&_code]:px-1 [&_code]:text-2xs [&_table]:my-1 [&_table]:w-full [&_table]:border-collapse [&_th]:border-b [&_th]:border-border [&_th]:py-1 [&_th]:text-left [&_th]:font-medium [&_td]:border-b [&_td]:border-border/40 [&_td]:py-1 [&_td]:pr-2">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{m.text}</ReactMarkdown>
+                  </div>
                   {m.products?.map((p) => <ProductMini key={p.sku} p={p} />)}
                   {m.cta && (
                     <Button asChild variant="outline" size="sm" className="gap-1.5"><Link href={m.cta.href} onClick={closeAi}>{m.cta.label} <ArrowRight className="h-3.5 w-3.5" /></Link></Button>
