@@ -293,46 +293,71 @@ async function main() {
     return { productId: p.id, qty, priceAt: p.pricePartner ?? p.priceBase, firmware: "Cisco" };
   };
 
-  const mkCompany = async (name: string, inn: string, tier: string) =>
-    prisma.company.create({ data: { name, inn, priceTier: tier, requisites: { inn, kpp: "770101001", address: "Москва" } } });
-
-  const mkOrder = async (
-    companyId: string,
-    userId: string,
-    type: string,
-    status: string,
-    date: string,
-    items: { productId: string; qty: number; priceAt: number; firmware: string }[],
+  const mkCompany = async (
+    name: string, inn: string, tier: string,
+    manager: { name: string; phone: string; email: string }, discountPct: number,
   ) =>
-    prisma.order.create({
-      data: { companyId, userId, type, status, createdAt: new Date(date), items: { create: items } },
+    prisma.company.create({
+      data: { name, inn, priceTier: tier, requisites: { inn, kpp: "770101001", address: "г. Москва, ул. Связистов, 12", manager, discountPct } },
     });
 
-  // Компания 1 — партнёр с богатой историей
-  const co1 = await mkCompany("ООО «ТелекомСтрой»", "7701234567", "partner");
+  type OrderSpec = { no: number; type: string; status: string; date: string; items: [string, number][] };
+  const mkOrders = async (companyId: string, userId: string, specs: OrderSpec[]) => {
+    for (const o of specs) {
+      await prisma.order.create({
+        data: {
+          companyId, userId, type: o.type, status: o.status,
+          customerJson: { no: o.no },
+          createdAt: new Date(o.date),
+          items: { create: o.items.map(([sku, qty]) => line(sku, qty)) },
+        },
+      });
+    }
+  };
+
+  // Компания 1 — партнёр с богатой историей (как в дизайне)
+  const co1 = await mkCompany("ООО «ИнтегроСети»", "7701234567", "partner", { name: "Андрей Соколов", phone: "+7 495 120-40-91", email: "sokolov@modul-comp.ru" }, 15);
   const u1 = await prisma.user.create({
-    data: { email: "ivan@telecomstroy.ru", passwordHash: "demo", name: "Иван Петров", role: "admin", companyId: co1.id },
+    data: { email: "sokolov@integroseti.ru", passwordHash: "demo", name: "Андрей Соколов", role: "admin", companyId: co1.id },
   });
-  await mkOrder(co1.id, u1.id, "order", "delivered", "2026-02-12", [line("MC-SFP10G-LR", 24), line("MC-SFP10G-DAC3", 12)]);
-  await mkOrder(co1.id, u1.id, "order", "delivered", "2026-03-20", [line("MC-QSFP100G-LR4", 6), line("MC-QSFP100G-DAC3", 8)]);
-  await mkOrder(co1.id, u1.id, "order", "shipped", "2026-05-28", [line("MC-SFP25G-LR", 48), line("MC-SFP25G-DAC1", 20)]);
-  await mkOrder(co1.id, u1.id, "quote", "quote_pending", "2026-06-02", [line("MC-QSFPDD400G-FR4", 4), line("MC-QSFP100G-SR4", 16)]);
-  await mkOrder(co1.id, u1.id, "quote", "quote_pending", "2026-06-04", [line("MC-SFP10G-ER", 8)]);
+  await mkOrders(co1.id, u1.id, [
+    { no: 24850, type: "quote", status: "quote_pending", date: "2026-06-04", items: [["MC-QSFPDD400G-FR4", 4], ["MC-QSFP100G-SR4", 16]] },
+    { no: 24845, type: "quote", status: "quote_pending", date: "2026-06-03", items: [["MC-SFP10G-ER", 8]] },
+    { no: 24830, type: "quote", status: "quote_sent", date: "2026-06-01", items: [["MC-QSFP100G-LR4", 10]] },
+    { no: 24816, type: "order", status: "shipped", date: "2026-06-02", items: [["MC-SFP10G-LR", 24], ["MC-SFP10G-DAC3", 12]] },
+    { no: 24790, type: "order", status: "delivered", date: "2026-05-28", items: [["MC-QSFP100G-LR4", 6]] },
+    { no: 24735, type: "order", status: "delivered", date: "2026-05-19", items: [["MC-SFP25G-LR", 16], ["MC-PC-LCLC-SM-3", 32]] },
+    { no: 24698, type: "order", status: "delivered", date: "2026-05-11", items: [["MC-SFP10G-SR", 48]] },
+    { no: 24640, type: "order", status: "delivered", date: "2026-04-24", items: [["MC-QSFP100G-SR4", 12], ["MC-QSFP100G-DAC3", 8]] },
+    { no: 24588, type: "order", status: "delivered", date: "2026-04-02", items: [["MC-SFP10G-LR", 40]] },
+    { no: 24521, type: "order", status: "delivered", date: "2026-03-14", items: [["MC-SFP25G-DAC3", 24], ["MC-SFP25G-SR", 16]] },
+    { no: 24477, type: "order", status: "delivered", date: "2026-02-26", items: [["MC-QSFP40G-LR4", 8]] },
+    { no: 24410, type: "order", status: "delivered", date: "2026-01-30", items: [["MC-SFP10G-ER", 6], ["MC-SFP10G-LR", 30]] },
+    { no: 24355, type: "order", status: "delivered", date: "2026-01-16", items: [["MC-SFP1G-LX", 50]] },
+  ]);
   await prisma.favorite.createMany({
-    data: ["MC-QSFP100G-LR4", "MC-SFP25G-LR", "MC-SFP10G-LR", "MC-CWDM-MUX8"].map((sku) => ({ userId: u1.id, productId: priceMap.get(sku)!.id })),
+    data: ["MC-SFP10G-LR", "MC-QSFP100G-LR4", "MC-SFP25G-LR", "MC-QSFP100G-DAC3", "MC-SFP10G-BX-D"].map((sku) => ({ userId: u1.id, productId: priceMap.get(sku)!.id })),
   });
-  await prisma.savedConfig.create({ data: { userId: u1.id, type: "compat", code: "TPL-CISCO-9300", payload: { note: "Комплект для Cisco Catalyst 9300" } } });
-  await prisma.savedConfig.create({ data: { userId: u1.id, type: "compare", code: "TPL-100G-LR4", payload: { note: "Сравнение 100G LR4 вариантов" } } });
+  await prisma.savedConfig.createMany({
+    data: [
+      { userId: u1.id, type: "compat", code: "TPL-TOR-25-100G", payload: { name: "Стойка ToR 25/100G", positions: 8, total: 186400 } },
+      { userId: u1.id, type: "line", code: "TPL-DWDM-100G", payload: { name: "DWDM-магистраль 100G", positions: 5, total: 312000 } },
+      { userId: u1.id, type: "compat", code: "TPL-CAMPUS-1-10G", payload: { name: "Кампус доступ 1/10G", positions: 6, total: 58200 } },
+    ],
+  });
 
   // Компания 2 — базовый тариф
-  const co2 = await mkCompany("АО «ДатаЦентр Сервис»", "7707654321", "base");
+  const co2 = await mkCompany("АО «ДатаЦентр Сервис»", "7707654321", "base", { name: "Мария Сидорова", phone: "+7 495 120-40-92", email: "sidorova@modul-comp.ru" }, 0);
   const u2 = await prisma.user.create({
     data: { email: "admin@dc-service.ru", passwordHash: "demo", name: "Мария Сидорова", role: "admin", companyId: co2.id },
   });
-  await mkOrder(co2.id, u2.id, "order", "delivered", "2026-04-15", [line("MC-QSFP100G-SR4", 12), line("MC-QSFP100G-AOC7", 6)]);
-  await mkOrder(co2.id, u2.id, "quote", "quote_pending", "2026-06-01", [line("MC-QSFPDD400G-DR4", 8)]);
+  await mkOrders(co2.id, u2.id, [
+    { no: 24812, type: "order", status: "delivered", date: "2026-04-15", items: [["MC-QSFP100G-SR4", 12], ["MC-QSFP100G-AOC7", 6]] },
+    { no: 24770, type: "order", status: "delivered", date: "2026-03-22", items: [["MC-SFP10G-SR", 24]] },
+    { no: 24851, type: "quote", status: "quote_pending", date: "2026-06-01", items: [["MC-QSFPDD400G-DR4", 8]] },
+  ]);
   await prisma.favorite.createMany({
-    data: ["MC-QSFP100G-SR4", "MC-QSFPDD400G-DR4"].map((sku) => ({ userId: u2.id, productId: priceMap.get(sku)!.id })),
+    data: ["MC-QSFP100G-SR4", "MC-QSFPDD400G-DR4", "MC-SFP10G-SR"].map((sku) => ({ userId: u2.id, productId: priceMap.get(sku)!.id })),
   });
 
   const counts = {
