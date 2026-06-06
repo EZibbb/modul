@@ -63,7 +63,11 @@
   - [x] 2.3.1 Токены в web/: `tokens.css`+`base.css`→`globals.css` (Tailwind 4 `@theme`), шрифты Inter+IBM Plex Mono — проверено build+gstack
   - [x] 2.3.2 shadcn/ui + примитивы button/card/badge/tabs/dialog/sheet — на наших токенах, проверено build+gstack (command — позже с ⌘K в 2.3.3)
   - [ ] 2.3.3 Тёмная тема (N2) + анти-FOUC (W11), ⌘K-каркас (N1)
-- [ ] 2.4 P0-экраны: каталог (A) → карточка (C) → совместимость (B) → главная (I)
+- [/] 2.4 P0-экраны: каталог (A) → карточка (C) → совместимость (B) → главная (I)
+  - [x] 2.4.1 Каталог `/catalog`: фасет-сайдбар (счётчики, дизъюнктивные), сорт, чипы, пагинация, URL-состояние (W06), SiteHeader/ProductCard. Проверено build+gstack (light/dark, фильтр)
+  - [ ] 2.4.2 Карточка товара `/product/[sku]` (C)
+  - [ ] 2.4.3 Подбор совместимости `/compatibility` (B)
+  - [ ] 2.4.4 Главная `/` (I)
 - [ ] 2.5 ИИ-слой L (Claude API + tool use)
 - [ ] 2.6 Деплой Vercel + Neon, прогон демо-сценариев
 

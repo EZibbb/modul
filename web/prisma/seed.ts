@@ -11,7 +11,7 @@ const prisma = new PrismaClient({ adapter });
 
 // — ценовые помощники (детерминированно) —
 const pp = (b: number) => Math.round((b * 0.87) / 10) * 10; // партнёрская
-const oem = (b: number, m: number) => Math.round((b * m) / 100) * 100; // OEM-аналог
+const oem = (b: number, m: number) => Math.round((b * m) / 10000) * 100; // OEM-аналог: base × (m/100), округл. до сотен
 
 const FW = ["Generic", "Cisco", "Juniper", "Huawei", "Arista", "MikroTik"];
 const CERT = ["CE", "FCC", "RoHS", "MSA"];

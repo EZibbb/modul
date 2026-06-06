@@ -1,6 +1,9 @@
 // Сервис каталога (модуль A): фасетный поиск со счётчиками, категории, автодополнение.
 import { prisma } from "@/lib/db";
 import { Prisma } from "@/generated/prisma/client";
+import { TEMP_LABELS } from "@/lib/catalog-params";
+
+export { TEMP_LABELS };
 
 export type CatalogFilters = {
   categorySlug?: string;
@@ -20,13 +23,6 @@ export type CatalogFilters = {
 export type CatalogSort = "popular" | "price-asc" | "price-desc" | "speed-desc" | "reach-desc";
 
 type ExcludeKey = "speedGbps" | "mediaType" | "connector" | "wavelengthNm" | "tempRange" | "domSupport" | "reach";
-
-// Лейблы фасетов (человекочитаемо)
-export const TEMP_LABELS: Record<string, string> = {
-  com: "0…+70 °C (коммерческий)",
-  ext: "−20…+85 °C (расширенный)",
-  ind: "−40…+85 °C (индустриальный)",
-};
 
 function buildWhere(f: CatalogFilters, exclude?: ExcludeKey): Prisma.ProductWhereInput {
   const and: Prisma.ProductWhereInput[] = [];
