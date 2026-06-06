@@ -230,9 +230,9 @@ body {
 .hero-glow { position:absolute; border-radius:9999px; filter:blur(90px); pointer-events:none; }
 .fiber-line { position:absolute; left:0; right:0; height:1px;
   background:linear-gradient(90deg, transparent, rgba(120,180,235,.16) 18%, rgba(120,180,235,.16) 82%, transparent); }
-.pulse { position:absolute; top:50%; height:2px; width:90px; transform:translateY(-50%); border-radius:9999px;
+.pulse { position:absolute; top:50%; left:-110px; height:2px; width:90px; transform:translateY(-50%); border-radius:9999px;
   background:linear-gradient(90deg, transparent, #38bdf8, #22d3ee, transparent); box-shadow:0 0 14px 1px rgba(34,211,238,.7);
-  animation:travel var(--d,7s) linear var(--delay,0s) infinite; }
+  animation:travel var(--d,7s) linear var(--delay,0s) infinite backwards; }
 @keyframes travel { from{ left:-110px; } to{ left:100%; } }
 .glass { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10); backdrop-filter:blur(8px); }
 .glass-field { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); }
