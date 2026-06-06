@@ -14,27 +14,19 @@ const plural = (n: number) => (n % 10 === 1 && n % 100 !== 11 ? "модуль" :
 
 export function ExpressPicker({ vendors, summary }: { vendors: VendorCascade; summary: Summary }) {
   const router = useRouter();
-  const [vendorId, setVendorId] = useState(vendors[0]?.id ?? "");
-  const vendor = vendors.find((v) => v.id === vendorId) ?? vendors[0];
-  const [seriesId, setSeriesId] = useState(vendor?.series[0]?.id ?? "");
-  const series = vendor?.series.find((s) => s.id === seriesId) ?? vendor?.series[0];
-  const [modelId, setModelId] = useState(series?.models[0]?.id ?? "");
+  // Пусто при открытии — пользователь выбирает сам (placeholder).
+  const [vendorId, setVendorId] = useState("");
+  const [seriesId, setSeriesId] = useState("");
+  const [modelId, setModelId] = useState("");
 
+  const vendor = vendors.find((v) => v.id === vendorId);
+  const series = vendor?.series.find((s) => s.id === seriesId);
   const seriesList = vendor?.series ?? [];
   const models = useMemo(() => series?.models ?? [], [series]);
-  const preview = summary[modelId];
+  const preview = modelId ? summary[modelId] : undefined;
 
-  const onVendor = (id: string) => {
-    setVendorId(id);
-    const v = vendors.find((x) => x.id === id);
-    const s = v?.series[0];
-    setSeriesId(s?.id ?? "");
-    setModelId(s?.models[0]?.id ?? "");
-  };
-  const onSeries = (id: string) => {
-    setSeriesId(id);
-    setModelId(vendor?.series.find((s) => s.id === id)?.models[0]?.id ?? "");
-  };
+  const onVendor = (id: string) => { setVendorId(id); setSeriesId(""); setModelId(""); };
+  const onSeries = (id: string) => { setSeriesId(id); setModelId(""); };
 
   const trigCls = "glass-field h-11 w-full";
   const StepNum = ({ n, on }: { n: number; on?: boolean }) => (
@@ -53,21 +45,21 @@ export function ExpressPicker({ vendors, summary }: { vendors: VendorCascade; su
         <label className="block">
           <span className="mb-1 flex items-center gap-2 text-2xs text-muted-foreground"><StepNum n={1} /> Вендор оборудования</span>
           <Select value={vendorId} onValueChange={onVendor}>
-            <SelectTrigger className={trigCls}><SelectValue /></SelectTrigger>
+            <SelectTrigger className={trigCls}><SelectValue placeholder="Выберите вендора" /></SelectTrigger>
             <SelectContent>{vendors.map((v) => <SelectItem key={v.id} value={v.id}>{v.name}</SelectItem>)}</SelectContent>
           </Select>
         </label>
         <label className="block">
           <span className="mb-1 flex items-center gap-2 text-2xs text-muted-foreground"><StepNum n={2} on /> Серия / платформа</span>
-          <Select value={seriesId} onValueChange={onSeries}>
-            <SelectTrigger className={trigCls}><SelectValue /></SelectTrigger>
+          <Select value={seriesId} onValueChange={onSeries} disabled={!vendorId}>
+            <SelectTrigger className={trigCls}><SelectValue placeholder="Выберите серию" /></SelectTrigger>
             <SelectContent>{seriesList.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}</SelectContent>
           </Select>
         </label>
         <label className="block">
           <span className="mb-1 flex items-center gap-2 text-2xs text-muted-foreground"><StepNum n={3} /> Модель</span>
-          <Select value={modelId} onValueChange={setModelId}>
-            <SelectTrigger className={`mono ${trigCls}`}><SelectValue /></SelectTrigger>
+          <Select value={modelId} onValueChange={setModelId} disabled={!seriesId}>
+            <SelectTrigger className={`mono ${trigCls}`}><SelectValue placeholder="Выберите модель" /></SelectTrigger>
             <SelectContent>{models.map((m) => <SelectItem key={m.id} value={m.id} className="mono">{m.name}</SelectItem>)}</SelectContent>
           </Select>
         </label>
@@ -90,7 +82,7 @@ export function ExpressPicker({ vendors, summary }: { vendors: VendorCascade; su
         </div>
       )}
 
-      <Button onClick={() => modelId && router.push(`/compatibility?model=${modelId}`)} className="mt-4 h-11 w-full gap-1.5">
+      <Button onClick={() => modelId && router.push(`/compatibility?model=${modelId}`)} disabled={!modelId} className="mt-4 h-11 w-full gap-1.5">
         Подобрать совместимые модули <ArrowRight className="h-4 w-4" />
       </Button>
       <p className="mt-2 flex items-center justify-center gap-1.5 text-2xs text-muted-foreground">
