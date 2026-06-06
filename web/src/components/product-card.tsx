@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { AddToSpec } from "@/components/add-to-spec";
+import { AddToCompare } from "@/components/add-to-compare";
 
 export type ProductCardData = {
   sku: string;
   name: string;
   formFactor: string;
+  speedGbps: number | null;
   mediaType: string | null;
   wavelengthNm: number | null;
   reachM: number | null;
@@ -37,6 +38,9 @@ export function ProductCard({ p }: { p: ProductCardData }) {
       {/* арт-плейсхолдер по форм-фактору (W04 — реальные SVG позже) */}
       <div className="relative flex h-32 items-center justify-center rounded-t-lg bg-gradient-to-br from-muted to-subtle">
         <span className="mono text-2xs rounded bg-card/80 px-2 py-1 text-muted-foreground">{p.formFactor}</span>
+        <div className="absolute left-2 top-2">
+          <AddToCompare item={p} iconOnly size="icon" variant="outline" className="h-7 w-7 bg-card/80" />
+        </div>
         <div className="absolute right-2 top-2">
           {p.stockStatus === "in" ? (
             <Badge variant="outline" className="border-success/40 bg-success-muted text-success">в наличии</Badge>
@@ -72,9 +76,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
               <div className="text-2xs text-success">−{savings}% к OEM</div>
             )}
           </div>
-          <Button size="sm" className="gap-1">
-            <Plus className="h-3.5 w-3.5" /> В спецификацию
-          </Button>
+          <AddToSpec item={{ sku: p.sku, name: p.name, priceBase: p.priceBase, pricePartner: p.pricePartner, oemPrice: p.oemPrice }} />
         </div>
       </div>
     </div>

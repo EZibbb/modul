@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Search, Sparkles, ClipboardList, User, GitCompare } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useStore } from "@/lib/store";
 
 const NAV = [
   { href: "/catalog", label: "Каталог" },
@@ -16,6 +17,7 @@ const NAV = [
 export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
   const router = useRouter();
   const [q, setQ] = useState(initialQuery);
+  const { cartCount, compare } = useStore();
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -57,14 +59,14 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
           <Button variant="secondary" size="sm" className="hidden gap-1.5 lg:inline-flex">
             <Sparkles className="h-4 w-4" /> ИИ-консультант
           </Button>
-          <button className="relative hidden h-9 items-center gap-1.5 rounded-md border border-border px-3 text-sm hover:bg-accent sm:inline-flex">
+          <Link href="/compare" className="relative hidden h-9 items-center gap-1.5 rounded-md border border-border px-3 text-sm hover:bg-accent sm:inline-flex">
             <GitCompare className="h-4 w-4" /> Сравнение
-            <span className="mono rounded bg-muted px-1.5 text-2xs text-muted-foreground">2</span>
-          </button>
-          <button className="relative inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary-hover">
+            {compare.length > 0 && <span className="mono rounded bg-muted px-1.5 text-2xs text-muted-foreground">{compare.length}</span>}
+          </Link>
+          <Link href="/cart" className="relative inline-flex h-9 items-center gap-1.5 rounded-md bg-primary px-3 text-sm font-medium text-primary-foreground hover:bg-primary-hover">
             <ClipboardList className="h-4 w-4" /> <span className="hidden sm:inline">Спецификация</span>
-            <span className="mono rounded bg-primary-foreground/20 px-1.5 text-2xs">5</span>
-          </button>
+            {cartCount > 0 && <span className="mono rounded bg-primary-foreground/20 px-1.5 text-2xs">{cartCount}</span>}
+          </Link>
           <Button asChild variant="outline" size="icon" aria-label="Личный кабинет">
             <Link href="/account"><User className="h-4 w-4" /></Link>
           </Button>

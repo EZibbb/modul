@@ -1,19 +1,30 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Check, Plus, Trash2, ArrowRight } from "lucide-react";
 import type { CompatByModel, CompatModule } from "@/lib/compat";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useStore } from "@/lib/store";
 
 const ru = (n: number) => n.toLocaleString("ru-RU");
 const price = (m: CompatModule) => m.pricePartner ?? m.priceBase;
 
 export function CompatResult({ compat }: { compat: CompatByModel }) {
+  const router = useRouter();
+  const { addToCart } = useStore();
   const [kit, setKit] = useState<Record<string, CompatModule>>({});
   const items = Object.values(kit);
   const total = items.reduce((s, m) => s + price(m), 0);
+
+  const addKit = () => {
+    items.forEach((m) =>
+      addToCart({ sku: m.sku, name: m.name, priceBase: m.priceBase, pricePartner: m.pricePartner, oemPrice: null }),
+    );
+    router.push("/cart");
+  };
 
   const toggle = (m: CompatModule) =>
     setKit((k) => {
@@ -109,7 +120,7 @@ export function CompatResult({ compat }: { compat: CompatByModel }) {
             <button onClick={() => setKit({})} className="inline-flex items-center gap-1 text-2xs text-muted-foreground hover:text-foreground">
               <Trash2 className="h-3.5 w-3.5" /> очистить
             </button>
-            <Button className="ml-auto gap-1.5">
+            <Button className="ml-auto gap-1.5" onClick={addKit}>
               Добавить комплект в спецификацию <ArrowRight className="h-4 w-4" />
             </Button>
           </div>

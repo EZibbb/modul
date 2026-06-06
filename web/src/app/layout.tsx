@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { StoreProvider } from "@/lib/store";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,7 +41,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
       <body className="min-h-full bg-background font-sans text-foreground">
-        {children}
+        <StoreProvider>{children}</StoreProvider>
       </body>
     </html>
   );

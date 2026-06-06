@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, Check, Plus, GitCompare, Heart, FileText } from "lucide-react";
+import { ChevronRight, Check, Heart, FileText } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { ProductCard, type ProductCardData } from "@/components/product-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { AddToSpec } from "@/components/add-to-spec";
+import { AddToCompare } from "@/components/add-to-compare";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { getProductBySku, getRelatedProducts } from "@/lib/catalog";
 import { getCompatForProduct } from "@/lib/compat";
@@ -138,8 +140,20 @@ export default async function ProductPage({ params }: { params: Promise<{ sku: s
               )}
 
               <div className="mt-4 grid grid-cols-2 gap-2">
-                <Button className="col-span-2 gap-1.5"><Plus className="h-4 w-4" /> В спецификацию</Button>
-                <Button variant="outline" className="gap-1.5"><GitCompare className="h-4 w-4" /> Сравнить</Button>
+                <AddToSpec
+                  className="col-span-2 h-10"
+                  size="lg"
+                  item={{ sku: product.sku, name: product.name, priceBase: product.priceBase, pricePartner: product.pricePartner, oemPrice: product.oemPrice }}
+                />
+                <AddToCompare
+                  variant="outline"
+                  item={{
+                    sku: product.sku, name: product.name, formFactor: product.formFactor, speedGbps: product.speedGbps,
+                    mediaType: product.mediaType, reachM: product.reachM, wavelengthNm: product.wavelengthNm,
+                    connector: product.connector, tempRange: product.tempRange, domSupport: product.domSupport,
+                    priceBase: product.priceBase, oemPrice: product.oemPrice,
+                  }}
+                />
                 <Button variant="outline" className="gap-1.5"><Heart className="h-4 w-4" /> В избранное</Button>
               </div>
             </div>
