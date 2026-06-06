@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Search, Sparkles, ClipboardList } from "lucide-react";
+import { Search, Sparkles, ClipboardList, User } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 
@@ -58,6 +58,9 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
           </Button>
           <Button variant="outline" size="icon" aria-label="Спецификация">
             <ClipboardList className="h-4 w-4" />
+          </Button>
+          <Button asChild variant="outline" size="icon" aria-label="Личный кабинет">
+            <Link href="/account"><User className="h-4 w-4" /></Link>
           </Button>
           <ThemeToggle />
         </div>

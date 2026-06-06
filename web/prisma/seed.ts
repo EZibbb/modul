@@ -18,6 +18,12 @@ const CERT = ["CE", "FCC", "RoHS", "MSA"];
 
 async function main() {
   // — чистим (идемпотентность) —
+  await prisma.favorite.deleteMany();
+  await prisma.savedConfig.deleteMany();
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
+  await prisma.user.deleteMany();
+  await prisma.company.deleteMany();
   await prisma.compatibility.deleteMany();
   await prisma.portGroup.deleteMany();
   await prisma.deviceModel.deleteMany();
@@ -277,6 +283,58 @@ async function main() {
   }
   await prisma.compatibility.createMany({ data: compat as never });
 
+  // — демо-аккаунты B2B (W14): компании, пользователи, история заказов, избранное, шаблоны —
+  const priceMap = new Map(
+    (await prisma.product.findMany({ select: { sku: true, id: true, priceBase: true, pricePartner: true, oemPrice: true } }))
+      .map((p) => [p.sku, p]),
+  );
+  const line = (sku: string, qty: number) => {
+    const p = priceMap.get(sku)!;
+    return { productId: p.id, qty, priceAt: p.pricePartner ?? p.priceBase, firmware: "Cisco" };
+  };
+
+  const mkCompany = async (name: string, inn: string, tier: string) =>
+    prisma.company.create({ data: { name, inn, priceTier: tier, requisites: { inn, kpp: "770101001", address: "Москва" } } });
+
+  const mkOrder = async (
+    companyId: string,
+    userId: string,
+    type: string,
+    status: string,
+    date: string,
+    items: { productId: string; qty: number; priceAt: number; firmware: string }[],
+  ) =>
+    prisma.order.create({
+      data: { companyId, userId, type, status, createdAt: new Date(date), items: { create: items } },
+    });
+
+  // Компания 1 — партнёр с богатой историей
+  const co1 = await mkCompany("ООО «ТелекомСтрой»", "7701234567", "partner");
+  const u1 = await prisma.user.create({
+    data: { email: "ivan@telecomstroy.ru", passwordHash: "demo", name: "Иван Петров", role: "admin", companyId: co1.id },
+  });
+  await mkOrder(co1.id, u1.id, "order", "delivered", "2026-02-12", [line("MC-SFP10G-LR", 24), line("MC-SFP10G-DAC3", 12)]);
+  await mkOrder(co1.id, u1.id, "order", "delivered", "2026-03-20", [line("MC-QSFP100G-LR4", 6), line("MC-QSFP100G-DAC3", 8)]);
+  await mkOrder(co1.id, u1.id, "order", "shipped", "2026-05-28", [line("MC-SFP25G-LR", 48), line("MC-SFP25G-DAC1", 20)]);
+  await mkOrder(co1.id, u1.id, "quote", "quote_pending", "2026-06-02", [line("MC-QSFPDD400G-FR4", 4), line("MC-QSFP100G-SR4", 16)]);
+  await mkOrder(co1.id, u1.id, "quote", "quote_pending", "2026-06-04", [line("MC-SFP10G-ER", 8)]);
+  await prisma.favorite.createMany({
+    data: ["MC-QSFP100G-LR4", "MC-SFP25G-LR", "MC-SFP10G-LR", "MC-CWDM-MUX8"].map((sku) => ({ userId: u1.id, productId: priceMap.get(sku)!.id })),
+  });
+  await prisma.savedConfig.create({ data: { userId: u1.id, type: "compat", code: "TPL-CISCO-9300", payload: { note: "Комплект для Cisco Catalyst 9300" } } });
+  await prisma.savedConfig.create({ data: { userId: u1.id, type: "compare", code: "TPL-100G-LR4", payload: { note: "Сравнение 100G LR4 вариантов" } } });
+
+  // Компания 2 — базовый тариф
+  const co2 = await mkCompany("АО «ДатаЦентр Сервис»", "7707654321", "base");
+  const u2 = await prisma.user.create({
+    data: { email: "admin@dc-service.ru", passwordHash: "demo", name: "Мария Сидорова", role: "admin", companyId: co2.id },
+  });
+  await mkOrder(co2.id, u2.id, "order", "delivered", "2026-04-15", [line("MC-QSFP100G-SR4", 12), line("MC-QSFP100G-AOC7", 6)]);
+  await mkOrder(co2.id, u2.id, "quote", "quote_pending", "2026-06-01", [line("MC-QSFPDD400G-DR4", 8)]);
+  await prisma.favorite.createMany({
+    data: ["MC-QSFP100G-SR4", "MC-QSFPDD400G-DR4"].map((sku) => ({ userId: u2.id, productId: priceMap.get(sku)!.id })),
+  });
+
   const counts = {
     categories: await prisma.category.count(),
     attributes: await prisma.attributeDefinition.count(),
@@ -285,6 +343,9 @@ async function main() {
     deviceModels: await prisma.deviceModel.count(),
     portGroups: await prisma.portGroup.count(),
     compatibility: await prisma.compatibility.count(),
+    companies: await prisma.company.count(),
+    orders: await prisma.order.count(),
+    favorites: await prisma.favorite.count(),
   };
   console.log("Seed OK:", JSON.stringify(counts));
 }
