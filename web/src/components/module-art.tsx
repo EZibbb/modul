@@ -124,16 +124,17 @@ function Wdm() {
 /* ============================ CategoryGlyph (плитки категорий) ============================ */
 // Цвет + число каналов делают каждую категорию различимой; читается и на тёмной теме.
 
+// Приглушённая инженерная палитра — различимая, но без неона.
 const CAT_ACCENT: Record<string, string> = {
-  sfp: "#38bdf8",
-  "sfp-plus": "#22d3ee",
-  sfp28: "#2dd4bf",
-  "qsfp-plus": "#818cf8",
-  qsfp28: "#60a5fa",
-  "qsfp-dd": "#a78bfa",
-  "dac-aoc": "#fb923c",
-  patch: "#34d399",
-  wdm: "#c084fc",
+  sfp: "#6f93b8",
+  "sfp-plus": "#5097a6",
+  sfp28: "#5a9e8d",
+  "qsfp-plus": "#7d83bb",
+  qsfp28: "#5f84bd",
+  "qsfp-dd": "#9081bd",
+  "dac-aoc": "#bd8a5e",
+  patch: "#5ca383",
+  wdm: "#977fb6",
 };
 
 export function CategoryGlyph({ slug, formFactor, className }: { slug?: string | null; formFactor?: string | null; className?: string }) {
@@ -142,8 +143,8 @@ export function CategoryGlyph({ slug, formFactor, className }: { slug?: string |
   const kind = kindOf(formFactor, s);
   const lanes = lanesOf(formFactor);
   return (
-    <div className={`relative flex items-center justify-center overflow-hidden rounded-md ${className ?? ""}`} style={{ background: `${c}14`, color: c }}>
-      <span aria-hidden className="absolute -right-5 -top-6 h-24 w-24 rounded-full" style={{ background: `${c}33`, filter: "blur(20px)" }} />
+    <div className={`relative flex items-center justify-center overflow-hidden rounded-md ${className ?? ""}`} style={{ background: `${c}10`, color: c }}>
+      <span aria-hidden className="absolute -right-6 -top-7 h-20 w-20 rounded-full" style={{ background: `${c}14`, filter: "blur(20px)" }} />
       <svg viewBox="0 0 200 110" fill="none" className="relative h-12 w-3/4" aria-hidden role="img">
         {kind === "cable" && <GlyphCable />}
         {kind === "patch" && <GlyphPatch />}
@@ -204,9 +205,9 @@ function GlyphWdm() {
         <line x1="70" y1="55" x2="96" y2="55" />
       </g>
       <g strokeWidth={3.4}>
-        <line x1="126" y1="55" x2="186" y2="36" stroke="#22d3ee" />
-        <line x1="126" y1="55" x2="190" y2="55" stroke="#60a5fa" />
-        <line x1="126" y1="55" x2="186" y2="74" stroke="#c084fc" />
+        <line x1="126" y1="55" x2="186" y2="36" stroke="#5a9e8d" />
+        <line x1="126" y1="55" x2="190" y2="55" stroke="#5f84bd" />
+        <line x1="126" y1="55" x2="186" y2="74" stroke="#977fb6" />
       </g>
     </g>
   );

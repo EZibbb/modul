@@ -113,7 +113,7 @@ export default async function Home() {
                 <div className="relative flex justify-between">
                   {WL.map((n) => (
                     <div key={n.wl} className="flex flex-col items-center gap-1">
-                      <span className="h-3 w-3 rounded-full bg-cyan shadow-[0_0_16px_3px_rgba(34,211,238,.75)] ring-2 ring-cyan/20" />
+                      <span className="h-2.5 w-2.5 rounded-full bg-cyan shadow-[0_0_8px_1px_rgba(34,211,238,.4)]" />
                       <span className="mono mt-1 text-sm font-medium">{n.wl}</span>
                       <span className="text-2xs uppercase tracking-wider text-muted-foreground">{n.label}</span>
                     </div>
@@ -137,7 +137,7 @@ export default async function Home() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild className="h-11 gap-1.5 bg-gradient-to-r from-primary to-cyan text-white shadow-sm hover:opacity-95"><Link href="/catalog">Открыть каталог <ArrowRight className="h-4 w-4" /></Link></Button>
+              <Button asChild className="h-11 gap-1.5 shadow-sm"><Link href="/catalog">Открыть каталог <ArrowRight className="h-4 w-4" /></Link></Button>
               <CopilotButton className="h-11" />
             </div>
           </div>
