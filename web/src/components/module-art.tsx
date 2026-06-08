@@ -143,7 +143,7 @@ export function CategoryGlyph({ slug, formFactor, className }: { slug?: string |
   const lanes = lanesOf(formFactor);
   return (
     <div className={`relative flex items-center justify-center overflow-hidden rounded-md ${className ?? ""}`} style={{ background: `${c}14`, color: c }}>
-      <span aria-hidden className="absolute -right-6 -top-7 h-20 w-20 rounded-full" style={{ background: `${c}1f`, filter: "blur(18px)" }} />
+      <span aria-hidden className="absolute -right-5 -top-6 h-24 w-24 rounded-full" style={{ background: `${c}33`, filter: "blur(20px)" }} />
       <svg viewBox="0 0 200 110" fill="none" className="relative h-12 w-3/4" aria-hidden role="img">
         {kind === "cable" && <GlyphCable />}
         {kind === "patch" && <GlyphPatch />}

@@ -17,7 +17,7 @@
 - [x] L7 Hero-CTA градиент primary→cyan
 - [x] L8 ⭐ Trust-иконки: tinted кружок-подложка
 - [x] L9 Бейдж «в наличии» насыщеннее (solid dot + tint)
-- [ ] L10 Wavelength-шкала: ярче точки/подписи
+- [x] L10 Wavelength-шкала: ярче точки/подписи
 - [ ] L11 Активный пункт навигации — primary-подсветка
 - [ ] L12 Search-поле: focus-ring primary + тень
 
@@ -36,25 +36,25 @@
 ## 🌙 ТЁМНАЯ
 
 Поверхности/elevation
-- [ ] D1 ⭐ Тиры elevation + hover-поднятие card (10→12% L)
-- [ ] D2 ⭐ Glow при hover карточек (cyan/15)
-- [ ] D3 Border-подсветка cyan на hover
+- [x] D1 ⭐ Тиры elevation + hover-поднятие card (10→12% L)
+- [x] D2 ⭐ Glow при hover карточек (cyan/15)
+- [x] D3 Border-подсветка cyan на hover
 - [ ] D4 Hero glow-пятна сильнее (primary+cyan)
 - [ ] D5 Таблицы: zebra тоньше, hover-row cyan-tint
 - [x] D6 ⭐ Footer dark отделить (card + spectrum)
 
 Акцент
-- [ ] D7 cyan активнее в разделителях/иконках
+- [x] D7 cyan активнее в разделителях/иконках
 - [ ] D8 Primary-кнопки лёгкое свечение
 - [x] D9 Success/warning бейджи ярче
-- [ ] D10 Глифы категорий — внешнее свечение сильнее
-- [ ] D11 Wavelength-точки сильнее glow
-- [ ] D12 spectrum-rule opacity .55→.7
+- [x] D10 Глифы категорий — внешнее свечение сильнее
+- [x] D11 Wavelength-точки сильнее glow
+- [x] D12 spectrum-rule opacity .55→.7
 
 Глубина/текстура
 - [ ] D13 Grid у текста видимее (.07→.10)
 - [ ] D14 Радиальные primary/cyan меш-пятна за секциями
-- [ ] D15 ⭐ Inner top-highlight карточек (1px)
+- [x] D15 ⭐ Inner top-highlight карточек (1px)
 - [ ] D16 Scrim drawer/модалок 50–60%
 
 Иерархия/типографика

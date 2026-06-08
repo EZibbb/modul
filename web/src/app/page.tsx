@@ -113,7 +113,7 @@ export default async function Home() {
                 <div className="relative flex justify-between">
                   {WL.map((n) => (
                     <div key={n.wl} className="flex flex-col items-center gap-1">
-                      <span className="h-3 w-3 rounded-full bg-cyan shadow-[0_0_10px_2px_rgba(34,211,238,.55)]" />
+                      <span className="h-3 w-3 rounded-full bg-cyan shadow-[0_0_16px_3px_rgba(34,211,238,.75)] ring-2 ring-cyan/20" />
                       <span className="mono mt-1 text-sm font-medium">{n.wl}</span>
                       <span className="text-2xs uppercase tracking-wider text-muted-foreground">{n.label}</span>
                     </div>
