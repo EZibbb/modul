@@ -12,6 +12,9 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 
+# Вендорные скиллы (ui-ux-pro-max / CKM, ставятся через `npx skills add`) — не в git
+.agents/
+
 # IDE / OS
 .vscode/
 .idea/

@@ -11,19 +11,19 @@
    ============================================================ */
 :root {
   color-scheme: light; /* нативные контролы (попап select, скроллбары) в светлой теме */
-  /* Neutrals (cool slate) */
-  --background: 214 32% 97%;
+  /* Neutrals (cool slate) — канва заметно не белая, белые карточки всплывают над ней */
+  --background: 215 24% 95%;
   --foreground: 222 47% 11%;
   --card: 0 0% 100%;
   --card-foreground: 222 47% 11%;
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 11%;
-  --muted: 216 24% 93%;
-  --muted-foreground: 220 9% 43%;
-  --subtle: 215 30% 95%;
-  --border: 218 18% 89%;
-  --border-strong: 220 14% 82%;
-  --input: 220 16% 88%;
+  --muted: 215 20% 91%;
+  --muted-foreground: 220 10% 40%;
+  --subtle: 215 24% 96.5%;
+  --border: 215 16% 86%;
+  --border-strong: 215 14% 78%;
+  --input: 215 16% 85%;
   --ring: 222 89% 46%;
 
   /* Brand — optical blue + fiber cyan */
@@ -58,24 +58,25 @@
 
   /* Radii / shadows */
   --radius: 0.5rem;
-  --shadow-xs: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
-  --shadow-sm: 0 1px 3px 0 hsl(222 47% 11% / 0.08), 0 1px 2px -1px hsl(222 47% 11% / 0.06);
-  --shadow-md: 0 4px 12px -2px hsl(222 47% 11% / 0.10), 0 2px 6px -2px hsl(222 47% 11% / 0.06);
-  --shadow-lg: 0 12px 28px -6px hsl(222 47% 11% / 0.14), 0 6px 12px -6px hsl(222 47% 11% / 0.08);
+  /* мягкие, чуть синие тени — «премиальное белое» (Linear/Vercel) */
+  --shadow-xs: 0 1px 2px 0 hsl(215 35% 18% / 0.05);
+  --shadow-sm: 0 1px 2px 0 hsl(215 35% 18% / 0.06), 0 2px 4px 0 hsl(215 35% 18% / 0.06);
+  --shadow-md: 0 2px 4px -1px hsl(215 35% 18% / 0.08), 0 10px 20px -6px hsl(215 35% 20% / 0.12);
+  --shadow-lg: 0 4px 8px -2px hsl(215 35% 18% / 0.10), 0 18px 36px -10px hsl(215 35% 22% / 0.16);
 }
 
 .dark {
   color-scheme: dark; /* нативный попап select/скроллбары — в тёмной теме */
-  --background: 222 33% 7%;
+  --background: 224 30% 6%;
   --foreground: 213 27% 92%;
-  --card: 222 28% 9%;
+  --card: 223 26% 10%;
   --card-foreground: 213 27% 92%;
-  --popover: 222 30% 10%;
+  --popover: 223 27% 12%;
   --popover-foreground: 213 27% 92%;
   --muted: 220 22% 14%;
   --muted-foreground: 218 13% 60%;
   --subtle: 222 26% 11%;
-  --border: 220 20% 18%;
+  --border: 220 18% 20%;
   --border-strong: 220 18% 26%;
   --input: 220 20% 20%;
   --ring: 217 91% 60%;

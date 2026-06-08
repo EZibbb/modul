@@ -150,7 +150,7 @@ export default async function Home() {
         {/* категории */}
         <Reveal><section className="py-12">
           <div className="mb-5 flex items-end justify-between">
-            <h2 className="text-xl font-semibold tracking-tight">Категории</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Категории</h2>
             <Link href="/catalog" className="text-sm text-primary hover:underline">Весь каталог →</Link>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -166,7 +166,7 @@ export default async function Home() {
 
         {/* готовые решения */}
         <Reveal><section id="solutions" className="scroll-mt-24 py-2">
-          <h2 className="mb-5 text-xl font-semibold tracking-tight">Готовые решения</h2>
+          <h2 className="mb-5 text-2xl font-semibold tracking-tight">Готовые решения</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {SOLUTIONS.map((s) => (
               <Link key={s.title} href={s.href} className="group lift-hover flex flex-col rounded-lg border border-border bg-card p-5 shadow-sm">
@@ -181,7 +181,7 @@ export default async function Home() {
         {/* популярное на складе */}
         <Reveal><section className="py-12">
           <div className="mb-5 flex items-end justify-between">
-            <h2 className="text-xl font-semibold tracking-tight">Популярное на складе</h2>
+            <h2 className="text-2xl font-semibold tracking-tight">Популярное на складе</h2>
             <Link href="/catalog?stock=1" className="text-sm text-primary hover:underline">Всё в наличии →</Link>
           </div>
           <div className="overflow-x-auto rounded-lg border border-border">
@@ -213,6 +213,21 @@ export default async function Home() {
           </div>
         </section></Reveal>
       </main>
+
+      {/* CTA-якорь — цветной блок, разбивает «бело-на-белом» */}
+      <Reveal><section className="relative overflow-hidden border-y border-border bg-primary text-primary-foreground">
+        <div className="hero-glow" style={{ width: 360, height: 220, top: -120, left: "10%", background: "rgba(34,211,238,.25)" }} />
+        <div className="relative mx-auto flex max-w-[1320px] flex-col items-start gap-5 px-6 py-12 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight">Не нашли модуль под проект?</h2>
+            <p className="mt-1.5 max-w-xl text-primary-foreground/85">Со-пилот подберёт совместимые трансиверы и аналоги OEM по вашей задаче — или запросите спецификацию у инженера.</p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-3">
+            <CopilotButton label="Спросить со-пилота" className="h-11 bg-white text-primary hover:bg-white/90" />
+            <Button asChild variant="outline" className="h-11 border-white/40 bg-transparent text-primary-foreground hover:bg-white/10 hover:text-primary-foreground"><Link href="/cart">Запросить КП</Link></Button>
+          </div>
+        </div>
+      </section></Reveal>
 
       {/* полоса доверия */}
       <Reveal><section className="page-head border-y border-border">
