@@ -8,7 +8,8 @@ const COLS = [
 
 export function SiteFooter() {
   return (
-    <footer className="mt-16 border-t border-border bg-card">
+    <footer className="relative mt-16 border-t border-border bg-muted/70">
+      <div className="spectrum-rule absolute inset-x-0 top-0" />
       <div className="mx-auto grid max-w-[1320px] gap-8 px-6 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-2">

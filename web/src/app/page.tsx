@@ -62,7 +62,7 @@ export default async function Home() {
   return (
     <>
       {/* утилити-бар */}
-      <div className="border-b border-border bg-card text-2xs text-muted-foreground">
+      <div className="border-b border-border bg-primary-muted/50 text-2xs text-muted-foreground">
         <div className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-x-5 gap-y-1 px-6 py-1.5">
           <span className="flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-success" />{STOCK} позиций на складе в Москве</span>
           <span>Отгрузка в день заказа до 16:00</span>
@@ -137,7 +137,7 @@ export default async function Home() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild className="h-11 gap-1.5"><Link href="/catalog">Открыть каталог <ArrowRight className="h-4 w-4" /></Link></Button>
+              <Button asChild className="h-11 gap-1.5 bg-gradient-to-r from-primary to-cyan text-white shadow-sm hover:opacity-95"><Link href="/catalog">Открыть каталог <ArrowRight className="h-4 w-4" /></Link></Button>
               <CopilotButton className="h-11" />
             </div>
           </div>
@@ -150,7 +150,10 @@ export default async function Home() {
         {/* категории */}
         <Reveal><section className="py-12">
           <div className="mb-5 flex items-end justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight">Категории</h2>
+            <div>
+              <div className="text-2xs font-semibold uppercase tracking-wider text-primary/70">Ассортимент</div>
+              <h2 className="mt-1 text-2xl font-semibold tracking-tight">Категории</h2>
+            </div>
             <Link href="/catalog" className="text-sm text-primary hover:underline">Весь каталог →</Link>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -166,7 +169,10 @@ export default async function Home() {
 
         {/* готовые решения */}
         <Reveal><section id="solutions" className="scroll-mt-24 py-2">
-          <h2 className="mb-5 text-2xl font-semibold tracking-tight">Готовые решения</h2>
+          <div className="mb-5">
+            <div className="text-2xs font-semibold uppercase tracking-wider text-cyan">Под задачу</div>
+            <h2 className="mt-1 text-2xl font-semibold tracking-tight">Готовые решения</h2>
+          </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {SOLUTIONS.map((s) => (
               <Link key={s.title} href={s.href} className="group lift-hover flex flex-col rounded-lg border border-border bg-card p-5 shadow-sm">
@@ -181,7 +187,10 @@ export default async function Home() {
         {/* популярное на складе */}
         <Reveal><section className="py-12">
           <div className="mb-5 flex items-end justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight">Популярное на складе</h2>
+            <div>
+              <div className="text-2xs font-semibold uppercase tracking-wider text-success">В наличии сейчас</div>
+              <h2 className="mt-1 text-2xl font-semibold tracking-tight">Популярное на складе</h2>
+            </div>
             <Link href="/catalog?stock=1" className="text-sm text-primary hover:underline">Всё в наличии →</Link>
           </div>
           <div className="overflow-x-auto rounded-lg border border-border">
@@ -199,12 +208,12 @@ export default async function Home() {
                 {popular.items.map((p, i) => {
                   const sav = p.oemPrice ? Math.round(((p.oemPrice - p.priceBase) / p.oemPrice) * 100) : null;
                   return (
-                    <tr key={p.sku} className={i % 2 ? "bg-subtle" : ""}>
+                    <tr key={p.sku} className={`transition-colors hover:bg-primary-muted/40 ${i % 2 ? "bg-subtle" : ""}`}>
                       <td className="px-4 py-2.5"><Link href={`/product/${p.sku}`} className="mono text-primary hover:underline">{p.sku}</Link></td>
                       <td className="px-4 py-2.5 text-muted-foreground">{p.name}</td>
                       <td className="mono px-4 py-2.5 text-right font-medium tabular-nums">{ru(p.priceBase)} ₽</td>
                       <td className="px-4 py-2.5 text-right">{sav != null && sav > 0 ? <span className="text-success">−{sav}%</span> : "—"}</td>
-                      <td className="px-4 py-2.5 text-right"><Badge variant="outline" className="border-success/40 text-success">в наличии</Badge></td>
+                      <td className="px-4 py-2.5 text-right"><Badge variant="outline" className="gap-1.5 border-success/30 bg-success-muted text-success"><span className="h-1.5 w-1.5 rounded-full bg-success" />в наличии</Badge></td>
                     </tr>
                   );
                 })}
@@ -236,7 +245,7 @@ export default async function Home() {
           <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {TRUST.map((t) => (
               <div key={t.title} className="flex gap-3">
-                <t.icon className="h-5 w-5 shrink-0 text-cyan" />
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cyan-muted text-cyan"><t.icon className="h-[18px] w-[18px]" /></span>
                 <div>
                   <div className="text-sm font-medium">{t.title}</div>
                   <p className="mt-0.5 text-sm text-muted-foreground">{t.desc}</p>

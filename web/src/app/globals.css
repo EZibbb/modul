@@ -211,9 +211,9 @@ body {
 /* subtle engineering grid backdrop */
 .grid-bg {
   background-image:
-    radial-gradient(ellipse 92% 72% at 50% -6%, rgba(255,255,255,0) 34%, #ffffff 80%),
-    linear-gradient(to right, rgba(100,116,139,0.14) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(100,116,139,0.14) 1px, transparent 1px);
+    radial-gradient(ellipse 95% 75% at 50% -8%, hsl(var(--background) / 0) 52%, hsl(var(--background)) 96%),
+    linear-gradient(to right, hsl(215 18% 50% / 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(215 18% 50% / 0.22) 1px, transparent 1px);
   background-size: 100% 100%, 34px 34px, 34px 34px;
 }
 .dark .grid-bg {
