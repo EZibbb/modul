@@ -18,14 +18,14 @@
 - [x] L8 ⭐ Trust-иконки: tinted кружок-подложка
 - [x] L9 Бейдж «в наличии» насыщеннее (solid dot + tint)
 - [x] L10 Wavelength-шкала: ярче точки/подписи
-- [ ] L11 Активный пункт навигации — primary-подсветка
-- [ ] L12 Search-поле: focus-ring primary + тень
+- [x] L11 Активный пункт навигации — primary-подсветка
+- [x] L12 Search-поле: focus-ring primary + тень
 
 Иерархия/типографика
-- [ ] L13 H1 hero крупнее (5xl→6xl) + tracking-tighter
+- [x] L13 H1 hero крупнее (5xl→6xl) + tracking-tighter
 - [x] L14 ⭐ Kicker-лейблы над H2 секций
-- [ ] L15 Цены tabular + solid success-chip экономии
-- [ ] L16 Контраст мелкого 2xs muted (4.5:1)
+- [x] L15 Цены tabular + solid success-chip экономии
+- [x] L16 Контраст мелкого 2xs muted (4.5:1)
 
 Моушн
 - [ ] L17 ⭐ Skeleton-загрузка каталога/поиска
@@ -58,10 +58,10 @@
 - [ ] D16 Scrim drawer/модалок 50–60%
 
 Иерархия/типографика
-- [ ] D17 Заголовки светлее (92→94%) + cyan kicker
-- [ ] D18 Цены tabular, акцент primary-light
-- [ ] D19 Контраст secondary ≥3:1
-- [ ] D20 Focus-ring ярче + offset
+- [x] D17 Заголовки светлее (92→94%) + cyan kicker
+- [x] D18 Цены tabular, акцент primary-light
+- [x] D19 Контраст secondary ≥3:1
+- [x] D20 Focus-ring ярче + offset
 
 ## Общие (один раз на обе)
 - L17/D-моушн skeleton · L18 theme-switch · L19 reveal-везде

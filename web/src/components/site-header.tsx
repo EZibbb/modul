@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
 import { Search, Sparkles, ClipboardList, User, GitCompare, ChevronDown, Calculator, ScanSearch, Activity, PiggyBank, FileSpreadsheet } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -23,9 +23,11 @@ const TOOLS = [
 
 export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [q, setQ] = useState(initialQuery);
   const [toolsOpen, setToolsOpen] = useState(false);
   const { cartCount, compare, openAi } = useStore();
+  const toolsActive = TOOLS.some((t) => pathname.startsWith(t.href));
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -45,16 +47,20 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
         </Link>
 
         <nav className="ml-2 hidden items-center gap-1 text-sm text-muted-foreground md:flex">
-          {NAV.map((n) => (
-            <Link key={n.href} href={n.href} className="rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground">
-              {n.label}
-            </Link>
-          ))}
+          {NAV.map((n) => {
+            const active = pathname === n.href || pathname.startsWith(n.href + "/");
+            return (
+              <Link key={n.href} href={n.href} className={`relative rounded-md px-2.5 py-1.5 transition-colors hover:bg-accent hover:text-foreground ${active ? "font-medium text-foreground" : ""}`}>
+                {n.label}
+                {active && <span className="absolute inset-x-2.5 -bottom-px h-0.5 rounded-full bg-primary" />}
+              </Link>
+            );
+          })}
           {/* Инструменты — выпадающее меню */}
           <div className="relative">
             <button
               onClick={() => setToolsOpen((o) => !o)}
-              className={`flex items-center gap-1 rounded-md px-2.5 py-1.5 hover:bg-accent hover:text-foreground ${toolsOpen ? "bg-accent text-foreground" : ""}`}
+              className={`flex items-center gap-1 rounded-md px-2.5 py-1.5 transition-colors hover:bg-accent hover:text-foreground ${toolsOpen || toolsActive ? "bg-accent font-medium text-foreground" : ""}`}
             >
               Инструменты <ChevronDown className={`h-3.5 w-3.5 transition-transform ${toolsOpen ? "rotate-180" : ""}`} />
             </button>
@@ -88,7 +94,7 @@ export function SiteHeader({ initialQuery = "" }: { initialQuery?: string }) {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Артикул, модель, параметр…"
-            className="mono h-9 w-full rounded-md border border-input bg-card pl-8 pr-10 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mono h-9 w-full rounded-md border border-input bg-card pl-8 pr-10 text-sm shadow-xs outline-none transition-shadow focus-visible:border-primary focus-visible:shadow-sm focus-visible:ring-2 focus-visible:ring-primary/25"
           />
           <kbd className="mono pointer-events-none absolute right-2 top-1/2 hidden -translate-y-1/2 rounded border border-border bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground md:block">⌘K</kbd>
         </form>

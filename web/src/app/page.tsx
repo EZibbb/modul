@@ -97,7 +97,7 @@ export default async function Home() {
             <div className="mono inline-flex items-center gap-3 rounded-full border border-border bg-card/60 px-3 py-1 text-2xs tracking-wider text-muted-foreground">
               <span className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-cyan" />850</span><span>·</span><span>1310</span><span>·</span><span>1550 NM</span>
             </div>
-            <h1 className="mt-5 max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h1 className="mt-5 max-w-2xl text-4xl font-semibold tracking-tighter sm:text-5xl lg:text-6xl lg:leading-[1.05]">
               Оптика, которая заведётся{" "}
               <span className="bg-gradient-to-r from-primary to-cyan bg-clip-text text-transparent">с первого порта</span>
             </h1>

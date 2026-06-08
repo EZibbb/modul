@@ -68,7 +68,7 @@
 .dark {
   color-scheme: dark; /* нативный попап select/скроллбары — в тёмной теме */
   --background: 224 30% 6%;
-  --foreground: 213 27% 92%;
+  --foreground: 213 30% 94%;
   --card: 223 26% 10%;
   --card-foreground: 213 27% 92%;
   --popover: 223 27% 12%;

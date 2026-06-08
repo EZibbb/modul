@@ -75,7 +75,7 @@ export function ProductCard({ p }: { p: ProductCardData }) {
           <div>
             <div className="mono text-base font-semibold">{ru(p.priceBase)}&nbsp;₽</div>
             {savings != null && savings > 0 && (
-              <div className="text-2xs text-success">−{savings}% к OEM</div>
+              <span className="mt-0.5 inline-flex w-fit items-center rounded bg-success-muted px-1.5 py-0.5 text-2xs font-medium text-success">−{savings}% к OEM</span>
             )}
           </div>
           <span className="relative z-10"><AddToSpec item={{ sku: p.sku, name: p.name, priceBase: p.priceBase, pricePartner: p.pricePartner, oemPrice: p.oemPrice }} /></span>
